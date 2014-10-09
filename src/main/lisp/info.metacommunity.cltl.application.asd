@@ -12,12 +12,11 @@
 (defsystem #:info.metacommunity.cltl.application
   :description 
   "API for application initialization and messaging"
-  :version "1.1"
+  :version "1.0"
   ;; :homepage "https://github.com/MetaCommunity/mci-cltl-application"
   ;; :license "https://github.com/MetaCommunity/mci-cltl-application/blob/master/LICENSE"
   
-  :depends-on (#:closer-mop
-               #:info.metacommunity.cltl.utils)
+  :depends-on (#:info.metacommunity.cltl.utils)
 
   :components 
   ((:file "app-package")
