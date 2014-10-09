@@ -4,6 +4,8 @@
   (:nicknames #:application)
   (:use #:info.metacommunity.cltl.utils #:cl)
   (:export 
+
+   #:current-application
    
    #:format-condition 
 

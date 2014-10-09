@@ -122,6 +122,16 @@
 
 (defvar %application% nil)
 
+;; FIXME: Define an APPLICATION class representative of the Lisp image itself
+
+(defun current-application ()
+  (values %application%))
+
+(defun (setf current-application) (new-value)
+  ;; FIXME: Thread handling?
+  (setf %application% new-value))
+
+
 ;; TO DO - w/ study onto POSIX
 ;; (defclass process ()
 ;;   ())
@@ -167,7 +177,7 @@
   ())
 
 #+NIL
-(handler-case
+(handler-case ; instance test - application-error
     (simple-program-error "Ping ping ping ping ~s" (get-universal-time))
   (error (c)
     (error 'application-error 
@@ -182,13 +192,20 @@
 (defgeneric notify (application context condition)
 
   (:method ((application null) context (condition error))
-    (error condition))
+    (error 'application-error
+           :application context
+           :condition condition))
 
   (:method ((application null) context (condition warning))
-    (warn condition))
+    (error 'application-warning
+           :application context
+           :condition condition))
 
   (:method ((application null) context (condition condition))
-    (signal condition)))
+    (signal 'applicaiton-condition
+            :application context
+            :condition condition)))
+
 
 ;; NOTE/TODO: This system now dep. on [system Bordeaux Threads]
 #+Bordeaux-Threads
@@ -222,4 +239,11 @@
   ;;    primarily of executive dissertations, if not
   ;;    entrepreneurialism
   ;;
-  (notify %application% (bordeaux-threads:current-thread) condition))
+  (notify (current-application) (bordeaux-threads:current-thread) condition))
+
+
+#+NIL
+(handler-case ; instance test - #'notify* and ... error method
+    (simple-program-error "Ping ping ping ping ~s" (get-universal-time))
+  (error (c)
+    (notify* c)))
