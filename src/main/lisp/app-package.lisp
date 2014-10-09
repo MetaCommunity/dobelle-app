@@ -5,6 +5,10 @@
   (:use #:info.metacommunity.cltl.utils #:cl)
   (:export 
 
+   #:label
+   #:labeled-object
+   #:princ-label
+
    #:current-application
    
    #:format-condition 

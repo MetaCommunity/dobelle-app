@@ -12,7 +12,7 @@
 (defsystem #:info.metacommunity.cltl.application
   :description 
   "API for application initialization and messaging"
-  :version "1.0"
+  :version "1.1"
   ;; :homepage "https://github.com/MetaCommunity/mci-cltl-application"
   ;; :license "https://github.com/MetaCommunity/mci-cltl-application/blob/master/LICENSE"
   
@@ -20,6 +20,11 @@
 
   :components 
   ((:file "app-package")
+   
+   (:file "label"
+          :depends-on
+          ("app-package"
+           ))
 
    (:file "notify"
           :depends-on 
