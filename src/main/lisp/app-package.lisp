@@ -2,7 +2,7 @@
 
 (defpackage #:info.metacommunity.cltl.application
   (:nicknames #:application)
-  (:use #:info.metacommunity.cltl.util #:cl)
+  (:use #:info.metacommunity.cltl.utils #:cl)
   (:export 
    
    #:format-condition 
