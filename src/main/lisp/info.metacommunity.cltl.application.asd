@@ -20,12 +20,12 @@
                #:info.metacommunity.cltl.utils)
 
   :components 
-  (#+NIL 
-   (:file "app-package")
+  ((:file "app-package")
 
    (:file "notify"
           :depends-on 
-          (#+NIL "app-package"
-                 ))
+          ("app-package"
+           ))
    ))
+
  
