@@ -4,6 +4,9 @@
     (:nicknames #:application)
     (:use #:info.metacommunity.cltl.util #:cl)
     (:export 
+     
+     #:format-condition 
+
      #:encapsulated-condition
      #:encapsulated-condition-object
      
@@ -155,7 +158,7 @@
  
 
 (defgeneric format-condition (condition stream))
-;; ^ FIXME: Move into #:utils system
+
 
 (define-condition encapsulated-condition ()
   ;; This class might be semantically similar to CELL-ERROR, but does
