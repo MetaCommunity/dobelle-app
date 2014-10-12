@@ -20,9 +20,10 @@
 
 
 (defmethod label ((object labeled-object))
+  ;; (values T BOOLEAN)
   (cond
     ((slot-boundp object 'label)
-     (values (slot-value object label) t))
+     (values (slot-value object 'label) t))
     (t (values nil nil))))
 
 
