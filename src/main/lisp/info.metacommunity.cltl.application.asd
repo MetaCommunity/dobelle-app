@@ -11,10 +11,10 @@
 
 (defsystem #:info.metacommunity.cltl.application
   :description 
-  "API for application initialization and messaging"
-  :version "1.1"
-  ;; :homepage "https://github.com/MetaCommunity/mci-cltl-application"
-  ;; :license "https://github.com/MetaCommunity/mci-cltl-application/blob/master/LICENSE"
+  "API for application initialization and messaging in Common Lisp"
+  :version "1.0"
+  :homepage "https://github.com/MetaCommunity/dobelle-app"
+  :license "https://github.com/MetaCommunity/dobelle-app/blob/master/LICENSE"
   
   :depends-on (#:info.metacommunity.cltl.utils)
 
