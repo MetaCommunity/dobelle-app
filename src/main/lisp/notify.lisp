@@ -51,7 +51,7 @@
 ;; 4.A) Extend this siple framework for an appliation system such that
 ;;      would be running within an Amazon Web Services (AWS) Elastic
 ;;      Compute Cloud (EC2) _instance_, and therefore would be able to
-;;      utilize the AWS notifications API - namely, as for notifying
+;;      utilize the AWS personal messaging API, [SNS](http://aws.amazon.com/sns/) - namely, as for notifying
 ;;      an application's maintainer and/or maintenance staff of any
 ;;      conditions observed within the Common Lisp appliation's
 ;;      runtime environment(w/ a top priority notification) 
@@ -118,6 +118,10 @@
 ;; [6] [Installing - FusionForge Wiki](https://fusionforge.org/plugins/mediawiki/wiki/fusionforge/index.php/Installing)
 ;; [7] [Debian Package Tracking System - fusionforge](https://packages.qa.debian.org/f/fusionforge.html)
 ;; [8] Prakash, Winston. [Practicing Continuous Delivery Using Hudson](http://www.eclipse.org/hudson/the-hudson-book/book-hudson.pdf)
+
+
+(defclass application ()
+  ())
 
 
 (defvar %application% nil)
