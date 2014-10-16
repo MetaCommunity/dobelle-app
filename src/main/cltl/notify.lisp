@@ -166,14 +166,18 @@
   ((application
     :initarg :application
     :initform %application%
-    :reader application-condition-application))
-  (:report
-   (lambda (c s) (format-condition c s))))
+    :reader application-condition-application)
+   (application-context
+    :initarg :application-context
+    :initform nil
+    :reader application-condition-application-context))
+  (:report format-condition))
 
 (defmethod format-condition ((condition application-condition)
                              (stream stream))
   ;; FIXME: #I18N
-  (format stream "~<Encapsulated condition within ~A:~> ~<~A~>"
+  (format stream "~<Encapsulated condition in context ~A within ~A:~> ~<~A~>"
+          (application-condition-application-context condition)
           (application-condition-application condition)
           (encapsulated-condition-object condition)))
 
@@ -194,20 +198,30 @@
 
 
 (defgeneric notify (application context condition)
-
+  ;; FIXME: Clarify usage of  CONTEXT argument
+  ;;
+  ;; e.g. for  CLIM-APP APPLICATION
+  ;;           CONTEXT classes e.g
+  ;;              WINDOW-CONTEXT
+  ;;              SHELL-PROCESS-CONTEXT
+  ;;              HOST-CONTEXT
+  ;;              etc
   (:method ((application null) context (condition error))
     (error 'application-error
-           :application context
+           :application nil
+           :application-context context
            :condition condition))
 
   (:method ((application null) context (condition warning))
     (error 'application-warning
-           :application context
+           :application nil
+           :application-context context
            :condition condition))
 
   (:method ((application null) context (condition condition))
     (signal 'applicaiton-condition
-            :application context
+            :application nil
+            :application-context context
             :condition condition)))
 
 
