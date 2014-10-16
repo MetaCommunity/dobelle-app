@@ -90,18 +90,18 @@ as in which an `%application%` would be:
 4. **(4.C) Illustrate how this simple generic function may be applied**
 within each of
 
-A. a desktop %application% using Garnet
+    * A. a desktop `%application%` using Garnet or CLIM
 
-B. an HTTP server %application% using Alexandria and/or CL-HTTP
+    * B. an HTTP server `%application%` using CL-HTTP
 
-C. an Eclpse IDE extension using ABCL and/or {CL+J, FOIL, ...}
-in which the %application% may represent simply an interface onto the
-Eclipse IDE - as the Eclipse IDE being, from the perspective of the
-Commonn Lisp peer, a _Java Application_ [Java]
+    * C. an Eclpse IDE extension using ABCL and/or {CL+J, FOIL, ...}
+    in which the %application% may represent simply an interface onto
+    the Eclipse IDE - as the Eclipse IDE being, from the perspective
+    of the Common Lisp peer, a _Java Application_ [Java]
 
-D. then define CORBA IDL for Nr. C, and extend as at least a simple
-(?) CORBA-integrated message passing / application notification
-framework for Common Lisp peer applications
+    * D. then define CORBA IDL for Nr. C, and extend as at least a
+    simple (?) CORBA-integrated message passing / application 
+    notification framework for Common Lisp peer applications
 
 ## Resource Notes
 
