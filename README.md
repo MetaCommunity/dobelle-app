@@ -103,6 +103,43 @@ within each of
     simple (?) CORBA-integrated message passing / application 
     notification framework for Common Lisp peer applications
 
+### API "TO DO"
+
+* Task: Extend [osicat] for interface with host process information
+  (e.g. PID, real UID, GID, effective UID, GID, priority) and process
+  control procedures (e.g.  *nice*, *sched_setscheduler*, *chroot*)
+  and CLIM presentation/interaction methods 
+
+* Class: PROCESS
+    * Class: THREAD-PROCESS (PROCESS)
+    * Class: SHELL-PROCESS (PROCESS)
+    * Accessors: [[POSIX process interface, where applicable, as subsuming
+     the THREAD-PROCESS inteface for a Lisp implementation running in a POSIX
+	 environment or similar]]
+
+* Class: APPLICATION
+
+    * Accessor: APPLCIATION-PROCESS
+    * Accessor: APPLICATION-NAME
+    * Accessor: APPLICATION-PARAMETERS
+	* Accessor: APPLICATION-DEBUGGER-HOOK
+    * Class: SHELL-APPLICATION (APPLICATION)
+	* Class: GRAPHICAL-APPLICATION (APPLICATION)
+	    * Class: GARNET-APPLIATION (GRAPHICAL-APPLICATION)
+		* Class: CLIM-APPLICATION (GRAPHICAL-APPLICATION)
+		    * For _application debugger hook_, use
+		      `clim-debugger:debugger` (defined in
+		      `mcclim:Apps;Debugger;clim-debugger.lisp`; depends on
+		      McCLIM _Clouseau_)
+	
+    * Class: JAVA-APPLICATION
+        * Accessor: JAVA-APPLICATION-MAIN-CLASS
+        * Class: JAVA-SHELL-APPLICATION (APPLICATION)
+		* Class: JAVA-CL+J-APPLICATION
+		* Class: JAVA-FOIL-APPLICATION
+		* Class: JAVA-ABCL-APPLICATION
+
+
 ## Resource Notes
 
 1. [Hudson Continuous Integration](http://hudson-ci.org/)
