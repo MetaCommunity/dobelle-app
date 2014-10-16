@@ -120,9 +120,17 @@ within each of
 * Class: APPLICATION
 
     * Accessor: APPLCIATION-PROCESS
-    * Class: SHELL-APPLICATION (APPLICATION)
     * Accessor: APPLICATION-NAME
     * Accessor: APPLICATION-PARAMETERS
+	* Accessor: APPLICATION-DEBUGGER-HOOK
+    * Class: SHELL-APPLICATION (APPLICATION)
+	* Class: GRAPHICAL-APPLICATION (APPLICATION)
+	    * Class: GARNET-APPLIATION (GRAPHICAL-APPLICATION)
+		* Class: CLIM-APPLICATION (GRAPHICAL-APPLICATION)
+		    * For _application debugger hook_, use
+		      `clim-debugger:debugger` (defined in
+		      `mcclim:Apps;Debugger;clim-debugger.lisp`; depends on
+		      McCLIM _Clouseau_)
 	
     * Class: JAVA-APPLICATION
         * Accessor: JAVA-APPLICATION-MAIN-CLASS
