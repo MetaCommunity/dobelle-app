@@ -2,7 +2,11 @@ Trvial API for application initialization and messaging in Common Lisp
 ======================================================================
 
 
+
+
 ## An initial summary about the APPLICATION system
+
+_**Ed. Note**: This documentation is focused mostly for development of applications within a context of Amazon Web Services (AWS), namely for application of a build system and a continuous interation framework within an AWS Elastic Beanstalk (EB) instance_
 
 [AFFTA] represents the first usage case for this application
 notification framework.
@@ -32,7 +36,10 @@ environment, and may be furthermore extended for appliation within a
 server environment.
           
 
+
 ## "TO DO"
+
+00. Make documentation modular - _AWS, Build System, Desktop Application System, etc._
 
 0. **Document how this <framework> is used within DO-RECORDED-TEST**
 
