@@ -1,14 +1,64 @@
-Trvial API for application initialization and messaging in Common Lisp
-======================================================================
+API for application packaging, initialization, and messaging in Common Lisp
+=========================================================================
+
+## Overview
+
+The [dobelle-app][dobelle-app] defines a class, `APPLICATION`,
+within a Common Lisp namespace.
+
+## Availability
+
+Source tree at Github:
+  [git@github.com:MetaCommunity/dobelle-app.git][dobelle-app] 
+
+## Initial Documentation
+
+### CORBA Interface Definitions
+
+_(TBD. Effectively, this functionality would reuires a definition of a
+seperate system for support of CORBA application development in Common
+Lisp -- including support for ORBs implementing Kerberos
+authentication and SSL tunnelling, viz
+(JacORB)[http://www.jacorb.org]. Context: "Mobile, Desktop, and Server
+Applications")_
+
+### Integration with CLIM
+
+_(TBD. See "Initial Summary", following. Context: "Desktop Applications")_
+
+**See also:**
+
+* CLIM-Desktop [[CLiki](http://www.cliki.net/clim-desktop)][[source tree](http://common-lisp.net/viewvc/clim-desktop/)]
+* History of Desktop Interfaces for Lisp Machines, for example
+    * [_Symbolics_, Wikipedia Republished](http://en.wiki2.org/wiki/Symbolics),
+      specifically, _[Ivory and Open Genera](http://en.wiki2.org/wiki/Symbolics#Ivory_and_Open_Genera)_
+
+### Integration with Amazon Web Services
+
+_(TBD. See "Initial Summary", following. Context: "Server Applications")_
+
+### Integration with ASDF
+
+_(TBD)_
+
+#### Modeling of Output Files for Application Package Assembly
+
+_(TBD. See also: [mci-doc-docbook][mci-doc-docbook])_
+
+### Integration with Host Packaging System
+
+_(TBD. See also: [mci-doc-docbook][mci-doc-docbook]; Debian Packaging
+System; Cygwin; Android app store(s))_
 
 
+### An initial summary about the APPLICATION system
 
+_**Ed. Note**: This documentation is focused mostly for development of
+applications within a context of Amazon Web Services (AWS), namely for
+application of a build system and a continuous interation framework
+within an AWS Elastic Beanstalk (EB) instance_ 
 
-## An initial summary about the APPLICATION system
-
-_**Ed. Note**: This documentation is focused mostly for development of applications within a context of Amazon Web Services (AWS), namely for application of a build system and a continuous interation framework within an AWS Elastic Beanstalk (EB) instance_
-
-[AFFTA] represents the first usage case for this application
+[AFFTA][affta] represents the first usage case for this application
 notification framework.
 
 In the origins of this framework's first application within AFFTA, it
@@ -157,3 +207,8 @@ within each of
 6. [Installing - FusionForge Wiki](https://fusionforge.org/plugins/mediawiki/wiki/fusionforge/index.php/Installing)
 7. [Debian Package Tracking System - fusionforge](https://packages.qa.debian.org/f/fusionforge.html)
 8. Prakash, Winston. [Practicing Continuous Delivery Using Hudson](http://www.eclipse.org/hudson/the-hudson-book/book-hudson.pdf)
+
+
+[dobelle-app]: https://github.com/MetaCommunity/dobelle-app
+[mci-doc-docbook]: https://github.com/MetaCommunity/mci-doc-docbook
+[affta]: https://github.com/MetaCommunity/affta
