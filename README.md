@@ -13,6 +13,24 @@ Source tree at Github:
 
 ## Initial Documentation
 
+### Concepts
+
+#### Package Life Cycle
+
+_cf. Debian package system_
+
+#### Application Life Cycle
+
+* Application initialization
+* Application runtime
+* Application error state
+* Application close
+
+#### Thread Management
+
+* Thread pools
+* _..._
+
 ### CORBA Interface Definitions
 
 _(TBD. Effectively, this functionality would reuires a definition of a
@@ -24,9 +42,62 @@ Applications")_
 
 ### Integration with CLIM
 
-_(TBD. See "Initial Summary", following. Context: "Desktop Applications")_
+_(TBD. See also: "Integration with ASDF," following; "Initial
+Summary", following. Context: "Desktop Applications")_ 
 
-**See also:**
+#### Application Initialization
+
+_(TBD. See also: "Integration with ASDF," following)_
+
+_Notes (Non-Normative)_
+
+* Reference implemnetaion of CLIM, for purpose of definitions in this project: [McCLIM][mcclim]
+* Host Window System Architectures and CLIM
+	* CLIM is developed essentially around a framework in which a _host
+	  windowing system_ is defined
+	* CLIM suports the X Window System, in multiple _graft_ backends, as
+	  avaialble within individual CLIM Implementations (e.g X Window
+	  System, and [McCLIM][mcclim] GTK Cairo backend)
+        * The X Window System allows for an _application_ to be _launched_
+          on a _remote client machine_, with the application's _graphical
+          user interface_ being displayed on an _X Window host_ running
+          on a local, _controlling terminal_.
+	        * Typically, the _remote client_ functionality of the X
+	          Window System would be augmented with an _SSL tunneling_
+	          provider, such as OpenSSL
+* Additional Host Resources
+	* In addition to a _windowing system_, a host operating system may
+	  provide features including:
+		* Desktop Environment (KDE, GNOME, XFCE, etc)
+		* Packaging System (typically, specific to the operating system)
+		* Locally installed software (see also: [xstow](http://xstow.sourceforge.net/)]
+	* A _host machine_ may implement multiple _host operating systems_,
+	  simultaneously
+		* A _host operating system_ may be initalized via a _virtualization
+		 host_, such as a Xen _Dom0 hypervisor_. (See also:
+		 [Dom0 - Xen Wiki](http://wiki.xen.org/wiki/Dom0)) or a
+		 VirtualBox _Virtual machine_ manager (See also: [VirtualBox](https://www.virtualbox.org/))
+
+
+Notes onto the VirtualBox SDK:
+* Usage cases:
+	* Cross-platform development
+	    * Application display via _Seamless_ and _Full Screen_
+	      presentations
+	    * Alternate to Xen virtualization (Note: Xen is implemented
+	      within Amazon Web Services instances)
+    * Interactive testing environment (temporary VMs)
+* [Download VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [VirtualBox Main API Documentation](https://www.virtualbox.org/sdkref/index.html)
+    * [VirtualBox API Class Hierarchy](https://www.virtualbox.org/sdkref/hierarchy.html) (Interfaces)
+    * [VirtualBox IEvent Interface](https://www.virtualbox.org/sdkref/interface_i_event.html)
+    * [VirtualBox IGuest::createSession(..)](https://www.virtualbox.org/sdkref/interface_i_guest.html#ad01dc4d81f1f0be4b9097977ddf2dc19)
+    * VirtualBox [IGuestSession::processCreate(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#abe43b79ce8bd8d02454c60456c2a44a9)
+      and [IGuestSession::ProcessCreateEx(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#a1353ebd47bb078594127a491d3af9797) methods
+    * [VirtualBox IProcess Interface](https://www.virtualbox.org/sdkref/interface_i_process.html)
+    * [VirtualBox IGuestProcess Interface](https://www.virtualbox.org/sdkref/interface_i_guest_process-members.html)
+
+#### See also
 
 * CLIM-Desktop [[CLiki](http://www.cliki.net/clim-desktop)][[source tree](http://common-lisp.net/viewvc/clim-desktop/)]
 * History of Desktop Interfaces for Lisp Machines, for example
@@ -212,3 +283,4 @@ within each of
 [dobelle-app]: https://github.com/MetaCommunity/dobelle-app
 [mci-doc-docbook]: https://github.com/MetaCommunity/mci-doc-docbook
 [affta]: https://github.com/MetaCommunity/affta
+[mcclim]: http://common-lisp.net/project/mcclim/
