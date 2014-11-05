@@ -1,10 +1,135 @@
-Trvial API for application initialization and messaging in Common Lisp
-======================================================================
+API for application packaging, initialization, and messaging in Common Lisp
+=========================================================================
+
+## Overview
+
+The [dobelle-app][dobelle-app] defines a class, `APPLICATION`,
+within a Common Lisp namespace.
+
+## Availability
+
+Source tree at Github:
+  [git@github.com:MetaCommunity/dobelle-app.git][dobelle-app] 
+
+## Initial Documentation
+
+### Concepts
+
+#### Package Life Cycle
+
+_cf. Debian package system_
+
+#### Application Life Cycle
+
+* Application initialization
+* Application runtime
+* Application error state
+* Application close
+
+#### Thread Management
+
+* Thread pools
+* _..._
+
+### CORBA Interface Definitions
+
+_(TBD. Effectively, this functionality would reuires a definition of a
+seperate system for support of CORBA application development in Common
+Lisp -- including support for ORBs implementing Kerberos
+authentication and SSL tunnelling, viz
+(JacORB)[http://www.jacorb.org]. Context: "Mobile, Desktop, and Server
+Applications")_
+
+### Integration with CLIM
+
+_(TBD. See also: "Integration with ASDF," following; "Initial
+Summary", following. Context: "Desktop Applications")_ 
+
+#### Application Initialization
+
+_(TBD. See also: "Integration with ASDF," following)_
+
+_Notes (Non-Normative)_
+
+* Reference implemnetaion of CLIM, for purpose of definitions in this project: [McCLIM][mcclim]
+* Host Window System Architectures and CLIM
+	* CLIM is developed essentially around a framework in which a _host
+	  windowing system_ is defined
+	* CLIM suports the X Window System, in multiple _graft_ backends, as
+	  avaialble within individual CLIM Implementations (e.g X Window
+	  System, and [McCLIM][mcclim] GTK Cairo backend)
+        * The X Window System allows for an _application_ to be _launched_
+          on a _remote client machine_, with the application's _graphical
+          user interface_ being displayed on an _X Window host_ running
+          on a local, _controlling terminal_.
+	        * Typically, the _remote client_ functionality of the X
+	          Window System would be augmented with an _SSL tunneling_
+	          provider, such as OpenSSL
+* Additional Host Resources
+	* In addition to a _windowing system_, a host operating system may
+	  provide features including:
+		* Desktop Environment (KDE, GNOME, XFCE, etc)
+		* Packaging System (typically, specific to the operating system)
+		* Locally installed software (see also: [xstow](http://xstow.sourceforge.net/)]
+	* A _host machine_ may implement multiple _host operating systems_,
+	  simultaneously
+		* A _host operating system_ may be initalized via a _virtualization
+		 host_, such as a Xen _Dom0 hypervisor_. (See also:
+		 [Dom0 - Xen Wiki](http://wiki.xen.org/wiki/Dom0)) or a
+		 VirtualBox _Virtual machine_ manager (See also: [VirtualBox](https://www.virtualbox.org/))
 
 
-## An initial summary about the APPLICATION system
+Notes onto the VirtualBox SDK:
+* Usage cases:
+	* Cross-platform development
+	    * Application display via _Seamless_ and _Full Screen_
+	      presentations
+	    * Alternate to Xen virtualization (Note: Xen is implemented
+	      within Amazon Web Services instances)
+    * Interactive testing environment (temporary VMs)
+* [Download VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [VirtualBox Main API Documentation](https://www.virtualbox.org/sdkref/index.html)
+    * [VirtualBox API Class Hierarchy](https://www.virtualbox.org/sdkref/hierarchy.html) (Interfaces)
+    * [VirtualBox IEvent Interface](https://www.virtualbox.org/sdkref/interface_i_event.html)
+    * [VirtualBox IGuest::createSession(..)](https://www.virtualbox.org/sdkref/interface_i_guest.html#ad01dc4d81f1f0be4b9097977ddf2dc19)
+    * VirtualBox [IGuestSession::processCreate(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#abe43b79ce8bd8d02454c60456c2a44a9)
+      and [IGuestSession::ProcessCreateEx(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#a1353ebd47bb078594127a491d3af9797) methods
+    * [VirtualBox IProcess Interface](https://www.virtualbox.org/sdkref/interface_i_process.html)
+    * [VirtualBox IGuestProcess Interface](https://www.virtualbox.org/sdkref/interface_i_guest_process-members.html)
 
-[AFFTA] represents the first usage case for this application
+#### See also
+
+* CLIM-Desktop [[CLiki](http://www.cliki.net/clim-desktop)][[source tree](http://common-lisp.net/viewvc/clim-desktop/)]
+* History of Desktop Interfaces for Lisp Machines, for example
+    * [_Symbolics_, Wikipedia Republished](http://en.wiki2.org/wiki/Symbolics),
+      specifically, _[Ivory and Open Genera](http://en.wiki2.org/wiki/Symbolics#Ivory_and_Open_Genera)_
+
+### Integration with Amazon Web Services
+
+_(TBD. See "Initial Summary", following. Context: "Server Applications")_
+
+### Integration with ASDF
+
+_(TBD)_
+
+#### Modeling of Output Files for Application Package Assembly
+
+_(TBD. See also: [mci-doc-docbook][mci-doc-docbook])_
+
+### Integration with Host Packaging System
+
+_(TBD. See also: [mci-doc-docbook][mci-doc-docbook]; Debian Packaging
+System; Cygwin; Android app store(s))_
+
+
+### An initial summary about the APPLICATION system
+
+_**Ed. Note**: This documentation is focused mostly for development of
+applications within a context of Amazon Web Services (AWS), namely for
+application of a build system and a continuous interation framework
+within an AWS Elastic Beanstalk (EB) instance_ 
+
+[AFFTA][affta] represents the first usage case for this application
 notification framework.
 
 In the origins of this framework's first application within AFFTA, it
@@ -32,7 +157,10 @@ environment, and may be furthermore extended for appliation within a
 server environment.
           
 
+
 ## "TO DO"
+
+00. Make documentation modular - _AWS, Build System, Desktop Application System, etc._
 
 0. **Document how this <framework> is used within DO-RECORDED-TEST**
 
@@ -235,3 +363,9 @@ within each of
 6. [Installing - FusionForge Wiki](https://fusionforge.org/plugins/mediawiki/wiki/fusionforge/index.php/Installing)
 7. [Debian Package Tracking System - fusionforge](https://packages.qa.debian.org/f/fusionforge.html)
 8. Prakash, Winston. [Practicing Continuous Delivery Using Hudson](http://www.eclipse.org/hudson/the-hudson-book/book-hudson.pdf)
+
+
+[dobelle-app]: https://github.com/MetaCommunity/dobelle-app
+[mci-doc-docbook]: https://github.com/MetaCommunity/mci-doc-docbook
+[affta]: https://github.com/MetaCommunity/affta
+[mcclim]: http://common-lisp.net/project/mcclim/
