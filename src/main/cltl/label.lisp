@@ -7,6 +7,7 @@
 
 (defgeneric label (object))
 ;; ^ (values t boolean)
+;; See also: UTILS:FORMAT-CONDITION
 
 (defclass labeled-object ()
   ((label

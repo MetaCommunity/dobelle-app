@@ -238,15 +238,100 @@ within each of
   control procedures (e.g.  *nice*, *sched_setscheduler*, *chroot*)
   and CLIM presentation/interaction methods 
 
-* Class: PROCESS
-    * Class: THREAD-PROCESS (PROCESS)
-    * Class: SHELL-PROCESS (PROCESS)
-    * Accessors: [[POSIX process interface, where applicable, as subsuming
-     the THREAD-PROCESS inteface for a Lisp implementation running in a POSIX
-	 environment or similar]]
+
+* Class: `PROCESS`
+    * Class: `THREAD-PROCESS` (`PROCESS`)
+        * Summary: Within a multi-thread environment, a _thread
+          process_ defines a _process_ that executes within the
+          _process environment_ of the containing _shell process_
+    * Class: `PROCESS-FORK` (`PROCESS`)
+        * Summary: Essentially a "copy" of the calling process,
+          created via _fork_
+        * Note: Streams after _fork_. See, for example:
+          `SB-EXT:RUN-PROGRAM`, which (#-w32 always) allocates a new
+          pseudo-terminal for the forked process, using
+          `SB-IMPL::OPEN-PTY`. See also: manual page `PTS(4)`. Note
+          also that osicat must be patched to implement `grantpt`,
+          `unlockpt` and `ptsname`.
+        * PROCESS-PID : The _fork_ function should return, to the
+          _parent process_, the PID of the _child process_. The _child 
+          process_ must also be able to access the _parent procoess_
+        * Note: Quitting the forked process (unless `SHELL-PROCESS`)
+        * Class: `SHELL-PROCESS` (`PROCESS-FORK`)
+            * Summary: A `SHELL-PROCESS` executes within a new _process
+              environment_, within the _process group_ of the containing
+              _Lisp process_, and launches a shell command via _exec..._
+            * See also: {SETENV bindings...}
+    * Class: #-W32 `PSEUDOTERMINAL`
+        * As an alternative to `grantpt`, `unlockpt` and `ptsname`,
+          a FIFO may be created for (by default) each of the standard
+          input, standard output, and standard error descriptors, for I/O
+          onto each respetive descriptor, between the "parent process"
+          and the "child process" -- calling `mkfifo` (ensuring that
+          the FIFO is created as to read/writable only by the calling
+          user) then `dup2` via OSICAT-POSIX, for each respective
+          FIFO. Although this methodology would result in the creation
+          of (by default) three FIFOs for each spawned process,
+          however it may be more portable....
+    * Function: `GET-PARENT-PROCESS` => process-or-null
+    * Accessor: `PROCESS-NAME` (string)
+    * Accessor: `PROCESS-CHILD-FUNCTION`
+        * (For a _thread process_, a Lisp function evaluating
+          arbitrary Lisp code; for a _shell process_, a Lisp function
+          that calls FORK, ... and EXEC or similar)
+    * Accessors (POSIX)
+        * TBD: POSIX process interface, where applicable
+        * For a `THREAD-PROCESS`, accessors would be applicable within
+          and external to the `THREAD-PROCESS`, and would be applied
+          to the process repreenting the Lisp environment, within the
+          host operationg system.
+        * For a `SHELL-PROCESS`, accessors would be applicable only
+          outside of the shell process.
+    * Accessor: `PROCESS-LOCAL-VARIABLES-FUNCTION`
+        * Type: Function
+        * Summary: The `PROCESS-LOCAL-VARIABLES-FUNCTION`, when
+          evaluted, must return a single value for each of the
+          `PROCESS-LOCAL-VARIABLES`. (Note: If the list of values 
+          returned by the function is shorter than the list of
+          variables denoted in `PROCESS-LOCAL-VARIABLES` then those
+          variables effectively following after the values - as
+          returned by the function - are exhausted will each be bound
+          to the value NIL)
+    * Accessor: `PROCESS-LOCAL-VARIABLES`
+        * Syntax for process-local vaiable declations: NAME
+        * Implementation detail: bind `PROCESS-LOCAL-VAIABLES` with
+          `MULTIPLE-VALUE-BIND`, in a FUNCALL to the
+          `PROCESS-LOCAL-VAIABLES-FUNCTION`
+        * Purpose: To ensure that a process' `PROCESS-CHILD-FUNCTION`
+          will be evaluated within a lexical environment in which any
+          of the `PROCESS-LOCAL-VAIABLES` is defined as local to the
+          same lexical environment.
+* Function: `MAKE-PROCESS`
+* Macro: `DEFPROCESS`
+    * Syntax: `DEPROCESS NAME (TYPE {(VAR BINDING)}*) {DECLARATION}? {FORM}*`
+        * `NAME`: A _process name_ (i.e. a string)
+        * `TYPE`: A symbol (denoting the type of the process to define)
+        * `VAR`: A symbol
+        * `BINDING`: A Lisp _form_, such that will be evaluted for
+          assigning a binding to `VAR` within the lexical environment
+          of the set of _FORMs_
+        * `DECLARATION`: ...
+        * `FORM`: A Lisp _form_
+* Function: `FIND-PROCESS`
+* Function: `UNDEFINE-PROCESS`
+    * Syntax: `UNDEFINE-PROCESS NAME => PROCESS`
+       * `NAME`: A _process name_
+       * `PROCESS`: The _process_ denoted by `NAME`
+   * Summary: The function `UNDEFINE-PROCESS` ensures that if a
+     process named `NAME` is currently defined such as to be
+     accessible to `FIND-PROCESS`, that the process will be made
+     inaccessible to `FIND-PROCESS`
+* Function: `CURRENT-PROCESS`
+
 
 * Class: APPLICATION
-
+    * _To Do: Differentiate "Application" from "Process",
+      semantically, or else join the two concepts into one API_
     * Accessor: APPLCIATION-PROCESS
     * Accessor: APPLICATION-NAME
     * Accessor: APPLICATION-PARAMETERS
