@@ -3,6 +3,8 @@
 (in-package #:application)
 
 
+;; FIXME: See also UTILS:PRINT-NAME, UTILS:PRINT-LABEL &family
+
 (defgeneric label (object))
 ;; ^ (values t boolean)
 
