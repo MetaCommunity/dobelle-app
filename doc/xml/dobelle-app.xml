@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book [
+
+<!ENTITY mdash
+	"&#x2014;"
+>
+
+<!-- project metadata -->
+
+<!ENTITY project
+	"<productname>Dobelle Application System</productname>"
+>
+
+<!ENTITY project.id
+	"dobelle-app"
+>
+
+<!-- terms -->
+
+<!ENTITY cltl
+	"<productname>Common Lisp</productname>"
+>
+
+<!ENTITY asdf
+	"<productname>ASDF</productname>"
+>
+
+<!ENTITY linux
+	"<productname>Linux</productname>"
+>
+
+<!ENTITY android
+	"<productname>Android</productname>"
+>
+
+<!ENTITY glibc
+	"<productname>GNU LibC</productname>"
+>
+
+]>
+<book xmlns="http://docbook.org/ns/docbook"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xml:id="&project.id;"
+      >
+  <info>
+    <title>&project; Reference Manual</title>
+    <subtitle>API for Application Packaging,
+    Initialization, Control, and Messaging in Common Lisp</subtitle>
+    
+    <author>
+      <personname>Sean Champ</personname>
+    </author>
+
+    <date>4 Nov 2014</date>
+  </info>
+
+  <preface>
+    <title>Overview</title>
+
+    <para>
+      The &project; implements an object model for
+      <glossterm>application</glossterm> objects, withinin a &cltl;
+      program space.
+    </para>
+    <para>
+      This object model shall provide an architecture for
+      initialization and control of application of the following 
+      natures:
+    </para>
+    <simplelist>
+      <member>&cltl; programs utilizing a threading architecture,
+      within a host operating system environment</member>
+
+      <member>&cltl; programs utilizing a process 
+      architecture, within a host operating system
+      environment</member> 
+
+      <member>&cltl; programs providing support for application of
+      &asdf; as aystem definitnion facility</member> 
+
+      <member>&cltl; programs extending of the Common Lisp Interface
+      Manager (<acronym>CLIM</acronym>)</member>
+
+      <member>Programs compiled as to be launched via
+      <function>exec</function> and similar functions, within a host
+      operating system environment.</member>
+
+      <member>Programs compiled as to be launched via a
+      <acronym>JVM</acronym>.</member> 
+
+    </simplelist>
+
+    <para>
+      This object model, furthermore, shall be implemented for the
+      following usage cases:
+    </para>
+
+    <simplelist>
+      <member>Applications within a desktop platform</member>
+      <member>Applications within a server platform</member>
+      <member>Applications within a mobile platform<footnote>
+      <para>This project proposes to apply the &android; platform, in
+      emulation and in usage tests, for mobile application development
+      with &cltl;</para>
+      </footnote></member>
+    </simplelist>
+  </preface>
+
+  <part>
+    <title>Applications</title>
+    <chapter>
+      <title>Application Concepts</title>
+
+      <section>
+        <title>External Applciations within a &glibc; Platform Environment</title>
+
+        <section>
+          <title>Filesystem Root Directory</title>
+          <remark>cf. chroot(2)</remark>
+        </section>
+
+        <section>
+          <title>Application Process Environment</title>
+          <remark>cf. getenv(3), setenv(3)</remark>
+        </section>
+
+        <section>
+          <title>Application Princial Identity</title>
+          <remark>real and effective UID, real and effective GID</remark>
+          <remark>cf. GNU LibC</remark>
+        </section>
+
+        <section>
+          <title>Application Priority</title>
+          <remark>cf. nice(2), sched_setscheduler(2)</remark>
+        </section>
+
+        <section>
+          <title>Application Initialization</title>
+          <para>Two methdologies available for initialization of an
+          <glossterm linkend="g.ext-app">external application</glossterm>'s effective
+          process space:
+          <simplelist>
+            <member>
+              Perform a <function>fork</function>, then within the
+              spawned process, call <function>exec[v[e|p]]</function>
+            </member>
+            <member>
+              Prepare the Lisp session for effective close, then
+              <function>exec[v[e|p]]</function> directly
+            </member>
+          </simplelist>
+          </para>
+      </section>
+
+      <section>
+        <title>Interprocess Communciation</title>
+        <remark>This system proposes to apply CORBA for interprocess
+        communication (IPC) beteenn a Lisp seesion and an External
+        Application. Insofar as such an architecture may be applicable
+        for communication with external applications on remote hosts,,
+        such functionality must implement a secure tunneling protocol,
+        cf. OpenSSl, if not also an authentication protocool,
+        cf. Kerberos, insofar as service-level fnctionalty as may be
+        provided external to an application.</remark>
+      </section>
+      
+      </section>
+    </chapter>
+
+    <!-- <reference> -->
+    <!--   <title>Application Dictionary</title> -->
+      
+    <!-- </reference> -->
+  </part>
+
+
+  <part>
+    <title>Application Packaging Systems</title>
+    <chapter>
+      <title>Packaging System Concepts</title>
+      <remark>A feature in context with procedures of application
+      development, installation, and support</remark>
+    </chapter>
+
+    <!-- <reference> -->
+    <!--   <title>Packaging Systems Dictionary</title> -->
+      
+    <!-- </reference> -->
+  </part>
+
+  <glossary>
+    <title>Terminology</title>
+
+    <glossentry xml:id="g.ext-app">
+      <glossterm>External Application</glossterm>
+      <glossdef>
+        <para>From a perspective of a Lisp session running within a
+        non-Lisp host environment: An appliation defined such as to be
+        initialized via <function>exec[v[e|p]]</function>. 
+        </para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry xml:id="g.int-app">
+      <glossterm>Internal Application</glossterm>
+      <glossdef>
+        <para>From a perspective of a Lisp session: An appliation
+        defined such as to be initialized via a platform threading
+        framework, as within the effectice process space of the Lisp
+        implementation.
+        </para>
+      </glossdef>
+    </glossentry>
+
+  </glossary>
+
+</book>
