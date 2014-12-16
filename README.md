@@ -70,12 +70,12 @@ _cf. Debian package system_
 
 ### CORBA Interface Definitions
 
-_(TBD. Effectively, this functionality would reuires a definition of a
+_(TBD. Effectively, this functionality would require a definition of a 
 seperate system for support of CORBA application development in Common
 Lisp -- including support for ORBs implementing Kerberos
 authentication and SSL tunnelling, viz
 (JacORB)[http://www.jacorb.org]. Context: "Mobile, Desktop, and Server
-Applications")_
+Applications". See also: CLORB)_
 
 ### Integration with CLIM
 
