@@ -65,7 +65,8 @@ _cf. Debian package system_
 
 #### Thread Management
 
-* Thread pools
+* Thread pools (Server platforms)
+* Scheduling (RTOS / Embedded Applications - Mobile Platforms)
 * _..._
 
 ### CORBA Interface Definitions
