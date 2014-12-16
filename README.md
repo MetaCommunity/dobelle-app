@@ -231,13 +231,11 @@ System; Cygwin; Android app store(s))_
 
 ### An initial summary about the APPLICATION system
 
-_**Ed. Note**: This documentation is focused mostly for development of
-applications within a context of Amazon Web Services (AWS), namely for
-application of a build system and a continuous interation framework
-within an AWS Elastic Beanstalk (EB) instance_ 
 
-[AFFTA][affta] represents the first usage case for this application
-notification framework.
+Sidebar: [AFFTA][affta] was conceived as to represent the first usage
+case for this application framework. That would be in a context of
+_continuous integration_ and _functional testing_ within a distributed
+development service network. 
 
 In the origins of this framework's first application within AFFTA, it
 was observed: That if an _error_, _warning_, or other unhandled
