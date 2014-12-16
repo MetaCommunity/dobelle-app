@@ -50,33 +50,101 @@ Source tree at Github:
         * BKNR
         * CLORB
         * ...
-
+* Platform-Centric Augmentative Design
+    * McCLIM
+    * Java
+    * AWS
+    * ...
+* Support for Developer Toolchains, Agile Development
+    * Functional testing
+        * Continuous Integration
+        * Testing Frameworks
+        * Notifications - Remote build hosts (distributed development
+          service network)
+    * End-of-Sprint
+        * Software Release
+        * Developer Commentary
+        * Issue Tracking
+    * Maintenance
+       * Issue Tracking
+       * Reusability Analysis
+    * Platforms
+       * Desktop environments
+           * Development environments
+               * Developer expertise
+           * Desktop user environments
+               * Pragmatism
+               * Issue tracking
+               * Documentation
+       * Mobile applications
+           * Mobile application prototyping (destkop and mobile)
+           * Server monitoring/notification
+           * Developer notes and mobile apps
+               * The illustrious _placemat sketch_, reduxed into
+                 digital media
+               * Outlines for documentation
+                   * cf. Omnigraffle; iThoughts; Cubetto mobile
+               * Elements for documentation
+                   * cf. UX Write; Wordnet; iCloud Notes
+               * Pseudocode/Prototypes
+                   * cf. Textastic; ...
+           * Task list and task tracking (PIM)
+               * cf. Omnifocus
+           * Community content development
+               * Web logs
+               * Social networking
+       * Server environments
+           * AWS as instance of _scalable service architecture_
+           * Digital Ocean as instance of _scalable classic VPS host_
+           * Enterprise server architectures - effective "black box"
+             in any proprietary elements, otherwise described in
+             community process and, in detail, within open technical
+             specifications
 
 #### Package Life Cycle
 
 _cf. Debian package system_
 
+* Concepts
+    * Software release (development context)
+    * Software installation (user context)
+    * Issue tracking (developers and users)
+
 #### Application Life Cycle
 
-* Application initialization
-* Application runtime
-* Application error state
-* Application close
+* Trivial Outline - Application as Module
+    * Application initialization
+    * Application runtime
+    * Application error state
+    * Application restart
+    * Application close
+    * See also: `initctl(8)`, _upstart_ and `init(8)` [Linux platforms]
 
 #### Thread Management
 
 * Thread pools (Server platforms)
 * Scheduling (RTOS / Embedded Applications - Mobile Platforms)
+* Contexts: Development; configuration
 * _..._
 
 ### CORBA Interface Definitions
 
-_(TBD. Effectively, this functionality would require a definition of a 
-seperate system for support of CORBA application development in Common
-Lisp -- including support for ORBs implementing Kerberos
-authentication and SSL tunnelling, viz
-(JacORB)[http://www.jacorb.org]. Context: "Mobile, Desktop, and Server
-Applications". See also: CLORB)_
+_(TBD. Effectively, this functionality would require an extension onto
+CLORB, for definition of a seperate system for support of CORBA
+application development in Common Lisp. That system should provide
+support for protocols implementing Kerberos authentication and SSL
+tunnelling onto CORBA, viz (JacORB)[http://www.jacorb.org]. Context:
+"Mobile, Desktop, and Server Applications". See also: CLORB)_
+
+* Concepts
+    * Service application networks
+    * Data-oriented computing
+    * CORBA services for mobile embedded platforms
+        * Inter-process communication (IPC) protocol and architectures 
+          for application coordination within _chroot jails_ on mobile
+          embedded platforms
+    * CORBA and Microkernel architectures (desktop and server platforms)
+    
 
 ### Integration with CLIM
 
