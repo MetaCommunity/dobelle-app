@@ -15,6 +15,43 @@ Source tree at Github:
 
 ### Concepts
 
+### Usage Cases
+
+* Desktop Applications
+    * McCLIM Applications
+    * Utility Applications
+        * DocBook Toolchain
+* Mobile Applications
+    * Android platform
+* Server Applications
+    * Known models for remote application control, monitoring, and
+      notification
+        * Notification: AWS ... notification architecture
+        * Control: AWS EB / EC2 / RDS ... and host operating system
+          configuration (e.g. Linux 'init')
+        * Monitoring: Nagios
+        * Monitoring/Logging: Multilog (Daemontools)
+        * Monitoring/Control: Java Management Extensions (JMX)
+        * Control: Puppetlabs Puppet (Ruby)
+        * Control/Monitoring/Notification: "DIY" w/ CORBA. See also: JMX
+    * Amazon Web Services
+        * Modular service components in the AWS architecture (EB, RDS, EC2, ...)
+        * Platform Virtualization (Xen Dom0...)
+        * AWS JSON API
+        * Pre-Packaged AWS Instances
+            * Liferay web portal (Tomcat 7) (Java EE)
+            * Allegrograph (Ontology) (CLtL2)
+        * "Blue Sky"
+            * Traveler's Cube
+                * VPN (strongSwan)
+                * Desktop Applications
+    * Common Lisp applications for server environments
+        * Allegrograph
+        * BKNR
+        * CLORB
+        * ...
+
+
 #### Package Life Cycle
 
 _cf. Debian package system_
