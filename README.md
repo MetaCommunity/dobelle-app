@@ -231,37 +231,41 @@ System; Cygwin; Android app store(s))_
 
 ### An initial summary about the APPLICATION system
 
-
 Sidebar: [AFFTA][affta] was conceived as to represent the first usage
 case for this application framework. That would be in a context of
 _continuous integration_ and _functional testing_ within a distributed
 development service network. 
 
-In the origins of this framework's first application within AFFTA, it
-was observed: That if an _error_, _warning_, or other unhandled
-_condition_ occurs during the application of a _test protocol_, it may
-be both feasible and supportive to the application developer, to
-ensure that the developer would be notified of the _condition_ --
-moreover, that not only may the _notification_ object include a
-representation of the _condition_ object - as would be in a format
-appropriate to the respective _notification media_ - but that
-furthermore, the _notification_ object may include a representation of
-a single _context object_ indicating the origin of the _condition_
-object.
+In the origins of this framework's initial design, as for application
+within [AFFTA][affta], it was observed: That if an _error_, _warning_,
+or other unhandled _condition_ occurs during the application of a
+_test protocol_, it may be both feasible and supportive to the
+application developer, to ensure that the developer would be notified
+of the _condition_ -- moreover, that not only may the _notification_
+object include a representation of the _condition_ object - as would
+be in a format appropriate to the respective _notification media_ -
+but that furthermore, the _notification_ object may include a
+representation of a single _context object_ indicating the origin of
+the _condition_ object. In a simple sense, this would be a matter of
+_encapsulated notifications_.
+
+
+#### The Null Application
 
 In the initial development of this application notification protocol,
-it was observed that the class NULL may serve as a convenient
+it was observed that the class `NULL` may serve as a convenient
 designator for a "null application" -- as in a context in which an
 application's development is essentially being conducted, informally,
 by way of direct stream I/O onto a locally accessible Common Lisp
 implementation.
+
+#### Usage Case: IDE
 
 This notification protocol may serve as a component of a system for
 supporting application design within an integrated development
 environment, and may be furthermore extended for appliation within a
 server environment.
           
-
 
 ## "TO DO"
 
