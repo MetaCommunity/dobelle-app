@@ -45,6 +45,46 @@ Applications")_
 _(TBD. See also: "Integration with ASDF," following; "Initial
 Summary", following. Context: "Desktop Applications")_ 
 
+
+* Class: `CLIM-APPLICATION`
+    * Description: Essentially, this class would provide at least an
+      interface onto both of `CLIM:MAKE-APPLICATION-FRAME` and
+      `CLIM:RUN-FRAME-TOP-LEVEL`.
+        * In the first instance, some specific attention should be
+          made for the `:CALLING-FRAME` argument, specificaly for any
+          `CLIM-APPLICTION` representing a nested CLIM application
+          frame.
+        * Extensionally, some attention should also be made to the
+          `:FRAME-MANAGER` argument to `MAKE-APPLICATION-FRAME`, and
+          correspondingly, `CLIM:FIND-FRAME-MANAGER` -- this may serve
+          to allow for selecting a specific display in a mult-head
+          configuration, or for selecting a specific frame manager for
+          a CLIM environment applying multiple ports, or for creating
+          an application frame on a remote X server.
+        * Some additional functionality may be provided as to present
+          a convenient interface for 'splash screen' display, in any
+          image format supported by McCLIM and the respective port
+          implementation.
+        * See also:
+            * `CLIM:*DEFAULT-FRAME-MANAGER`
+            * `CLIM:FIND-PORT`
+            * `#+MCCLIM` `CLIMI:FIND-DEFAULT-SERVER-PATH`.
+        * Note moreover that `CLIM:FIND-PORT` may result in a new
+          `PORT` instance being created, such as with the following
+          form is evaluated in McCLIM: `(clim:find-port :server-path
+          '(:clx :display ":0"))` .
+        * This may be applied as onto integration with SSH tunneling
+          (To Do: Develop usage cases) 
+* Related Concepts
+    * Port [CLIM]
+    * Frame Manager [CLIM]
+    * _Concerning CLX_
+        * Xauth (X Window System architecture)
+        * SSH tunnelling (X Window System architecture; OpenSSL; PuTTY)
+    * _Concerning the McCLIM Gtkairo backend_
+        * ?
+
+
 #### Application Initialization
 
 _(TBD. See also: "Integration with ASDF," following)_
