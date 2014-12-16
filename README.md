@@ -91,13 +91,28 @@ _(TBD. See also: "Integration with ASDF," following)_
 
 _Notes (Non-Normative)_
 
-* Reference implemnetaion of CLIM, for purpose of definitions in this project: [McCLIM][mcclim]
+* This project denotes [McCLIM][mcclim] as [McCLIM][mcclim] being
+  effectively a _reference implmentation_ of CLIM 2. [McCLIM][mcclim]
+  is published as licensed under a _free/open source software_
+  license. Therefore, [McCLIM][mcclim] is avaialble for development
+  and for application, within any compatible host environment. Pending
+  appropriate licensing, alternate CLIM implementations may be
+  available, such as for _Allegro Common Lisp_, published by Franz
+  Inc.
+  
 * Host Window System Architectures and CLIM
 	* CLIM is developed essentially around a framework in which a _host
-	  windowing system_ is defined
-	* CLIM suports the X Window System, in multiple _graft_ backends, as
-	  avaialble within individual CLIM Implementations (e.g X Window
-	  System, and [McCLIM][mcclim] GTK Cairo backend)
+	  windowing system_ is defined.
+    * Normatively, CLIM interacts with a _host window system_ as
+      via a _frame manager_ implementation, such that would be
+      provided for application with a single _port_ extending of
+      CLIM 2.
+	* CLIM suports the X Window System, in multiple _port_
+	  implementations, as avaialble within individual CLIM
+	  Implementations (e.g in [McCLIM][mcclim]: CLX,
+	  OpenGL, and GTK Cairo _backends_, such that all effectively
+	  extend of the X Window System, namely when running on a Linux
+	  host environment)
         * The X Window System allows for an _application_ to be _launched_
           on a _remote client machine_, with the application's _graphical
           user interface_ being displayed on an _X Window host_ running
@@ -105,21 +120,35 @@ _Notes (Non-Normative)_
 	        * Typically, the _remote client_ functionality of the X
 	          Window System would be augmented with an _SSL tunneling_
 	          provider, such as OpenSSL
-* Additional Host Resources
-	* In addition to a _windowing system_, a host operating system may
-	  provide features including:
-		* Desktop Environment (KDE, GNOME, XFCE, etc)
-		* Packaging System (typically, specific to the operating system)
-		* Locally installed software (see also: [xstow](http://xstow.sourceforge.net/)]
+              
+* Additional Resources Available of a Conventional Desktop Host
+  Environment, in most conventional Desktop Linux platforms
+	* In addition to a _windowing system_, a _host operating system_
+	  may provide features including:
+		* _Desktop Environment_ (KDE, GNOME, XFCE, etc)
+		* _Packaging System_ (typically, specific to the operating system)
+		* Locally installed _software_ (see also:
+		  [xstow](http://xstow.sourceforge.net/)] 
 	* A _host machine_ may implement multiple _host operating systems_,
 	  simultaneously
 		* A _host operating system_ may be initalized via a _virtualization
 		 host_, such as a Xen _Dom0 hypervisor_. (See also:
 		 [Dom0 - Xen Wiki](http://wiki.xen.org/wiki/Dom0)) or a
-		 VirtualBox _Virtual machine_ manager (See also: [VirtualBox](https://www.virtualbox.org/))
+		 VirtualBox _Virtual machine_ manager (See also:
+		 [VirtualBox](https://www.virtualbox.org/))
+    * Some features may not be provided, by default, of any single
+      _embedded Linux_ (RTOS) platform
 
 
-Notes onto the VirtualBox SDK:
+## Development Environment
+
+### Notes: The VirtualBox SDK
+
+* Concepts
+    * Desktop Virtualization
+    * Software-Defined Networking (SDN)
+    * Oracle xVM Virtualbox
+        * Originally developed by Sun Microsystems
 * Usage cases:
 	* Cross-platform development
 	    * Application display via _Seamless_ and _Full Screen_
