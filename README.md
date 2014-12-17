@@ -30,7 +30,8 @@ Source tree at Github:
 * Server Applications
     * Known models for remote application control, monitoring, and
       notification
-        * Notification: AWS ... notification architecture
+        * Notification: AWS [SNS](http://aws.amazon.com/sns/)
+          (simple notification system)
         * Control: AWS EB / EC2 / RDS ... and host operating system
           configuration (e.g. Linux 'init')
         * Monitoring: Nagios
@@ -117,8 +118,11 @@ _cf. Debian package system_
 #### Application Life Cycle
 
 * Trivial Outline - Application as Module
+    * Application installation
     * Application initialization
     * Application runtime
+    * Application I/O onto local data serialization (conventional filesystems)
+    * Application communication over network protocols (common)
     * Application error state
     * Application restart
     * Application close
@@ -287,10 +291,6 @@ _Notes (Non-Normative)_
 
 _(TBD. See "Initial Summary", following. Context: "Server Applications")_
 
-### Integration with ASDF
-
-_(TBD)_
-
 #### Modeling of Output Files for Application Package Assembly
 
 _(TBD. See also: [mci-doc-docbook][mci-doc-docbook])_
@@ -306,7 +306,7 @@ System; Cygwin; Android app store(s))_
 Sidebar: [AFFTA][affta] was conceived as to represent the first usage
 case for this application framework. That would be in a context of
 _continuous integration_ and _functional testing_ within a distributed
-development service network. 
+development service network. See also: `AFFTA:DO-RECORDED-TEST`
 
 In the origins of this framework's initial design, as for application
 within [AFFTA][affta], it was observed: That if an _error_, _warning_,
@@ -344,37 +344,35 @@ server environment.
 00. Make documentation modular - _AWS, Build System, Desktop Application System, etc._
 
 0. **Document how this <framework> is used within DO-RECORDED-TEST**
+    * First: Review design documents for AFFTA 
 
 1. **[COMPLETE] Move this into a new 'application' system [MCi]**
+    * Result: `dobelle-app` source tree
 
 2. **Document NOTIFY [standard generic function]**
-
+    * First: Integration with CLIM (mobile)
+    * Second: Development and implementation of IDL interfaces for
+      application notification messages (First: Kerberos, SSL, and CLORB)
+    
 3. **Describe %APPLICATION% [Variable]**
+    * First: Architecture
 
-4. **(4.A) Extend this simple framework for an appliation system** such that
- would be running within an Amazon Web Services (AWS) Elastic Compute
- Cloud (EC2) _instance_, and therefore would be able to utilize the
- AWS personal messaging API, [SNS](http://aws.amazon.com/sns/) -
- namely, as for notifying an application's maintainer and/or
- maintenance staff of any conditions observed within the Common Lisp
- appliation's runtime environment(w/ a top priority notification) any
- error conditions, if not also (w/ a less priority notification)
- warning conditions occurring within the Common Lisp application's
- environment on the server - cf. also Nagios, Daemontools' Multilog,
- and SystemD, as in a context of server (if not also desktop) shell
- intefaces, as well as (in a Java server domain) Tomcat, Glassfish,
- and Liferay
+4. **(4.A) Develop architecture: An appliation system for Common Lisp** 
      
-4. **(4.B)) Extend this simple framework for a build system**
-utilizing Hudson [[1]] [[2]] [[3]]
-within Fusion Forge[[4]] [[5]] [[6]] [[7]] [Java]
-as in which an `%application%` would be:
+4. **(4.B)) Develop archicture: Hybrid interactive/automated build
+   system for "Software and things"**
 
-    1. In a development domain, an object of functional
+(Context: Development environment)
+
+Example: Utilizing Hudson [[1]] [[2]] [[3]] (alternately: Travis CI)
+within Fusion Forge[[4]] [[5]] [[6]] [[7]] (alternately: "Just
+Ubunutu") hypothetically an `%application%` may represent:
+
+    1. In a development model, an object of functional
        testing in a context of continuous integration[[8]]
 
     2. In a resource management and resource distribution
-       domain, an object for distribution e.g. to individual
+       model, an object for distribution e.g. to individual
        Maven, Debian, Cygwin, and other package repositories,
        as in a context of continuous delivery[[8]]
 
@@ -390,27 +388,14 @@ as in which an `%application%` would be:
        moreover in a context of service customer support and
        overall customer fulfillment
 
-    4. In a  _network services domain_, an object running on
-       one or more _application hosts_, such that would be
+    4. If the `%application%` implements a _network service_, then in
+       a  _network services domain_: Once installed, an object running
+       on one or more _application hosts_, such that would be
        _managed_ -- directly and/or indirectly -- by a
-       developer developing this software, likewise cf. AWS,
-       furthermore cf. DeLorme inReach
-
-4. **(4.C) Illustrate how this simple generic function may be applied**
-within each of
-
-    * A. a desktop `%application%` using Garnet or CLIM
-
-    * B. an HTTP server `%application%` using CL-HTTP
-
-    * C. an Eclpse IDE extension using ABCL and/or {CL+J, FOIL, ...}
-    in which the %application% may represent simply an interface onto
-    the Eclipse IDE - as the Eclipse IDE being, from the perspective
-    of the Common Lisp peer, a _Java Application_ [Java]
-
-    * D. then define CORBA IDL for Nr. C, and extend as at least a
-    simple (?) CORBA-integrated message passing / application 
-    notification framework for Common Lisp peer applications
+       network service administrator -- observing that a developer
+       developing a network service application may be serving also as
+       a network service administrator, in such development.
+       
 
 ### API "TO DO"
 
@@ -419,8 +404,9 @@ within each of
   control procedures (e.g.  *nice*, *sched_setscheduler*, *chroot*)
   and CLIM presentation/interaction methods 
 
-
 * Class: `PROCESS`
+    * Generic protocol class for interfaces onto existing
+      multi-process architectures
     * Class: `THREAD-PROCESS` (`PROCESS`)
         * Summary: Within a multi-thread environment, a _thread
           process_ defines a _process_ that executes within the
