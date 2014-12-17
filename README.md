@@ -6,6 +6,10 @@ API for application packaging, initialization, and messaging in Common Lisp
 The [dobelle-app][dobelle-app] defines a class, `APPLICATION`,
 within a Common Lisp namespace.
 
+_Ed. Note: This documentation endeavors to define a baseline
+architecture towards a framework for application development in Common
+Lisp_
+
 ## Availability
 
 Source tree at Github:
@@ -529,6 +533,72 @@ within each of
 		* Class: JAVA-FOIL-APPLICATION
 		* Class: JAVA-ABCL-APPLICATION
 
+
+## Appendix: Symbolic Name of the Dobelle-App Source Tree
+
+The [Dobelle-App][dobelle-app] source tree was named after a feature
+of a science-fiction novel, _Summertide_ -- the first novel of the
+series, _The Heritage Universe_, by Charles Scheffield.
+
+As a short synopsis of the symbolism represented in the naming of the
+[Dobelle-App][dobelle-app] source tree: In the first book of the
+_Heritage Universe_ series, _Dobelle_ represents a planetary system
+defined of two contrasting worlds, _Quake_ and _Opal_. The two planets
+are connected by a mysterious _artifact_ denoted as _Umblical_, all
+situated within a binary star system in a region of the _Milky Way
+galaxy_ far remote to the planet _Earth_.
+
+Even in an amateur analysis, it may be understood that a physical
+system of planets and stars would present a number of intriguing
+concerns with regards to tidal effects of gravitational objects --
+moreso, an obvious concern when the  two planetary bodies in such a
+system would be inhabited. Within the _Dobelle_ system, the
+_Umbilical_ itself presents a novel solution, effectivelly challenging
+the limits of engineering in the artifact's known
+functionaltiy. Though _Umbilical_ may seem to play only a _bit part_
+in the overall storyline as developed in the _Heritage Universe_
+books, but as in regards to so many works of engineering -- even
+insofar as works of engineering developed in works of fictional
+literature -- certainly, the _Dobelle_ system may well belong in a
+world literary hall of fame.
+
+Insofar as with regards to a concept of naming a software project
+after such a physical system, perhaps it may serve as towards a
+keynote that in reciprocal of a certain popular adage: Even the most
+advanced engineering system may be understood insofar as with regards
+to elements of its mechanical nature, provided a sufficient overview
+of the system's composition. Thus, even a binary planetary system of a
+fictional binary star system -- and a strange artifact interposed 
+between the planets -- that even such an exotic phsycial system may be
+understood for its mechanical nature, without any undue
+mystification.
+
+Of course, the _Dobelle_ system would require no specific maintenance, 
+itself, as with regards to its nature as an artifact obviously of a
+manner of genius -- beyond the hypothetical material nature of such a
+phsycial system, it being moreover an artifact developed essentially
+as a work of storytelling, in a medium of science fiction. As to any 
+more of details of the nature of the _Dobelle_ system -- but it might 
+well spoil the reader's attention, if this document was to summarize
+all of the story developed in _Summertide_, if in any too simple
+regards.
+
+Essentially: If there is any single work in the modern science
+fiction, such that the work that may serve to represent an inspiring
+character of engineering, Thomas Scheffield's _Heritage Universe_
+presents a friendly and, in a manner, furthermore a scientifically
+compelling hypothesis as to the nature of engieering within the
+physical universe. Of course, it would be a hypothesis developed unto
+a universe in which the theories of general and special relativity
+would have been effectively amended across technical developments in
+material travel at interstellar distances.
+
+So, insofar as a name, it seemed to serve as a convenient thing
+after which to name an aspiring software project -- in a simple
+regards, towards developing a convenient application bridge between
+the Common Lisp program environment and a small number of modular
+computing environments on desktop, mobile, and server computing
+architectures, somewhere north of _Summertide_.
 
 ## Resource Notes
 
