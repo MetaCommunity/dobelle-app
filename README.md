@@ -137,12 +137,7 @@ _cf. Debian package system_
 
 ### CORBA Interface Definitions
 
-_(TBD. Effectively, this functionality would require an extension onto
-CLORB, for definition of a seperate system for support of CORBA
-application development in Common Lisp. That system should provide
-support for protocols implementing Kerberos authentication and SSL
-tunnelling onto CORBA, viz (JacORB)[http://www.jacorb.org]. Context:
-"Mobile, Desktop, and Server Applications". See also: CLORB)_
+_(TBD)_
 
 * Concepts
     * Service application networks
@@ -152,7 +147,7 @@ tunnelling onto CORBA, viz (JacORB)[http://www.jacorb.org]. Context:
           for application coordination within _chroot jails_ on mobile
           embedded platforms
     * CORBA and Microkernel architectures (desktop and server platforms)
-    
+
 
 ### Integration with CLIM
 
@@ -404,17 +399,96 @@ Ubunutu") hypothetically an `%application%` may represent:
   control procedures (e.g.  *nice*, *sched_setscheduler*, *chroot*)
   and CLIM presentation/interaction methods 
 
-* Class: `PROCESS`
+* Class: `BRANCH`
     * Generic protocol class for interfaces onto existing
       multi-process architectures
-    * Class: `THREAD-PROCESS` (`PROCESS`)
-        * Summary: Within a multi-thread environment, a _thread
-          process_ defines a _process_ that executes within the
-          _process environment_ of the containing _shell process_
-    * Class: `PROCESS-FORK` (`PROCESS`)
-        * Summary: Essentially a "copy" of the calling process,
-          created via _fork_
-        * Note: Streams after _fork_. See, for example:
+        * i.e. "Root" class for an implementation of a unified
+          interface onto host processes and threads
+        * and a bit of a lighthearted metaphor with regards to 
+          the details of processes and threads under POSIX
+          and the pertinence of _namespaces_ in the Linux kernel --
+          i.e namespaces of (referencing `clone(2)`)
+            * file descriptors - `CLONE_FILES`
+            * mount points (`CLONE_NEWNS`) -- othogonal to process-local
+              interface to filesystem (e.g `CLONE_FS` unset)
+              (cf. `chdir` etc)
+            * I/O contexts - `CLONE_IO` (when set, relevant for any
+              IO-intensive applications. when not set, no shared I/O
+              scheduling with thread group) (orthogonal)
+            * IPC descriptors (`CLONE_NEWIPC`) or SysV semaphores
+             (`CLONE_SYSVSEM`)
+            * signal handlers - `CLONE_SIGHAND`
+            * properties of networking protocols - `CLONE_NEWNET`
+            * PID namespace - `CLONE_NEWPID`
+            * host UTS fields - `CLONE_NEWUTS`, cf `uname(2)`
+            * thread local storage - `CLONE_SETTLS` (orthogonal)
+            * memory space - `CLONE_VM` as with relation to parent
+              process (orthogonal)
+        * ...within the Linux kernel, such as -- in an instance of
+          "All isolated namespaces" -- may pertain to definition of:
+            * sensitive applications on the Linux platform, if not
+               moreover...
+            * a manner of ad-hoc host virtualization in the kernel
+          space (question: What about the relevance of virtual
+          filesystems? cf. `/proc` and `CLONE_NEWPID`), albeit with a
+          shared process scheduling environment (presumably), and 
+          (absolutely) a shared kernel configuration, as of a single
+          Linux host, but otherwise towards something like a complete 
+          vhost framework on Linux (effects TBD with regards to shared
+          memory registers within the controlling kernel environment)
+          (effects TBD with regards to simultaneous access to same
+          root filesystem) (effects TBD with regards to unique mount
+          namespsaces and real and virtual filesystems onto "Kernel
+          space") (may not be suitable for embedded applications) (may
+          not be suitable for direct interactive desktop applications,
+          including desktop virtualization frameworks) (effects TBD
+          with regards to networking hardware and protocols.) (Formal 
+          SDN frameworks and normative virtualization environments may be
+          preferred, or virtual hosting limited at least as with
+          regards to `CLONE_NEWNET` ). See also: `clone(2)`, `init`
+    * This class presents an architecture-neutral metaphor in its
+      implementation, furthermore avoiding ambiguity between POSIX 
+      processes, POSIX-compliant implementations of pthreads, and
+      (historic/optional) LinuxThreads implementations of pthreads
+    * Class: `THREAD` (`BRANCH`)
+        * Summary: Within a multi-thread Lisp implementation, a
+          _thread branch_ defines a _branch_ that executes within the 
+          _process environment_ of the containing _process branch_.
+        * Observing that `clone` [`clone(2)`] may be applied
+          effectively to "Work around" numerous conventions
+          for POSIX threading [`pthreads(7)`]. Note, however
+          `CLONE_THREAD` (`clone(2)`) (Linux kernel - thread groups)
+          and also `CLONE_VM` (same manual page)
+        * TBD: How to provide a "Null interface" with this class, in
+          non-multithreading Lisp implementations
+        * With regards to Linux host operating systems, see
+          also: `pthreads(7)` and subsequent notes in this outline
+    * Class: `PROCESS` (`BRANCH`)
+       * Effectively presents an object-oriented interface onto
+         features of host-specific _process_ implementation (focusing
+         on POSIX and Linux, however)
+       * See also: `SHELL-PROCESS`
+    * Class: `FORK` (`OS-PROCESS`)
+        * Summary: Initially a "copy" of the calling process, 
+          as created via `fork(2)` or optionally `clone(2)` (note:
+          `CLONE_IO`, as with regards to serialization of data objects
+          within a Common Lisp implementation; `CLONE_NEWIPC` as with
+          regards to isolation of IPC namespaces for senstive
+          applications - effects with regards to SBCL POSIX waitqueues
+          and mutexes TBD. See also: `sysvipc(7)` and
+          `mq_overview(7)`, as well as `clone(2)`). If created via
+          `fork(2)`, always has a unique PID . Is effectively a
+          "branch" extending of the implementation's initial _host
+          process_ (cf. POSIX process groups), though effectively
+          limited across _process boundaries_ (?) and memory
+          registers. (See also: also `CLONE_VM` [`clone(2)`])
+        * Deterministic scheduling between parent processes and
+          single time-critical child processes: note `CLONE_VFORK`
+          [`clone(2)`]
+        * See also: `execve(2)` but note side-effects with regards to
+          thread groups, as specifically denoted about `CLONE_THREAD`
+          in `clone(2)`
+        * **Note: Streams interaction after _fork_**. See, for example: 
           `SB-EXT:RUN-PROGRAM`, which (#-w32 always) allocates a new
           pseudo-terminal for the forked process, using
           `SB-IMPL::OPEN-PTY`. See also: manual page `PTS(4)`. Note
@@ -423,24 +497,36 @@ Ubunutu") hypothetically an `%application%` may represent:
         * PROCESS-PID : The _fork_ function should return, to the
           _parent process_, the PID of the _child process_. The _child 
           process_ must also be able to access the _parent procoess_
-        * Note: Quitting the forked process (unless `SHELL-PROCESS`)
         * Class: `SHELL-PROCESS` (`PROCESS-FORK`)
             * Summary: A `SHELL-PROCESS` executes within a new _process
               environment_, within the _process group_ of the containing
               _Lisp process_, and launches a shell command via _exec..._
             * See also: {SETENV bindings...}
-    * Class: #-W32 `PSEUDOTERMINAL`
+    * Class: #-W32 `FIFO-PSEUDOTERMINAL` (via FIFOs - TBD, prototype)
         * As an alternative to `grantpt`, `unlockpt` and `ptsname`,
-          a FIFO may be created for (by default) each of the standard
+        * a FIFO may be created for (by default) each of the standard
           input, standard output, and standard error descriptors, for I/O
           onto each respetive descriptor, between the "parent process"
           and the "child process" -- calling `mkfifo` (ensuring that
           the FIFO is created as to read/writable only by the calling
           user) then `dup2` via OSICAT-POSIX, for each respective
-          FIFO. Although this methodology would result in the creation
+          FIFO.
+        * This methodology would result in the creation
           of (by default) three FIFOs for each spawned process,
-          however it may be more portable....
-    * Function: `GET-PARENT-PROCESS` => process-or-null
+          without any PTY type encapsulation within the host operating
+          system. Possibly not adequate for interactive application,
+          this may at least suffice to provide a "bundle of streams"
+          within an encapsualted manner, for forked applications
+    * Class: `PTY-PSEUDOTERMINAL`
+        * May be recommended for interactive applications (if
+          applicable distinct to `FIFO-PSEUDOTERMINAL`, with 
+          such as a CLIM pane as an intermediary)
+    * Function: `GET-PARENT-BRANCH &OPTIONAL PROCESS` =>
+      process-or-null
+        * Null: Only e.g. when PROCESS has PID `0`
+        * **Design Issue:** Ephemeral interfaces for host OS processes
+          not within current process' thread group. (May be limited
+          according to user permissions within host operating system)
     * Accessor: `PROCESS-NAME` (string)
     * Accessor: `PROCESS-CHILD-FUNCTION`
         * (For a _thread process_, a Lisp function evaluating
@@ -451,7 +537,7 @@ Ubunutu") hypothetically an `%application%` may represent:
         * For a `THREAD-PROCESS`, accessors would be applicable within
           and external to the `THREAD-PROCESS`, and would be applied
           to the process repreenting the Lisp environment, within the
-          host operationg system.
+          host operating system.
         * For a `SHELL-PROCESS`, accessors would be applicable only
           outside of the shell process.
     * Accessor: `PROCESS-LOCAL-VARIABLES-FUNCTION`
@@ -473,51 +559,191 @@ Ubunutu") hypothetically an `%application%` may represent:
           will be evaluated within a lexical environment in which any
           of the `PROCESS-LOCAL-VAIABLES` is defined as local to the
           same lexical environment.
-* Function: `MAKE-PROCESS`
-* Macro: `DEFPROCESS`
-    * Syntax: `DEPROCESS NAME (TYPE {(VAR BINDING)}*) {DECLARATION}? {FORM}*`
+* Function: `MAKE-BRANCH`
+* Macro: `DEFPROCESS` (**FIXME:** Reconsider whether this may present
+  any too informal of an interface to the underlying process object
+  system)
+    * Syntax: `DEFPROCESS NAME (TYPE {(VAR BINDING)}*) {DECLARATION}? {FORM}*`
         * `NAME`: A _process name_ (i.e. a string)
         * `TYPE`: A symbol (denoting the type of the process to define)
-        * `VAR`: A symbol
+        * `VAR`: A symbol (**FIXME:** Reconsider this 'implicit let' design)
         * `BINDING`: A Lisp _form_, such that will be evaluted for
           assigning a binding to `VAR` within the lexical environment
-          of the set of _FORMs_
-        * `DECLARATION`: ...
-        * `FORM`: A Lisp _form_
-* Function: `FIND-PROCESS`
-* Function: `UNDEFINE-PROCESS`
-    * Syntax: `UNDEFINE-PROCESS NAME => PROCESS`
-       * `NAME`: A _process name_
-       * `PROCESS`: The _process_ denoted by `NAME`
-   * Summary: The function `UNDEFINE-PROCESS` ensures that if a
-     process named `NAME` is currently defined such as to be
-     accessible to `FIND-PROCESS`, that the process will be made
-     inaccessible to `FIND-PROCESS`
-* Function: `CURRENT-PROCESS`
+          of the set of _FORMs_ (**FIXME:** Reconsider this 'implicit
+          let' design)
+        * `DECLARATION`: (**FIXME:** Reconsider this 'implicit
+          let' design)
+        * `FORM`: An _implicit progn_ (i.e. thread function body??)
+          (**FIXME:** Reconsider this 'implicit let' design) 
+* Function: `FIND-BRANCH`
+    * Drilldown: Trivial.
+    * Definition depends on convention for process/thread
+      naming/indexing, as defined by the host OS and as then as
+      interfaced by the specific Lisp implementation
+    * **TO DO:** Define architecture for process naming/indexing
+        * Note that this would apply only in regards to
+          threads created via `dobelle-app`. Conceivably, without
+          closer implementation-specific integration, it would be
+          possible for an application to create a thread that would
+          not be indexed in this sytem
+        * Applicability: ????
+            * In what instances may a program need to locate a
+              thread by its "ID" ?
+            * Correspondingly, in what instances may a "Branch Id" be
+              applied within a program, other than to produce a list
+              of "Indexed threads"?
+                  * See also `pthread_sigqueue(3)`, `sigqueue(3)`,
+                    `sigaction(2)` (?) 
+            * See also: `pthreads(7)`
+                * Shared data/heap segments
+                * Unique stack
+                * Shared process attributes
+                * Unique branch id, signal mask, errno, signal stack,
+                  scheduling priority (see `sched_setscheduler(2)`,
+                  `sched_setparam(2)`)
+                * Linux: unique process capabilities set; unique CPU
+                  affinity
+                * Note branch id reuse ("Branch Ids")
+                * Linux: NPTL (kernel 2.6 and later)
+                * Note also: `ulimit` and thread-specific handling of
+                  `RLIMIT_STACK`
+        * Should be extensible onto _thread processes_ (i.e. threads
+          of process having same PID,) as well as PID-unique processes
+        * Note: "Largest possible real PID" even on 64 bit Linux
+          implementation: unsigned 32 bit - see
+          `/usr/include/bits/typesizes.h`
+        * Note: Branch Ids (implementation specific interfaces)
+            * In SBCL, refer to: `sbcl:src;code;target-thread.lisp`
+              specifically around definition of
+              `SB-THREAD::%CREATE-THREAD` and the corresponding C
+              language source code within `sbcl:src;runtime;thread.c`
+              namely as in regards to type `pthread_mutex_t` (size of
+              which is defined in `/usr/include/bits/pthreadtypes.h`,
+              see also `pthread.h` and `pthread_mutex_init(3)`) ...but
+              also, note applciations of `os_thread_t` type in
+              SBCL source code. `os_thread_t` is defined in
+              `sbcl:src;runtime;runtime.h` as synonymous with type
+              `pthread_t` (i.e unsigned long, referencing
+              `pthreadtypes.h`)
+        * To define a native `host-process-pid` type, See also: POSIX
+          `pid_t`; _osicat_; _cffi-grovel_.
+        * To define a native `host-thread-id` type, See also: POSIX
+          `pthread_t`; _osicat_; _cffi-grovel_; `pthreads(7)`
+        * To define a "Branch Ids" type:
+            * Concept: Unique, platform-agnostic identification of
+              host processes and threads
+            * Derived type: `(simple-array #.(widest-type 'host-process-pid 'host-thread-id) (2))`
+            * Note that `sb-thread:make-thread` requires a _string_
+              type _thread name_. Although useful for identifying
+              threads to a human user, within a thread index
+              (cf. SLIME, SWANK/BACKEND) but for indentifying threads
+              within a software program, a numeric type or
+              numeric-vectors type may be preferred.
+            * A _branch id_ may be assigned to a _thread_ object,
+              as external to any _multithreading_ implementation's
+              specific _threading architecture_. Though it will 
+              require initialization of third object, complimentay to
+              the _thread_ and its _branch iD_, however it would
+              provide a platform-agnostic method for thread indexing,
+              no less allowing for a fixnum-constrained (or lesser,
+              e.g. unsigned 32 bit or even unsigned 31 bit, if in the
+              latter, a limit of 2 billion indexed threads may be
+              practically sufficient, observing furthermore that SBCL
+              defines a type of optimized vector for simple arrays of
+              unsigned 31 bit elements. see also:
+              `SB-VM:SIMPLE-ARRAY-UNSIGNED-BYTE-31-WIDETAG`) in
+              indexing of _branch ids_.
+            * Ensure that the _branch id_ with _thread id_ `0` for any
+              single _process_  object will always denote a 'primary
+              controlling thread', within the same _process_ object as
+              any _thread id_ under the same _process ID_--
+              similar to the _managing thread_ of a _Linux threads_
+              implementation. Conceivably, if a _branch_ with
+              _thread id_ `0` would be terminated, that should result
+              in termination of every _thread branch_ spawned by the same
+              _process branch_.
+             * See also: `fork(2)`, `clone(2)`, and `pthreads(7)`
+               (Linux as host OS)
+* Function: `TERMINATE-BRANCH` (?)
+    * Syntax: `TERMINATE-BRANCH NAME => PROCESS`
+       * `NAME`: A _branch name_
+       * `BRANCH`: The _process_ denoted by `NAME`
+    * Summary: The function `TERMINATE-BRANCH` ensures that if a
+      branch named `NAME` is currently defined such as to be
+      accessible to `FIND-BRANCH`, that the branch will be terminated
+    * see also: `pthread_kill(3)`, `kill(2)`, `tgkill(2)`, and
+      `clone(2)` as with regards to _thread groups_ namely: _"Signal
+      dispositions  and actions are process-wide: if an unhandled
+      signal is delivered to a thread, then it will affect (terminate,
+      stop, continue, be ignored in) all members of the thread
+      group."_ [`clone(2)`]
+
+      `CLONE_THREAD`
+* Function: `CURRENT-BRANCH`
 
 
-* Class: APPLICATION
+* Class: `APPLICATION`
     * _To Do: Differentiate "Application" from "Process",
       semantically, or else join the two concepts into one API_
-    * Accessor: APPLCIATION-PROCESS
-    * Accessor: APPLICATION-NAME
-    * Accessor: APPLICATION-PARAMETERS
-	* Accessor: APPLICATION-DEBUGGER-HOOK
-    * Class: SHELL-APPLICATION (APPLICATION)
-	* Class: GRAPHICAL-APPLICATION (APPLICATION)
+    * Accessor: `APPLCIATION-BRANCH` - i.e. controlling process/thread
+    * Accessor: `APPLICATION-NAME` - object naming?
+    * Accessor: `APPLICATION-PARAMETERS` - _too generic?_
+	* Accessor: `APPLICATION-DEBUGGER-HOOK`
+        * This accessor should need some particular attention for its
+          application. In one regard, the CLIM Debugger may present a
+          interseting feature towards remote application debugging in
+          Common Lisp, but it should be integrated with a **debugger
+          I/O protocol**, optionally onto CORBA (alternate to X.org +
+          VNC) so as to not require installation of graphical desktop
+          applications within server networks.
+    * Class: `SHELL-APPLICATION` (APPLICATION)
+        * Relatively trivial?
+        * Should extend of features of POSIX, insofar as within POSIX
+          environments
+            * Process environment
+            * Process priority
+            * Process scheduling policy (RTOS environments / Kernel space)
+            * Process input/output/error streams
+                * Byte-limited logging + log rotation (cf. `multilog`), and/or
+                * PTY, and/or
+                * File
+            * Process effective UID, GID
+            * Process root filesystem (cf. `chroot`)
+            * See also: `credentials(7)`
+            * See also: `capabilities(7)`
+            * See also: UNIX `fork`
+            * The "Null Process" i.e. the containing Lisp
+              implementation, within any conventional POSIX system or
+              any eerily, incompletely POSIX-like system
+	* Class: `GRAPHICAL-APPLICATION` (APPLICATION)
 	    * Class: GARNET-APPLIATION (GRAPHICAL-APPLICATION)
+            * e.g _Garnetdraw_
 		* Class: CLIM-APPLICATION (GRAPHICAL-APPLICATION)
 		    * For _application debugger hook_, use
 		      `clim-debugger:debugger` (defined in
 		      `mcclim:Apps;Debugger;clim-debugger.lisp`; depends on
 		      McCLIM _Clouseau_)
 	
-    * Class: JAVA-APPLICATION
-        * Accessor: JAVA-APPLICATION-MAIN-CLASS
-        * Class: JAVA-SHELL-APPLICATION (APPLICATION)
-		* Class: JAVA-CL+J-APPLICATION
-		* Class: JAVA-FOIL-APPLICATION
-		* Class: JAVA-ABCL-APPLICATION
+    * Class: `JAVA-APPLICATION`
+        * JVM memory management 
+            * Heap / Stack Limits
+            * Garbage Collection
+        * JVM compatibility (1.6, 1.7, ...)
+        * Accessor: `JAVA-APPLICATION-MAIN-CLASS`
+        * Differentiating subclasses by interface system:
+            * Class: JAVA-SHELL-APPLICATION (SHELL-APPLICATION)
+                * Java application within a distinctly POSIX wrapper
+            * Class: JAVA-CL+J-APPLICATION
+                * via "Null process" in any environment in which CL+J
+                  is supported (e.g. ECL)
+            * Class: JAVA-FOIL-APPLICATION
+                * via "Null process" in any environment in which Foil
+                  is supported
+            * Class: JAVA-ABCL-APPLICATION
+                * via "Null process" in ABCL
+            * Class: JAVA-FOO-APPLICATION
+                * via hypothetical Java class file interpreter in
+                  Common Lisp, therefore via "Null process" in same
 
 
 ## Appendix: Symbolic Name of the Dobelle-App Source Tree
