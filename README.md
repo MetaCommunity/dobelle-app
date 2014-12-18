@@ -8,7 +8,38 @@ within a Common Lisp namespace.
 
 _Ed. Note: This documentation endeavors to define a baseline
 architecture towards a framework for application development in Common
-Lisp_
+Lisp, focusing on three distinct types of host architecture: Server
+platform; Desktop platform; Mobile platform. As such, this
+documentation would be developed for an audience of software
+developers._
+
+_This documentation has served largely as a page for collecting notes,
+as firstly with regards to the concepts of hardware architectures,
+computing platforms, operating system environments, software
+applications, application packaging systems, application debugging,
+and issue tracking._
+
+_Secondly, this documentation has served as a page for collecting
+notes also with regads to specific application architectures --
+focusing, herein, about CORBA as a network application architecture
+and Linux as an operating system._
+
+_Thirdly, this documentation has served as a page for collecting a few
+notes with regards to software development process and
+development process support._
+
+_Regarding the items of those "Second" and "Third" topics: Those items
+would be essentially orthogonal to the baseline concepts of this
+system, and should likewise be developed within seperate items of
+documentation, in altogether seperate application systems. However,
+insofar as those concepts may bear at least an orthogonal relation to
+the baseline concepts of this system -- furthermore, pending
+additional development of an architecture for development and
+application of such orthogonal concepts, within this heterogenous
+conceptual framework -- presently, this documentation will continue to
+serve as a generic "Notes collection" towards development of an
+application architecture._
+
 
 ## Availability
 
