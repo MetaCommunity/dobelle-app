@@ -41,6 +41,12 @@ serve as a generic "Notes collection" towards development of an
 application architecture._
 
 
+_Orthogonal concepts addressed in the following sections:_
+* _Unified interface for process and threading protocols, as primarily
+   within POSIX environments - i.e. `BRANCH` class protocol_
+* _Desktop virtualization - context, Development Environment_
+* _CORBA_
+
 ## Availability
 
 Source tree at Github:
@@ -48,9 +54,10 @@ Source tree at Github:
 
 ## Initial Documentation
 
-### Concepts
+### Usage Cases (and orthogonal notes)
 
-### Usage Cases
+_FIXME: Move orthogonal notes into other sections of this outline or
+other documentation _
 
 * Desktop Applications
     * McCLIM Applications
@@ -137,14 +144,7 @@ Source tree at Github:
              community process and, in detail, within open technical
              specifications
 
-#### Package Life Cycle
-
-_cf. Debian package system_
-
-* Concepts
-    * Software release (development context)
-    * Software installation (user context)
-    * Issue tracking (developers and users)
+### Application Concepts
 
 #### Application Life Cycle
 
@@ -159,109 +159,33 @@ _cf. Debian package system_
     * Application close
     * See also: `initctl(8)`, _upstart_ and `init(8)` [Linux platforms]
 
-#### Thread Management
 
-* Thread pools (Server platforms)
-* Scheduling (RTOS / Embedded Applications - Mobile Platforms)
-* Contexts: Development; configuration
-* _..._
+### Package System Concepts
 
-### CORBA - ORB and Interface Definitions
+### Integration with Host Packaging System
 
-_(TBD Context: "Mobile, Desktop, and Server Applications")_
+_(TBD. See also: Debian Packaging System; Cygwin; Android app
+store(s); Apache Maven; Apache Ivy; ...)_
+
+#### Package Life Cycle
+
+_cf. Debian package system_
 
 * Concepts
-    * Service application networks
-    * Data-oriented computing
-    * CORBA services for mobile embedded platforms
-        * Inter-process communication (IPC) protocol and architectures 
-          for application coordination within _chroot jails_ on mobile
-          embedded platforms
-    * CORBA and Microkernel architectures (desktop and server platforms)
+    * Software release (development context)
+    * Software installation (user context)
+    * Issue tracking (developers and users)
 
-* **Notes**
-    * Effectively, this functionality would require an extension onto 
-      CLORB, towards a definition of a seperate system for support of
-      CORBA application development in Common Lisp.
-    * That system should provide support for protocols implementing
-      Kerberos authentication and SSL tunnelling onto CORBA, as also
-      implemented in [JacORB](http://www.jacorb.org)
-    * Focusing on the Linux platform, that same CORBA aplication
-      development system may develop a model for "Insulated execve",
-      namely applying specific _flags_ to `clone()`, cf `clone(2)` and
-      observing the notes about those same _flags_ within the section,
-      below, about the definition of the `BRANCH` class
-        * On a Linux host system (post kernel 2.6) `clone()` may be
-          applied in a manner as to provide a level of _process
-          insulation_, extending far beyond the simple _chroot jail_,
-          namely as ensure that a process created with `clone(2)` will
-          have unique namespaces even insofar as with regards to
-          networking protocols. Avoiding the `CLONE_NEWNET` flag to
-          `clone()`, however, `clone()` may be called as to create
-          largely an insulated process space for a server
-          application.
-        * With sufficient procedures being implemented in an
-          applicaiton architecture, such as for ensuring appropriate
-          transition across `clone()` -- namely, concerning
-          filesystems, and avoiding the `CLONE_NEWNET`
-          flag, however -- then an _process_ may be created such that
-          would be _insulated_ within the Linux kernel space, though
-          nonetheless accessible via the host's same networking
-          interfaces. Effectively, `clone()` may be applied as to
-          create an_"On-host network DMZ"_ for a networked server
-          application, though such that would nonetheless use the same
-          networking interfaces (and coresponding _iptables_
-          configuration) as within the _cloning host_. Thus, with
-          appropriate procedures in the application, then in event
-          of a _buffer overrun_ exploint, not only would the _cloned
-          process_ be completely inaccessible to the filesystem of the
-          _cloning host_ (insofar as mount points, with `CLONE_NEWNS`
-          set), but would also be inaccessible with regards to file
-          descriptors (`CLONE_FILES` unset), IPC namespace
-          (`CLONE_NEWIPC` set), and PID namespace (`CLONE_NEWPID` set)
-          of the _cloning process_ and the broader _host_ (also unset: 
-          `CLONE_IO`,; `CLONE_SETTLS`, `CLONE_UTS`, `CLONE_VM`,
-          `CLONE_FS`, etc) ... with a procedure ensuring it would be
-          impossible for the  _cloning process_ to access the memory
-          space of the the _child stack_  argument provided to
-          _clone_.
-        * Effectively, this may be approched with a call to simple
-          `fork()` followed with a call to `execve()`, followed with
-          appropriate calls within the _spawned process_, to close all
-          open file descriptors, excepting a "lock file," to release
-          all mutexes, and release all network resources, to allocate
-          memory if necessary, then to call `clone()` with the
-          appropriate _flags_ (as specified in the previous), thus
-          creating a  _cloned process_ -- at which time, the intermediary
-          _spawned process_ would _terminate_, thus preventing access
-          from the _spawned process_, to any memory areas within the
-          _cloned process_. The _cloned process_ may then _mount_ a
-          filesystem as would be the location of the lock file creaetd
-          by the _cloning process_, as wait until the
-          _lock file_ has been removed by the _cloning process_ --
-          such that would have been  to allow the _cloning process_ to 
-          terminate -- then to unmount that shared filesystem. 
-          The _cloned process_  would then be altogether isolated from 
-          the _spawned process_, except by way of networking and
-          kernel drivers. The _cloned process_ may then make calls to
-          mount its own virtual  `/proc` and `/sys` filesystems 
-          within its new _mount namespace_ and new _PID namespace_,
-          subsequently to mount any isolated block-special filesystems
-          for the application's normal operation, and to initialize a
-          CORBA ORB, such that may then be accessed -- specifically
-          via network interfaces -- from within the original _forking
-          process_. The host's firewall may furethremore be configured
-          as to prevent LAN or other network access to the host,
-          except via the CORBA ORB created in the final _cloned
-          process_. Subsequently, any network communication to be
-          directed from the host may be managed via the single
-          _insulated ORB_
-    * See also: CLORB
+#### Modeling (?) of Output Files for Application Package Assembly
 
-### Integration with CLIM
+_(TBD. See also: [mci-doc-docbook][mci-doc-docbook])_
 
-_(TBD. See also: "Integration with ASDF," following; "Initial
-Summary", following. Context: "Desktop Applications")_ 
+
+### Desktop Platform Concepts
+
+#### Integration with CLIM
+
+_(TBD. See also: "Initial Summary", below)_ 
 
 
 * Class: `CLIM-APPLICATION`
@@ -303,9 +227,9 @@ Summary", following. Context: "Desktop Applications")_
         * ?
 
 
-#### Application Initialization
+#### Desktop Application Initialization (cf. CLIM)
 
-_(TBD. See also: "Integration with ASDF," following)_
+_(TBD)_
 
 _Notes (Non-Normative)_
 
@@ -358,51 +282,30 @@ _Notes (Non-Normative)_
       _embedded Linux_ (RTOS) platform
 
 
-## Development Environment
-
-### Notes: The VirtualBox SDK
-
-* Concepts
-    * Desktop Virtualization
-    * Software-Defined Networking (SDN)
-    * Oracle xVM Virtualbox
-        * Originally developed by Sun Microsystems
-* Usage cases:
-	* Cross-platform development
-	    * Application display via _Seamless_ and _Full Screen_
-	      presentations
-	    * Alternate to Xen virtualization (Note: Xen is implemented
-	      within Amazon Web Services instances)
-    * Interactive testing environment (temporary VMs)
-* [Download VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* [VirtualBox Main API Documentation](https://www.virtualbox.org/sdkref/index.html)
-    * [VirtualBox API Class Hierarchy](https://www.virtualbox.org/sdkref/hierarchy.html) (Interfaces)
-    * [VirtualBox IEvent Interface](https://www.virtualbox.org/sdkref/interface_i_event.html)
-    * [VirtualBox IGuest::createSession(..)](https://www.virtualbox.org/sdkref/interface_i_guest.html#ad01dc4d81f1f0be4b9097977ddf2dc19)
-    * VirtualBox [IGuestSession::processCreate(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#abe43b79ce8bd8d02454c60456c2a44a9)
-      and [IGuestSession::ProcessCreateEx(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#a1353ebd47bb078594127a491d3af9797) methods
-    * [VirtualBox IProcess Interface](https://www.virtualbox.org/sdkref/interface_i_process.html)
-    * [VirtualBox IGuestProcess Interface](https://www.virtualbox.org/sdkref/interface_i_guest_process-members.html)
-
-#### See also
+#### See also (cf. CLIM)
 
 * CLIM-Desktop [[CLiki](http://www.cliki.net/clim-desktop)][[source tree](http://common-lisp.net/viewvc/clim-desktop/)]
 * History of Desktop Interfaces for Lisp Machines, for example
     * [_Symbolics_, Wikipedia Republished](http://en.wiki2.org/wiki/Symbolics),
       specifically, _[Ivory and Open Genera](http://en.wiki2.org/wiki/Symbolics#Ivory_and_Open_Genera)_
 
+#### Usage Case: IDE
+
+This notification protocol may serve as a component of a system for
+supporting application design within an integrated development
+environment, and may be furthermore extended for appliation within a
+server environment.
+          
+
+## Server Platform Concepts
+
 ### Integration with Amazon Web Services
 
-_(TBD. See "Initial Summary", following. Context: "Server Applications")_
+_(TBD)_
 
-#### Modeling of Output Files for Application Package Assembly
+### Integration with CLORB
 
-_(TBD. See also: [mci-doc-docbook][mci-doc-docbook])_
-
-### Integration with Host Packaging System
-
-_(TBD. See also: [mci-doc-docbook][mci-doc-docbook]; Debian Packaging
-System; Cygwin; Android app store(s))_
+_(TBD)_
 
 
 ### An initial summary about the APPLICATION system
@@ -435,13 +338,6 @@ application's development is essentially being conducted, informally,
 by way of direct stream I/O onto a locally accessible Common Lisp
 implementation.
 
-#### Usage Case: IDE
-
-This notification protocol may serve as a component of a system for
-supporting application design within an integrated development
-environment, and may be furthermore extended for appliation within a
-server environment.
-          
 
 ## "TO DO"
 
@@ -501,7 +397,10 @@ Ubunutu") hypothetically an `%application%` may represent:
        a network service administrator, in such development.
        
 
-### API "TO DO"
+# Orthogonal Concepts
+
+
+### 'Branch' (i.e. Process/Thread) API "TO DO"
 
 * Task: Extend [osicat] for interface with host process information
   (e.g. PID, real UID, GID, effective UID, GID, priority) and process
@@ -853,6 +752,133 @@ Ubunutu") hypothetically an `%application%` may represent:
             * Class: JAVA-FOO-APPLICATION
                 * via hypothetical Java class file interpreter in
                   Common Lisp, therefore via "Null process" in same
+
+#### Thread Management
+
+* Thread pools (Server platforms)
+* Scheduling (RTOS / Embedded Applications - Mobile Platforms)
+* Contexts: Development; configuration
+* _..._
+
+
+### CORBA - ORB and Interface Definitions (Orthogonal)
+
+_(TBD Context: "Mobile, Desktop, and Server Applications")_
+
+* Concepts
+    * Service application networks
+    * Data-oriented computing
+    * CORBA services for mobile embedded platforms
+        * Inter-process communication (IPC) protocol and architectures 
+          for application coordination within _chroot jails_ on mobile
+          embedded platforms
+    * CORBA and Microkernel architectures (desktop and server platforms)
+
+* **Notes**
+    * Effectively, this functionality would require an extension onto 
+      CLORB, towards a definition of a seperate system for support of
+      CORBA application development in Common Lisp.
+    * That system should provide support for protocols implementing
+      Kerberos authentication and SSL tunnelling onto CORBA, as also
+      implemented in [JacORB](http://www.jacorb.org)
+    * Focusing on the Linux platform, that same CORBA aplication
+      development system may develop a model for "Insulated execve",
+      namely applying specific _flags_ to `clone()`, cf `clone(2)` and
+      observing the notes about those same _flags_ within the section,
+      below, about the definition of the `BRANCH` class
+        * On a Linux host system (post kernel 2.6) `clone()` may be
+          applied in a manner as to provide a level of _process
+          insulation_, extending far beyond the simple _chroot jail_,
+          namely as ensure that a process created with `clone(2)` will
+          have unique namespaces even insofar as with regards to
+          networking protocols. Avoiding the `CLONE_NEWNET` flag to
+          `clone()`, however, `clone()` may be called as to create
+          largely an insulated process space for a server
+          application.
+        * With sufficient procedures being implemented in an
+          applicaiton architecture, such as for ensuring appropriate
+          transition across `clone()` -- namely, concerning
+          filesystems, and avoiding the `CLONE_NEWNET`
+          flag, however -- then an _process_ may be created such that
+          would be _insulated_ within the Linux kernel space, though
+          nonetheless accessible via the host's same networking
+          interfaces. Effectively, `clone()` may be applied as to
+          create an_"On-host network DMZ"_ for a networked server
+          application, though such that would nonetheless use the same
+          networking interfaces (and coresponding _iptables_
+          configuration) as within the _cloning host_. Thus, with
+          appropriate procedures in the application, then in event
+          of a _buffer overrun_ exploint, not only would the _cloned
+          process_ be completely inaccessible to the filesystem of the
+          _cloning host_ (insofar as mount points, with `CLONE_NEWNS`
+          set), but would also be inaccessible with regards to file
+          descriptors (`CLONE_FILES` unset), IPC namespace
+          (`CLONE_NEWIPC` set), and PID namespace (`CLONE_NEWPID` set)
+          of the _cloning process_ and the broader _host_ (also unset: 
+          `CLONE_IO`,; `CLONE_SETTLS`, `CLONE_UTS`, `CLONE_VM`,
+          `CLONE_FS`, etc) ... with a procedure ensuring it would be
+          impossible for the  _cloning process_ to access the memory
+          space of the the _child stack_  argument provided to
+          _clone_.
+        * Effectively, this may be approched with a call to simple
+          `fork()` followed with a call to `execve()`, followed with
+          appropriate calls within the _spawned process_, to close all
+          open file descriptors, excepting a "lock file," to release
+          all mutexes, and release all network resources, to allocate
+          memory if necessary, then to call `clone()` with the
+          appropriate _flags_ (as specified in the previous), thus
+          creating a  _cloned process_ -- at which time, the intermediary
+          _spawned process_ would _terminate_, thus preventing access
+          from the _spawned process_, to any memory areas within the
+          _cloned process_. The _cloned process_ may then _mount_ a
+          filesystem as would be the location of the lock file creaetd
+          by the _cloning process_, as wait until the
+          _lock file_ has been removed by the _cloning process_ --
+          such that would have been  to allow the _cloning process_ to 
+          terminate -- then to unmount that shared filesystem. 
+          The _cloned process_  would then be altogether isolated from 
+          the _spawned process_, except by way of networking and
+          kernel drivers. The _cloned process_ may then make calls to
+          mount its own virtual  `/proc` and `/sys` filesystems 
+          within its new _mount namespace_ and new _PID namespace_,
+          subsequently to mount any isolated block-special filesystems
+          for the application's normal operation, and to initialize a
+          CORBA ORB, such that may then be accessed -- specifically
+          via network interfaces -- from within the original _forking
+          process_. The host's firewall may furethremore be configured
+          as to prevent LAN or other network access to the host,
+          except via the CORBA ORB created in the final _cloned
+          process_. Subsequently, any network communication to be
+          directed from the host may be managed via the single
+          _insulated ORB_
+    * See also: CLORB
+
+## Development Environment
+
+### Desktop Virtualization - VirtualBox SDK 
+
+* Concepts
+    * Desktop Virtualization
+    * Software-Defined Networking (SDN)
+    * Oracle xVM Virtualbox
+        * Originally developed by Sun Microsystems
+        * Focused primarily for emulation of Intel platforms
+* Usage cases:
+	* Cross-platform development
+	    * Application display via _Seamless_ and _Full Screen_
+	      presentations
+	    * Alternate to Xen virtualization (Note: Xen is implemented
+	      within Amazon Web Services instances)
+    * Interactive testing environment (temporary VMs)
+* [Download VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [VirtualBox Main API Documentation](https://www.virtualbox.org/sdkref/index.html)
+    * [VirtualBox API Class Hierarchy](https://www.virtualbox.org/sdkref/hierarchy.html) (Interfaces)
+    * [VirtualBox IEvent Interface](https://www.virtualbox.org/sdkref/interface_i_event.html)
+    * [VirtualBox IGuest::createSession(..)](https://www.virtualbox.org/sdkref/interface_i_guest.html#ad01dc4d81f1f0be4b9097977ddf2dc19)
+    * VirtualBox [IGuestSession::processCreate(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#abe43b79ce8bd8d02454c60456c2a44a9)
+      and [IGuestSession::ProcessCreateEx(...)](https://www.virtualbox.org/sdkref/interface_i_guest_session.html#a1353ebd47bb078594127a491d3af9797) methods
+    * [VirtualBox IProcess Interface](https://www.virtualbox.org/sdkref/interface_i_process.html)
+    * [VirtualBox IGuestProcess Interface](https://www.virtualbox.org/sdkref/interface_i_guest_process-members.html)
 
 
 ## Appendix: Symbolic Name of the Dobelle-App Source Tree
