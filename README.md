@@ -135,9 +135,9 @@ _cf. Debian package system_
 * Contexts: Development; configuration
 * _..._
 
-### CORBA Interface Definitions
+### CORBA - ORB and Interface Definitions
 
-_(TBD)_
+_(TBD Context: "Mobile, Desktop, and Server Applications")_
 
 * Concepts
     * Service application networks
@@ -148,6 +148,84 @@ _(TBD)_
           embedded platforms
     * CORBA and Microkernel architectures (desktop and server platforms)
 
+* **Notes**
+    * Effectively, this functionality would require an extension onto 
+      CLORB, towards a definition of a seperate system for support of
+      CORBA application development in Common Lisp.
+    * That system should provide support for protocols implementing
+      Kerberos authentication and SSL tunnelling onto CORBA, as also
+      implemented in [JacORB](http://www.jacorb.org)
+    * Focusing on the Linux platform, that same CORBA aplication
+      development system may develop a model for "Insulated execve",
+      namely applying specific _flags_ to `clone()`, cf `clone(2)` and
+      observing the notes about those same _flags_ within the section,
+      below, about the definition of the `BRANCH` class
+        * On a Linux host system (post kernel 2.6) `clone()` may be
+          applied in a manner as to provide a level of _process
+          insulation_, extending far beyond the simple _chroot jail_,
+          namely as ensure that a process created with `clone(2)` will
+          have unique namespaces even insofar as with regards to
+          networking protocols. Avoiding the `CLONE_NEWNET` flag to
+          `clone()`, however, `clone()` may be called as to create
+          largely an insulated process space for a server
+          application.
+        * With sufficient procedures being implemented in an
+          applicaiton architecture, such as for ensuring appropriate
+          transition across `clone()` -- namely, concerning
+          filesystems, and avoiding the `CLONE_NEWNET`
+          flag, however -- then an _process_ may be created such that
+          would be _insulated_ within the Linux kernel space, though
+          nonetheless accessible via the host's same networking
+          interfaces. Effectively, `clone()` may be applied as to
+          create an_"On-host network DMZ"_ for a networked server
+          application, though such that would nonetheless use the same
+          networking interfaces (and coresponding _iptables_
+          configuration) as within the _cloning host_. Thus, with
+          appropriate procedures in the application, then in event
+          of a _buffer overrun_ exploint, not only would the _cloned
+          process_ be completely inaccessible to the filesystem of the
+          _cloning host_ (insofar as mount points, with `CLONE_NEWNS`
+          set), but would also be inaccessible with regards to file
+          descriptors (`CLONE_FILES` unset), IPC namespace
+          (`CLONE_NEWIPC` set), and PID namespace (`CLONE_NEWPID` set)
+          of the _cloning process_ and the broader _host_ (also unset: 
+          `CLONE_IO`,; `CLONE_SETTLS`, `CLONE_UTS`, `CLONE_VM`,
+          `CLONE_FS`, etc) ... with a procedure ensuring it would be
+          impossible for the  _cloning process_ to access the memory
+          space of the the _child stack_  argument provided to
+          _clone_.
+        * Effectively, this may be approched with a call to simple
+          `fork()` followed with a call to `execve()`, followed with
+          appropriate calls within the _spawned process_, to close all
+          open file descriptors, excepting a "lock file," to release
+          all mutexes, and release all network resources, to allocate
+          memory if necessary, then to call `clone()` with the
+          appropriate _flags_ (as specified in the previous), thus
+          creating a  _cloned process_ -- at which time, the intermediary
+          _spawned process_ would _terminate_, thus preventing access
+          from the _spawned process_, to any memory areas within the
+          _cloned process_. The _cloned process_ may then _mount_ a
+          filesystem as would be the location of the lock file creaetd
+          by the _cloning process_, as wait until the
+          _lock file_ has been removed by the _cloning process_ --
+          such that would have been  to allow the _cloning process_ to 
+          terminate -- then to unmount that shared filesystem. 
+          The _cloned process_  would then be altogether isolated from 
+          the _spawned process_, except by way of networking and
+          kernel drivers. The _cloned process_ may then make calls to
+          mount its own virtual  `/proc` and `/sys` filesystems 
+          within its new _mount namespace_ and new _PID namespace_,
+          subsequently to mount any isolated block-special filesystems
+          for the application's normal operation, and to initialize a
+          CORBA ORB, such that may then be accessed -- specifically
+          via network interfaces -- from within the original _forking
+          process_. The host's firewall may furethremore be configured
+          as to prevent LAN or other network access to the host,
+          except via the CORBA ORB created in the final _cloned
+          process_. Subsequently, any network communication to be
+          directed from the host may be managed via the single
+          _insulated ORB_
+    * See also: CLORB
 
 ### Integration with CLIM
 
