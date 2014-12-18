@@ -37,6 +37,24 @@
 	"<productname>GNU LibC</productname>"
 >
 
+
+
+<!ENTITY docbook
+	"<productname>DocBook</productname> <productname>XML</productname>"
+>
+
+<!ENTITY docbookXSL
+	"<productname>DocBook</productname> <productname>XSL</productname>"
+>
+
+<!ENTITY relax
+	"<productname>RELAX NG</productname>"
+>
+
+<!ENTITY relax
+	"<productname>Trang</productname>"
+>
+
 ]>
 <book xmlns="http://docbook.org/ns/docbook"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -60,7 +78,7 @@
 
     <para>
       The &project; implements an object model for
-      <glossterm>application</glossterm> objects, withinin a &cltl;
+      <glossterm>application</glossterm> objects, within a &cltl;
       program space.
     </para>
     <para>
@@ -77,7 +95,7 @@
       environment</member> 
 
       <member>&cltl; programs providing support for application of
-      &asdf; as aystem definitnion facility</member> 
+      &asdf; as system definition facility</member> 
 
       <member>&cltl; programs extending of the Common Lisp Interface
       Manager (<acronym>CLIM</acronym>)</member>
@@ -113,8 +131,7 @@
       <title>Application Concepts</title>
 
       <section>
-        <title>External Applciations within a &glibc; Platform Environment</title>
-
+        <title>External Applications within a &glibc; Platform Environment</title>
         <section>
           <title>Filesystem Root Directory</title>
           <remark>cf. chroot(2)</remark>
@@ -126,7 +143,7 @@
         </section>
 
         <section>
-          <title>Application Princial Identity</title>
+          <title>Application Principal Identity</title>
           <remark>real and effective UID, real and effective GID</remark>
           <remark>cf. GNU LibC</remark>
         </section>
@@ -138,7 +155,7 @@
 
         <section>
           <title>Application Initialization</title>
-          <para>Two methdologies available for initialization of an
+          <para>Two methodologies available for initialization of an
           <glossterm linkend="g.ext-app">external application</glossterm>'s effective
           process space:
           <simplelist>
@@ -155,17 +172,49 @@
       </section>
 
       <section>
-        <title>Interprocess Communciation</title>
+        <title>Interprocess Communication</title>
         <remark>This system proposes to apply CORBA for interprocess
-        communication (IPC) beteenn a Lisp seesion and an External
+        communication (IPC) between a Lisp session and an External
         Application. Insofar as such an architecture may be applicable
         for communication with external applications on remote hosts,,
         such functionality must implement a secure tunneling protocol,
-        cf. OpenSSl, if not also an authentication protocool,
-        cf. Kerberos, insofar as service-level fnctionalty as may be
+        cf. OpenSSL, if not also an authentication protocol,
+        cf. Kerberos, insofar as service-level functionality as may be
         provided external to an application.</remark>
       </section>
       
+      </section>
+      
+      <section>
+        <title>Features of a &cltl; Program Environment</title>
+
+        <para><remark>Features to address here:</remark>
+        <simplelist>
+          <member>
+            <remark>The &cltl; conditions framework, including:
+            Interactive continuation forms, in definitions of
+            containable errors</remark> 
+          </member>
+          <member>
+            <remark>Debugger integration</remark>
+          </member>
+          <member>
+            <remark>Application Concept: Dependency Management for source
+            compilation and source loading within Common Lisp
+            programs, cf. &asdf; and historically, MK:DEFSYSTEM</remark>
+          </member>
+          <member>
+            <remark>Application Concept: Protocols for interaction with
+            and control of a remote Lisp environment, referencing SLIME
+            and also CORBA</remark>
+          </member>
+          <member>
+            <remark>Application Concept: Presentation of debugger and
+            containable errors, within a desktop or server
+            environment</remark>
+          </member>
+        </simplelist>
+        </para>
       </section>
     </chapter>
 
@@ -197,7 +246,7 @@
       <glossterm>External Application</glossterm>
       <glossdef>
         <para>From a perspective of a Lisp session running within a
-        non-Lisp host environment: An appliation defined such as to be
+        non-Lisp host environment: An application defined such as to be
         initialized via <function>exec[v[e|p]]</function>. 
         </para>
       </glossdef>
@@ -206,14 +255,476 @@
     <glossentry xml:id="g.int-app">
       <glossterm>Internal Application</glossterm>
       <glossdef>
-        <para>From a perspective of a Lisp session: An appliation
+        <para>From a perspective of a Lisp session: An application
         defined such as to be initialized via a platform threading
-        framework, as within the effectice process space of the Lisp
+        framework, as within the effective process space of the Lisp
         implementation.
         </para>
       </glossdef>
     </glossentry>
 
+    <glossentry xml:id="g.session">
+      <glossterm>Session</glossterm>
+      <glossdef>
+        <remark>TBD</remark>
+      </glossdef>
+    </glossentry>
+
+
+    <glossentry xml:id="g.process">
+      <glossterm>Process</glossterm>
+      <glossdef>
+        <remark>TBD</remark>
+      </glossdef>
+    </glossentry>
+
+
+    <glossentry xml:id="g.process">
+      <glossterm>Host Environment</glossterm>
+
+      <glossdef>
+        <remark>Typically, a POSIX-compatible environment (e.g. Linux,
+        BSD, QNX, perhaps also OS X), or an environment at least
+        partially reminiscent of POSIX (e.g Microsoft
+        Windows, BeOS, etc)</remark> 
+
+        <remark>In a context of virtualization, an application of a
+        virtualization service may essentially serve as to add a
+        further layer to a definition of the term, "Host environment"
+        &mdash; such as in which, an application's host environment
+        may effectively represent  a <emphasis>guest</emphasis>
+        instance (cf. VirtualBox) or alternately, a
+        <emphasis>dom1</emphasis> instance (cf. Xen) running within 
+        &mdash; respectively &mdash; a <emphasis>host</emphasis>
+        operating system (cf. VirtualBox) or a
+        <emphasis>dom0</emphasis> <glossterm>Hypervisor</glossterm>
+        (cf. Xen). See also: Amazon Web Services API</remark>
+
+        <remark>With regards to the Dobelle-App system,
+        specifically, virtualization may be relevant in contexts of:
+        (1) inter-process communication, if not also (2) procedures for
+        application initialization, such as in which a virtual image
+        must be initialized and polled for its "boot-time state", as
+        an effective prerequisite to an application being launched
+        within the virtual image; (3) Heuristics for determination of
+        environment features, e.g. if there is a PCI device named
+        "InnoTek Systemberatung GmbH VirtualBox Guest Service" then
+        it's likely a VirtualBox Guest environment, and similar for
+        detection of a Xen dom1 environment</remark>
+
+        <remark>Of course, the concern as with regards to application
+        initialization may be of some relevance not only in an
+        instance of an "Own hardware" environment. With regards to
+        cloud computing services, as in these decades along in the 
+        evolution of timeshare models: Considering some functionality
+        provided of an Amazon Web Services (AWS) Elastic Beanstalk
+        (EB) instance, insofar as that an EB instance may be 
+        remotely activated or deactivated via an authenticated
+        connection onto the web API published of AWS, it may be
+        fortuitous to design  a continuous integration system such
+        that the system's build service would be running only when an
+        application is being built, and would be deactivated on
+        completion of the build process &mdash; this, together with
+        copious messaging and records storage features, as should be
+        published by such a software build service.</remark>
+      </glossdef>
+    </glossentry>
+
+
   </glossary>
 
+
+  <reference>
+    <title>Usage Cases</title>
+
+    <refentry>
+      <refnamediv>
+        <refname>dobelle-app-docbook-uc</refname>
+        <refpurpose>Usage Case onto a &docbook; Toolchain</refpurpose>
+        <refclass>Usage Case</refclass>
+      </refnamediv>
+      <refsect1>
+        <title>Overview</title>
+        
+        <refsect2>
+          <title>Towards Applications of a &docbook; Toolchain</title>
+
+          <para>In any version of the &docbook; schema, in any
+          single schema syntax, the &docbook; schema may be 
+          applied and furthermore extended, as it being a normative 
+          and extensible document schema for XML documents.</para>
+          
+          <para>In a production of a document conformant to the
+          &docbook; schema, an XSLT transform engine may be applied to
+          the  document, such as to apply the &docbookXSL;
+          stylesheets.</para> 
+
+          <para>A toolchain developed onto &docbook; may be developed
+          such as to apply a set of software tools, each within one of
+          the following roles:
+          <simplelist>
+            <member>Schema validation, for schema developed as
+            extending onto a &docbook; schema</member>
+            <member>Document validation, for applications of a
+            &docbook; schema</member>
+            <member>XSL transforms, for applying the &docbookXSL;
+            stylesheets onto one or more source documents</member>
+            <member>Additional software tools, such as may be applied
+            in formatting of documents produced directly of the XSL 
+            transforms, specifically towards producing a file of any
+            specific output format</member>
+            <member>Tools for software packaging and software
+            distribution, such as may be applied for publication of
+            documents as formatted with the preceding
+            toolchain.</member>
+          </simplelist>
+          </para>
+        </refsect2>
+
+        <refsect2>
+          <title>Phases of Development in a &docbook;
+          Toolchain</title>
+
+          <para>Broadly, a &docbook; toolchain may be applied as across
+          the following generic phases within a documentation life
+          cycle:</para>
+
+          <simplelist>
+            <member>Schema development</member>
+            <member>Document authoring</member>
+            <member>Document formatting</member>
+            <member>Publication</member>
+          </simplelist>
+          
+        </refsect2>
+
+        <refsect2>
+          <title>Automation of a &docbook; Toolchain with
+          &asdf;</title>
+
+          <remark>To to: Provide an introduction to ASDF, MK:DEFSYS,
+          etc</remark>
+          
+          <para>&asdf; may be applied, namely for purposes of 
+          <emphasis>file validation</emphasis> and 
+          <emphasis>file transformation</emphasis>, onto file
+          components  within a documentation life cycle applying the
+          &docbook; toolchain. In such application:</para>
+
+          <table>
+            <caption>Relations of Source Objects and Software Products Within
+            a &docbook; Toolchain</caption>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Predicate</th>
+                <th>Object</th>
+                <th>Procedural Consequent</th>
+                <th>Correlated Subjects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <para>Source Repository</para>
+                  <para>and Revision Specifier</para>
+                </td>
+                <td>Source checkout</td>
+                <td>Destination</td>
+                <td>Source Tree</td>
+                <td>
+                  <simplelist>
+                    <member></member>
+                  </simplelist>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <para>&relax; Schema</para>
+                  <para>
+                    <acronym>XML</acronym> or
+                    <acronym>RNC</acronym> Syntax
+                  </para>
+                </td>
+                <td>schema validation</td>
+                <td><application>nXML</application> or
+                <application>Trang</application>
+                <footnote>
+
+                  <para>This would represent, essentially, a decision
+                  that would be addressed in the design of the
+                  documentation toolchain &mdash; contextually, in
+                  regards to application of a &relax; schema &mdash;
+                  in a decision onto a selection of
+                  <application>nXML</application> or   
+                  <application>Trang</application> at this instance,
+                  within an effective documentation workflow
+                  model.</para> 
+
+                  <para><application>nXML</application> may applied
+                  for interactive or batch validation of schema
+                  syntax, insofar as a &relax; schema being a valid
+                  &relax; schema.</para>
+
+                  <para><application>Trang</application> may be
+                  applied for batch validation of schema syntax,
+                  insofar as towards whether a &relax; schema may be
+                  transformed towards a production of a schema of
+                  an second schema syntax.</para> 
+                </footnote>
+                </td>
+                <td>
+                  <emphasis>Valid Schema</emphasis> for
+                  <acronym>XML</acronym> Documents
+                </td>
+                <td>
+                  <simplelist>
+                    <member>
+                      <acronym>XML</acronym> format
+                    </member>
+                    <member>
+                      &relax; <acronym>XML</acronym> syntax
+                    </member>
+                    <member>
+                      &relax; <emphasis>compact</emphasis> syntax
+                    </member>
+                    <member>
+                      <acronym>XML</acronym> schema formats
+                    </member>
+                  </simplelist>
+                </td>
+              </tr>
+              <tr>
+                <td>Document applying a &relax; schema</td>
+                <td>validation</td>
+                <td>Trang</td>
+                <td><emphasis>Valid <acronym>XML</acronym>
+                Document</emphasis></td>
+                <td>
+                  <simplelist>
+                    <member>Schema</member>
+                    <member>Document</member>
+                    <member>
+                      Relation of <emphasis>document</emphasis>
+                      and <emphasis>schema</emphasis>
+                    </member>
+                    <member>
+                      <acronym>XML</acronym> format
+                    </member>
+                    <member>
+                      Subjects as correlated of <emphasis>schema
+                      validation</emphasis> procedures
+                    </member>
+                  </simplelist>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <para>Valid <acronym>XML</acronym> Document</para>
+                  <para>and valid <acronym>XSL</acronym> stylsheet</para>
+                </td>
+                <td>Transformation</td>
+                <td>XSL transformation engine
+                <footnote>
+                  <para>For instance, <productname>Saxon</productname>,
+                  <productname>xsltproc</productname>, or otherwise</para>
+                </footnote></td>
+                <td>Document of a publishable format<footnote>
+                <para>Publishable formats may include
+                <productname>HTML</productname> 
+                <productname>PDF</productname>, <productname>Manual
+                page</productname>,
+                <productname>TeXinfo</productname>, etc.
+                </para>
+                </footnote></td>
+                <td>
+                  <simplelist>
+                    <member>
+                      <acronym>XML</acronym> format
+                    </member>
+                    <member>
+                      <acronym>XSL</acronym> stylesheet
+                    </member>
+                    <member>
+                      Formats for document publication
+                    </member>
+                    <member>Specific formats and tools such as may be
+                    applied  within an encapsulated methodology for
+                    producing a document of a publishable format from
+                    the initial <acronym>XML</acronym> document, in
+                    application of an <acronym>XSL</acronym>
+                    transforms</member> 
+                  </simplelist>
+                </td>
+              </tr>
+              <tr>
+                <td>Document of a Publishable Format</td>
+                <td>Preview Before publication</td>
+                <td>Document Viewer</td>
+                <td>One of: <emphasis>Publishable document</emphasis>,
+                or <emphasis>Task item</emphasis>, as towards a review
+                for revision of elements in documentation
+                toolchain
+                <footnote>
+                  <para>In a linear workflow model, if not in a formal
+                  workflow syntax such as <acronym>BPMN</acronym>,  this
+                  represents essentially a <emphasis>decision
+                  node</emphasis>, within the documentation
+                  toolchain</para>
+                  <para>Typically, if a <emphasis>task item</emphasis>
+                  would be developed at this <emphasis>decision
+                  node</emphasis>, and would be verified for its
+                  applicability onto the preceding documentation
+                  toolchain, it may be determined that there may be an  
+                  issue addressing any one or more of: 
+                  <simplelist>
+                    <member>Content of any single
+                    <emphasis>transformational stylesheet</emphasis>, as
+                    would be applied in
+                    <emphasis>transformation</emphasis> of 
+                    a single <emphasis>source document</emphasis> in
+                    the toolchain's application</member>  
+
+                    <member>Content of any single
+                    <emphasis>presentational stylesheet</emphasis>,
+                    as would be applied in
+                    <emphasis>presentation</emphasis> of the 
+                    <emphasis>document of publishable
+                    format</emphasis> &mdash; 
+                    namely, as would be correlated to the format of
+                    the  <emphasis>document of publishable
+                    format</emphasis> &mdash; correlation of
+                    HTML and Cascading Stylesheets, in web-based
+                    presentation, in print presentation, in HTML help
+                    presentation, or in EPUB presentation, etc.</member>
+                    
+                    <member>The content of any single <emphasis>source
+                    document</emphasis>, at the instance of the
+                    toolchain's application</member>
+                  </simplelist>
+                  </para>
+                </footnote>
+                </td>
+                <td>
+                  <simplelist>
+                    <member>Correlation of document formats and
+                    document viewers</member>
+
+                    <member>Desktop computing environment</member>
+
+                    <member>Issue tracking system</member>
+                  </simplelist>
+                </td>
+              </tr>
+              <tr>
+                <td>Publishable Document</td>
+                <td>Encapsulation for Distribution</td>
+                <td>Software Packaging Tools</td>
+                <td>Software Package</td>
+                <td>
+                  <simplelist>
+                    <member>Software package formats</member>
+                    <member>Software packaging toolchains</member>
+                    <member>Release cycle for publications</member>
+                    <member>Policy for software releases</member>
+                  </simplelist>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </refsect2>
+        <refsect2>
+          <title>Additional Functionality (Interactive Instances
+          within Toolchain)</title>
+          
+          <remark>TO DO: Integrate this section within the broader
+          usage case, 
+          as illustrated here in this <tag
+          class="element">refentry</tag> item</remark>
+          
+          <remark>Abstract Concept: Differentiation of
+          <emphasis>batch</emphasis> and
+          <emphasis>interactive</emphasis> processes, within
+          documentation toolchain</remark>
+
+          <remark>Practical Concept: Development of an IDE for
+          documentation authors</remark> 
+
+          <simplelist>
+            <member>Interactive Spell Checking</member>
+            <member>Integration with interactive documentation tools
+            &mdash; those  extending of the DocBook schema, and those
+            implemented as being functionally independent of the DocBook
+            schema &mdash; e.g. bibliographical database; MathML
+            editor; graphics editor</member>
+            <member>Notification of documentation authors, on instance
+            of <emphasis>issue tracker</emphasis></member>
+            <member>Integration of <emphasis>source
+            document</emphasis> with <emphasis>source tree</emphasis>
+            </member>
+          </simplelist>
+        </refsect2>
+      </refsect1>
+      <refsect1>
+        <title>Planning</title>
+        <remark>Essentially, this <emphasis>usage case</emphasis>
+        represents a plan for a <emphasis>documentation 
+        system</emphasis>. </remark>
+        <remark>Insofar as &asdf; may be applied for
+        actuation of non-interactive events, correspondingly, it may
+        be possible to develop a usage-case for an interactive
+        procedure onto ASDF, such that might effectively re-use ASDF's
+        component dependency management features, essentially for
+        automation of repetitive actions within an  interactive
+        desktop environment. Debugger integration, "TO DO"</remark>
+        <remark></remark>
+      </refsect1>
+      <refsect1>
+        <title>Resources</title>
+        
+        <segmentedlist>
+          <segtitle>Resource</segtitle>
+          <segtitle>Resource Kind</segtitle>
+          <segtitle>Roles</segtitle>
+          <seglistitem>
+            <seg><systemitem class="resource"
+                             xlink:href="https://github.com/MetaCommunity/mci-doc-docbook/"
+                             >mci-doc-docbook</systemitem></seg>
+            <seg>Source code repository</seg>
+            <seg><simplelist>
+              <member>Public source code repository for
+              extensions developed onto DocBook</member>
+              <member>Source of usage-case</member> 
+            </simplelist></seg>
+          </seglistitem>
+        </segmentedlist>
+        
+      </refsect1>
+    </refentry>
+
+  </reference>
 </book>
+
+<!--  LocalWords:  Dobelle ASDF LibC DocBook XSL NG Trang API CLIM EB
+-->
+<!--  LocalWords:  JVM Filesystem chroot getenv setenv UID GID sched
+-->
+<!--  LocalWords:  setscheduler Interprocess CORBA interprocess IPC
+-->
+<!--  LocalWords:  OpenSSL Kerberos DEFSYSTEM TBD POSIX QNX BeOS dom
+-->
+<!--  LocalWords:  virtualization VirtualBox Xen Hypervisor PCI GmbH
+-->
+<!--  LocalWords:  InnoTek Systemberatung AWS dobelle docbook uc XSLT
+-->
+<!--  LocalWords:  Toolchain conformant stylesheets toolchain DEFSYS
+-->
+<!--  LocalWords:  RNC nXML workflow  xsltproc PDF TeXinfo
+-->
+<!--  LocalWords:  stylesheet BPMN transformational toolchain's EPUB
+-->
+<!--  LocalWords:  presentational toolchains refentry IDE MathML mci
+-->
+<!--  LocalWords:  ASDF's
+-->
