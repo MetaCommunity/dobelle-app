@@ -46,7 +46,7 @@ _Orthogonal concepts addressed in the following sections:_
    within POSIX environments - i.e. `BRANCH` class protocol_
 * _Desktop virtualization - context, Development Environment_
 * _CORBA_
-
+*
 ## Availability
 
 Source tree at Github:
@@ -399,6 +399,114 @@ Ubunutu") hypothetically an `%application%` may represent:
 
 # Orthogonal Concepts
 
+### Externalized Classes / Externalized Objects
+
+* MOP extension
+* To do: define with `info.metacommunity.cltl.mop.external` system
+* To do: Define classes `externalized-class`,
+  `externalized-slot-definition`, `direct-externalized-slot-definition`,
+  `effective-externalized-slot-definition` such that;
+    * An _externalized slot_ would implicitly have _class allocation_,
+      although the _slot value storage_ for an _externalized slot_
+      may be consistently ignored within implementations - as wherein
+      the _externalized slot_ would represent a value already
+      stored within the _containiing host environment_
+    * A _direct exernalized slot definition_ may be specified as
+      _read-only_. If any initform/initfunction is provided for a
+      _read-only_  manner of _system object property_ slot, then that
+      should result in an error when the containing class is
+      [re]initialized
+
+
+
+#### System Classes / System Objects
+
+* Overview: Extension of _Externalized classes_ protocol, onto POSIX
+  environments and similar
+* To do: define with `info.metacommunity.cltl.mop.system-classes` system
+* Description: _Process_ objects and _thread_ objects of a POSIX
+  environment would have, each, a set of _properties_ such that may be
+  accessed via individual functions defined within GNU
+  LibC. Effectively, each set of such __properties_ serves to define a
+  distinct _system class_, such as of a _process_ or _thread_ -- 
+  similarly, as with _user_, _group_, _file_, _host_ and other
+  effective  _system object_ classes
+  
+* **Allocation of slots for _system object properties_**
+    * Within a CLOS environment, those effective _system object_
+      classes can be modeled such that each such _property_ would be
+      represented by a _slot definition_ such that, although defined
+      as a direct slot definition to a class, need not be represented
+      with an allocated slot value within any instances of that class,
+      and -- as with PCL -- neither with the _class layout_ of the
+      class.
+    * Effectively, any _slot_ intialized for such a _property_
+      would be in duplication of the value of the same _property_
+      within the containing _system environment_. Although it may
+      present a _portable_ implementation, to allow a slot to be
+      allocated even for each such _system object property_ but -- if 
+      it would be avoidable, within any specific implemenation -- then
+      no slot need be allocated for each such _system object property_.
+        * See also (?) `SB-PCL::MAKE-PRELIMINARY-LAYOUT`,
+          `SB-KERNEL:LAYOUT-SLOT-TABLE`, `SB-PCL::MAKE-SLOT-TABLE`, as
+          with regards to the question, "How is slot value storage
+          allocated", focusing then on the nature of a _class layout_
+          in PCL.
+        * Referencing `SHARED-INITIALIZE :AFTER (CLASS T)` [SBCL], the
+          value provided to `MAKE-SLOT-TABLE` is the value returned
+          from `COMPUTE-SLOTS`.
+        * See also `SLOT-VALUE` [SBCL], observing the application of
+          `SB-PCL::FIND-SLOT-CELL` 
+        * Without effectively revising MOP, it may not be possible to
+          prevent allocation of slot value storage for _system object
+          properties_. If _system object properties_ would be defined
+          with _instance allocated slots_, then each such _property_
+          would effectively be define with a wasted storage space, for
+          each such slot's (unused) value within the Lisp environment.
+        * A slot for a _system object property_ may be defined as a
+          _class allocated slot_, but the storage defined for the slot
+          nonetheless ignored within the containing class - such that
+          `SLOT-BOUNDP-USING-CLASS` would always return `T`, and
+          `SLOT-VALUE-USING-CLASS` would always access the _system
+          object property_ within the _system environment_.
+* **System Object Identity**
+    * To uniquely identify a _system object class_ as may be defined
+      for representing a POSIX _process_, the definition may need not
+      be made with an _instance allocated slot_ for the same
+      identify value, insofar as the _system object class_ would
+      represent the _containing process_ (in which instance, see also
+      `getpid`).
+    * By contrast: To uniquely identify a _system object class_ as may
+      be defined for representing a POSIX _file descriptor_, then an
+      _instance allocated slot_ must be created for containing the
+      identity of each such _system object_, such that the _identity
+      slot_ for such a _system obbject_ would contain a _file
+      descriptor index_.
+        * usage cases: see also, `fcntl(2)`, e.g with regards to
+          mandatory/advisory file locking, such that 
+          may be of relevance for an object serialization system; with
+          regards to "Close on exec"; with regards to capacities for
+          "pipe" FD; file and directory change notification (e.g. for
+          directory listings, or interactive file editing tools);
+          blocking (synchronous) I/O; FD permissions; file leases
+* **References (Usage Case)** - _System Classes in POSIX, Linux, and 
+      GNU LibC Environments_
+    * GNU LibC Info documentation; Linux manual pages
+    * Focus: pthreads
+        * A threads may inherit some or all of of process identity
+          values from within a thread's creating process
+        * For control of which process identity values --
+          including namespaces -- will or will not be inherited
+          when a thread is created, see also `clone(2)` [Linux]
+        * Manual page `pthread_attr_init(3)`
+            * `pthread_attr_getdetachstate`
+            * `pthread_attr_getscope`
+            * `pthread_attr_getinheritsched`
+            * `pthread_attr_getschedpolicy`
+            * `pthread_attr_getschedparam`
+            * `pthread_attr_getguardsize`
+            * `pthread_attr_getstack`
+
 
 ### 'Branch' (i.e. Process/Thread) API "TO DO"
 
@@ -431,7 +539,9 @@ Ubunutu") hypothetically an `%application%` may represent:
             * host UTS fields - `CLONE_NEWUTS`, cf `uname(2)`
             * thread local storage - `CLONE_SETTLS` (orthogonal)
             * memory space - `CLONE_VM` as with relation to parent
-              process (orthogonal)
+              process (orthogonal) (see also: The chapter
+              _[The Process Address Space](http://www.makelinux.net/books/lkd2/ch14.html)_
+              in [[LKD2][lkd2]])
         * ...within the Linux kernel, such as -- in an instance of
           "All isolated namespaces" -- may pertain to definition of:
             * sensitive applications on the Linux platform, if not
@@ -458,6 +568,12 @@ Ubunutu") hypothetically an `%application%` may represent:
       implementation, furthermore avoiding ambiguity between POSIX 
       processes, POSIX-compliant implementations of pthreads, and
       (historic/optional) LinuxThreads implementations of pthreads
+    * Concerning process/thread implementations in Linux host
+      environments, see also: Respectively, the chapters about
+      _[Process Management](http://www.makelinux.net/books/lkd2/ch03)_
+      and
+      _[Process Scheduling](http://www.makelinux.net/books/lkd2/ch04)_
+      from [[LKD2][lkd2]]
     * Class: `THREAD` (`BRANCH`)
         * Summary: Within a multi-thread Lisp implementation, a
           _thread branch_ defines a _branch_ that executes within the 
@@ -489,7 +605,7 @@ Ubunutu") hypothetically an `%application%` may represent:
           "branch" extending of the implementation's initial _host
           process_ (cf. POSIX process groups), though effectively
           limited across _process boundaries_ (?) and memory
-          registers. (See also: also `CLONE_VM` [`clone(2)`])
+          registers. (See also: also `CLONE_VM` [`clone(2)`] (?))
         * Deterministic scheduling between parent processes and
           single time-critical child processes: note `CLONE_VFORK`
           [`clone(2)`]
@@ -963,3 +1079,4 @@ architectures, somewhere north of _Summertide_.
 [mci-doc-docbook]: https://github.com/MetaCommunity/mci-doc-docbook
 [affta]: https://github.com/MetaCommunity/affta
 [mcclim]: http://common-lisp.net/project/mcclim/
+[lkd2]: http://www.makelinux.net/books/lkd2/
