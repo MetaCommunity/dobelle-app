@@ -14,11 +14,6 @@
   :components 
   ((:file "app-package")
    
-   (:file "label"
-          :depends-on
-          ("app-package"
-           ))
-
    (:file "notify"
           :depends-on 
           ("app-package"
