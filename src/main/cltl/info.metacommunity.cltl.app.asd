@@ -1,13 +1,6 @@
 ;; info.metacommunity.cltl.app.asd			-*-lisp-*-
 
-(in-package #:cl-user)
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defpackage #:application-system
-    (:use #:asdf #:cl)))
-
-(in-package #:application-system)
-
+(in-package #:asdf-user)
 
 (defsystem #:info.metacommunity.cltl.app
   :description 
@@ -31,5 +24,3 @@
           ("app-package"
            ))
    ))
-
- 
