@@ -1,6 +1,6 @@
 
 
-(in-package #:application)
+(in-package #:mcicl.app)
 
 
 ;;;; Trivial application notification framework for condition handling
@@ -53,7 +53,7 @@
     :initarg :application
     :initform %application%
     :reader application-condition-application)
-   (application-context
+   (application-context ;; ? Too vague, and ambiguous onto Java's Spring Framework
     :initarg :application-context
     :initform nil
     :reader application-condition-application-context))
