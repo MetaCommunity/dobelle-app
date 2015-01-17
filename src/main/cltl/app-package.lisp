@@ -8,7 +8,7 @@
    #+NIL #:label
    #+NIL #:labeled-object
    #+NIL #:princ-label
-   ;; ^ use UTILS:PRETTY-PRINTABLE-OBJECT instead
+   ;; ^ use MCICL.UTILS:PRETTY-PRINTABLE-OBJECT instead
 
    #:current-application
    
