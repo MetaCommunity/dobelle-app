@@ -59,13 +59,68 @@ Source tree at Github:
 _FIXME: Move orthogonal notes into other sections of this outline or
 other documentation _
 
-* Desktop Applications
+
+* Generic Concepts - Applications and UNIX
+    * Applications in a Mult-iuser UNIX Environment
+        * Processes in the Kernel Environment
+            * See also: FreeBSD; Linux
+        * The 'init' command as a primary controlling process
+        * User Login Shell
+            * Getty / Login
+            * SSH
+            * Shell as Primary User-Controlled Process for User Login Session
+    * Applications, Processes, and Threads
+        * DAG of controlling/subordinate processes from post-boot init
+        _process_ to every spawned _process_
+        * Controlling Terminal (TTY / PTY)
+        * Multithreading in Single Processes
+            * Thread Model in FreeBSD
+            * POSIX Threads (pThreads) in Linux
+            * ...
+        * Foreground Processes, Background Processes
+        * Zombie Processes
+    * Applications in Multiprocessing Environments
+        * Controlling Thread (?)
+        * Subordinate Threads (?)
+    * Applications in a Generic Network Environment
+        * Network
+        * Presence (cf. XMPP)
+        * All the fancy remote desktop protocols
+            * XLib - Note, "Server on local terminal, client on remote
+              terminal" model, XFree86/X.org
+            * RDP
+            * VNC
+            * NX (Distinct protool?)
+            * Citrix (?)
+        * Network Transport/Control Methods for Applications
+            * Network Shells
+            * RPC
+            * XML-RPC, SOAP
+            * CORBA
+* Generic Concepts - Applications and Object Controllers
+    * Sidebar Concepts
+        * Shell Script as _Interpreted Object_
+        * Java Class File a _Compiled Object_ (originally, Java Source
+          File as Source Object, subsequently Source Object procesed
+          with Compiler Application )
+        * Common Lisp Source File as _Hybrid Interpretabe/Compilable
+        Object_
+            * Semantics of CLtL2 `LOAD` Function
+            * Semantics of CLtL2 `COMPILE` Function
+    * Case Study: JVM
+    * Case Study: Ruby
+* Generic Concepts - Scripting and Automation in Java Application Systems
+    * [JADE Toolkit](http://jade.tilab.com/doc/index.html)
+    * [Apache Ant](http://ant.apache.org/)
+    * [Apache Maven](http://maven.apache.org/)
+    * ...
+* Desktop Applications - Misc.
     * McCLIM Applications
     * Utility Applications
         * DocBook Toolchain
-* Mobile Applications
+* Mobile Applications - Android
     * Android platform
-* Server Applications
+* Server Applications - Thoughts
     * Known models for remote application control, monitoring, and
       notification
         * Notification: AWS [SNS](http://aws.amazon.com/sns/)
