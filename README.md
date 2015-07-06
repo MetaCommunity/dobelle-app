@@ -331,12 +331,9 @@ _encapsulated notifications_.
 
 #### The Null Application
 
-In the initial development of this application notification protocol,
-it was observed that the class `NULL` may serve as a convenient
-designator for a "null application" -- as in a context in which an
-application's development is essentially being conducted, informally,
-by way of direct stream I/O onto a locally accessible Common Lisp
-implementation.
+The class `NULL` may serve as a convenient designator for an
+applicatiton denoting a primary controlling thread within a containing
+Common Lisp implementation
 
 
 ## "TO DO"
