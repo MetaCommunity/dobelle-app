@@ -109,11 +109,18 @@ other documentation _
             * Semantics of CLtL2 `COMPILE` Function
     * Case Study: JVM
     * Case Study: Ruby
-* Generic Concepts - Scripting and Automation in Java Application Systems
-    * [JADE Toolkit](http://jade.tilab.com/doc/index.html)
-    * [Apache Ant](http://ant.apache.org/)
-    * [Apache Maven](http://maven.apache.org/)
-    * ...
+* Case Study: Java(TM)
+    * Conventional JVM command line syntax
+        * 'Properties' section `-Dfoo=bar`, `-Dfum` [OPTIONAL]
+        * Classpath specifier (cmdline; see also: `%CLASSPATH%` etc) [OPTIONAL]
+        * 'Main' Class name
+        * Args for 'Main' Class [OPTIONAL]
+        * See also: Eclipse IDE 
+    * Generic Concepts - Scripting and Automation in Java Application Systems
+        * [JADE Toolkit](http://jade.tilab.com/doc/index.html)
+        * [Apache Ant](http://ant.apache.org/)
+        * [Apache Maven](http://maven.apache.org/)
+        * ...
 * Desktop Applications - Misc.
     * McCLIM Applications
     * Utility Applications
