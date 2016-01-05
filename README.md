@@ -16,6 +16,27 @@ TBD: Case study - FreeBSD `boot0`
 
 (TBD)
 
+#### Application Configuration
+
+(TBD)
+
+#### Dobelle Application Initialization Parameters
+
+(TBD - Platform-Agnostic Applications Object Model)
+
+##### Configuring Dobelle Applications with Shell Runtime Parameters
+
+(TBD: Implementation-neutral interface for consuming shell commandline args)
+(TBD: getopt_long(3), getsubopt(3), ... HOWTO: Object-oriented model for shcmd arg consumer)
+
+#### Dobelle Applications in Multiprocessing Environments
+
+(TBD - Processes; Threads)
+
+* Initializing a Dobelle Application in a New Thread
+* Initializing a Dobelle Application within a Common Lisp Peeer Process
+
+
 ## Platform-Specific Application Activation
 
 ### Appliation Activation on Desktop and Server Platforms
