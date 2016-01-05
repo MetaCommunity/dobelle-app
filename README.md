@@ -1,10 +1,36 @@
 API for application packaging, initialization, and messaging in Common Lisp
 =========================================================================
 
-## Overview
+# Overview
 
 The [dobelle-app][dobelle-app] defines a class, `APPLICATION`,
 within a Common Lisp namespace.
+
+## Application Modeling
+
+### Operating System Runtime Model
+
+TBD: Case study - FreeBSD `boot0`
+
+### Dobelle Lisp Application Model
+
+(TBD)
+
+## Platform-Specific Application Activation
+
+### Appliation Activation on Desktop and Server Platforms
+
+#### UNIX boot/init/login
+
+### Application Activation on Mobile Appliance Operating Systems
+
+#### Android Zygote
+
+#### Tizen
+
+#### Maemo
+
+## Previous Notes
 
 _Ed. Note: This documentation endeavors to define a baseline
 architecture towards a framework for application development in Common
@@ -47,14 +73,14 @@ _Orthogonal concepts addressed in the following sections:_
 * _Desktop virtualization - context, Development Environment_
 * _CORBA_
 *
-## Availability
+# Availability
 
 Source tree at Github:
   [git@github.com:MetaCommunity/dobelle-app.git][dobelle-app] 
 
-## Initial Documentation
+# Initial Documentation
 
-### Usage Cases (and orthogonal notes)
+## Usage Cases (and orthogonal notes)
 
 _FIXME: Move orthogonal notes into other sections of this outline or
 other documentation _
@@ -206,9 +232,9 @@ other documentation _
              community process and, in detail, within open technical
              specifications
 
-### Application Concepts
+## Application Concepts
 
-#### Application Life Cycle
+### Application Life Cycle
 
 * Trivial Outline - Application as Module
     * Application installation
@@ -222,14 +248,14 @@ other documentation _
     * See also: `initctl(8)`, _upstart_ and `init(8)` [Linux platforms]
 
 
-### Package System Concepts
+## Package System Concepts
 
-### Integration with Host Packaging System
+## Integration with Host Packaging System
 
 _(TBD. See also: Debian Packaging System; Cygwin; Android app
 store(s); Apache Maven; Apache Ivy; ...)_
 
-#### Package Life Cycle
+### Package Life Cycle
 
 _cf. Debian package system_
 
@@ -238,14 +264,14 @@ _cf. Debian package system_
     * Software installation (user context)
     * Issue tracking (developers and users)
 
-#### Modeling (?) of Output Files for Application Package Assembly
+### Modeling (?) of Output Files for Application Package Assembly
 
 _(TBD. See also: [mci-doc-docbook][mci-doc-docbook])_
 
 
-### Desktop Platform Concepts
+## Desktop Platform Concepts
 
-#### Integration with CLIM
+### Integration with CLIM
 
 _(TBD. See also: "Initial Summary", below)_ 
 
@@ -289,7 +315,7 @@ _(TBD. See also: "Initial Summary", below)_
         * ?
 
 
-#### Desktop Application Initialization (cf. CLIM)
+### Desktop Application Initialization (cf. CLIM)
 
 _(TBD)_
 
@@ -344,14 +370,14 @@ _Notes (Non-Normative)_
       _embedded Linux_ (RTOS) platform
 
 
-#### See also (cf. CLIM)
+### See also (cf. CLIM)
 
 * CLIM-Desktop [[CLiki](http://www.cliki.net/clim-desktop)][[source tree](http://common-lisp.net/viewvc/clim-desktop/)]
 * History of Desktop Interfaces for Lisp Machines, for example
     * [_Symbolics_, Wikipedia Republished](http://en.wiki2.org/wiki/Symbolics),
       specifically, _[Ivory and Open Genera](http://en.wiki2.org/wiki/Symbolics#Ivory_and_Open_Genera)_
 
-#### Usage Case: IDE
+### Usage Case: IDE
 
 This notification protocol may serve as a component of a system for
 supporting application design within an integrated development
@@ -359,18 +385,18 @@ environment, and may be furthermore extended for appliation within a
 server environment.
           
 
-## Server Platform Concepts
+# Server Platform Concepts
 
-### Integration with Amazon Web Services
-
-_(TBD)_
-
-### Integration with CLORB
+## Integration with Amazon Web Services
 
 _(TBD)_
 
+## Integration with CLORB
 
-### An initial summary about the APPLICATION system
+_(TBD)_
+
+
+## An initial summary about the APPLICATION system
 
 Sidebar: [AFFTA][affta] was conceived as to represent the first usage
 case for this application framework. That would be in a context of
@@ -391,14 +417,14 @@ the _condition_ object. In a simple sense, this would be a matter of
 _encapsulated notifications_.
 
 
-#### The Null Application
+### The Null Application
 
 The class `NULL` may serve as a convenient designator for an
 applicatiton denoting a primary controlling thread within a containing
 Common Lisp implementation
 
 
-## "TO DO"
+# "TO DO"
 
 00. Make documentation modular - _AWS, Build System, Desktop Application System, etc._
 
@@ -458,7 +484,7 @@ Ubunutu") hypothetically an `%application%` may represent:
 
 # Orthogonal Concepts
 
-### Externalized Classes / Externalized Objects
+## Externalized Classes / Externalized Objects
 
 * MOP extension
 * To do: define with `info.metacommunity.cltl.mop.external` system
@@ -478,7 +504,7 @@ Ubunutu") hypothetically an `%application%` may represent:
 
 
 
-#### System Classes / System Objects
+### System Classes / System Objects
 
 * Overview: Extension of _Externalized classes_ protocol, onto POSIX
   environments and similar
@@ -567,7 +593,7 @@ Ubunutu") hypothetically an `%application%` may represent:
             * `pthread_attr_getstack`
 
 
-### 'Branch' (i.e. Process/Thread) API "TO DO"
+## 'Branch' (i.e. Process/Thread) API "TO DO"
 
 * Task: Extend [osicat] for interface with host process information
   (e.g. PID, real UID, GID, effective UID, GID, priority) and process
@@ -928,7 +954,7 @@ Ubunutu") hypothetically an `%application%` may represent:
                 * via hypothetical Java class file interpreter in
                   Common Lisp, therefore via "Null process" in same
 
-#### Thread Management
+### Thread Management
 
 * Thread pools (Server platforms)
 * Scheduling (RTOS / Embedded Applications - Mobile Platforms)
@@ -936,7 +962,7 @@ Ubunutu") hypothetically an `%application%` may represent:
 * _..._
 
 
-### CORBA - ORB and Interface Definitions (Orthogonal)
+## CORBA - ORB and Interface Definitions (Orthogonal)
 
 _(TBD Context: "Mobile, Desktop, and Server Applications")_
 
@@ -1028,9 +1054,9 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
           _insulated ORB_
     * See also: CLORB
 
-## Development Environment
+# Development Environment
 
-### Desktop Virtualization - VirtualBox SDK 
+## Desktop Virtualization - VirtualBox SDK 
 
 * Concepts
     * Desktop Virtualization
@@ -1056,7 +1082,7 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
     * [VirtualBox IGuestProcess Interface](https://www.virtualbox.org/sdkref/interface_i_guest_process-members.html)
 
 
-## Appendix: Symbolic Name of the Dobelle-App Source Tree
+# Appendix: Symbolic Name of the Dobelle-App Source Tree
 
 The [Dobelle-App][dobelle-app] source tree was named after a feature
 of a science-fiction novel, _Summertide_ -- the first novel of the
@@ -1122,7 +1148,7 @@ the Common Lisp program environment and a small number of modular
 computing environments on desktop, mobile, and server computing
 architectures, somewhere north of _Summertide_.
 
-## Resource Notes
+# Resource Notes
 
 1. [Hudson Continuous Integration](http://hudson-ci.org/)
 2. [Hudson Continus Integration - Eclipse Foundation](http://www.eclipse.org/hudson/)
