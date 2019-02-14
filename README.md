@@ -20,6 +20,9 @@ TBD: Case study - FreeBSD `boot0`
 
 (TBD)
 
+Case Studies:
+* ...
+
 #### Dobelle Application Initialization Parameters
 
 (TBD - Platform-Agnostic Applications Object Model)
@@ -29,6 +32,10 @@ TBD: Case study - FreeBSD `boot0`
 (TBD: Implementation-neutral interface for consuming shell commandline args)
 (TBD: getopt_long(3), getsubopt(3), ... HOWTO: Object-oriented model for shcmd arg consumer)
 
+Topic: Shell Command Line Arguments
+* Made available via shell command line
+* ...or (for linkable object files) made avaialble via direct call to object file's 'main()', cf. exec(), execve()
+
 #### Dobelle Applications in Multiprocessing Environments
 
 (TBD - Processes; Threads)
@@ -36,6 +43,16 @@ TBD: Case study - FreeBSD `boot0`
 * Initializing a Dobelle Application in a New Thread
 * Initializing a Dobelle Application within a Common Lisp Peeer Process
 
+#### Shell Environment
+
+Case Study: AWS key data provided IPC via shell environment variables
+
+#### Application Message Bus
+
+Case Studies
+* DBUS
+* CORBA (RPC)
+* MSMQ, AMQP, ... MQTT
 
 ## Platform-Specific Application Activation
 
