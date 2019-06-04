@@ -65,7 +65,7 @@
     <title>&project; Reference Manual</title>
     <subtitle>API for Application Packaging,
     Initialization, Control, and Messaging in Common Lisp</subtitle>
-    
+
     <author>
       <personname>Sean Champ</personname>
     </author>
@@ -83,19 +83,19 @@
     </para>
     <para>
       This object model shall provide an architecture for
-      initialization and control of application of the following 
+      initialization and control of application of the following
       natures:
     </para>
     <simplelist>
       <member>&cltl; programs utilizing a threading architecture,
       within a host operating system environment</member>
 
-      <member>&cltl; programs utilizing a process 
+      <member>&cltl; programs utilizing a process
       architecture, within a host operating system
-      environment</member> 
+      environment</member>
 
       <member>&cltl; programs providing support for application of
-      &asdf; as system definition facility</member> 
+      &asdf; as system definition facility</member>
 
       <member>&cltl; programs extending of the Common Lisp Interface
       Manager (<acronym>CLIM</acronym>)</member>
@@ -105,7 +105,7 @@
       operating system environment.</member>
 
       <member>Programs compiled as to be launched via a
-      <acronym>JVM</acronym>.</member> 
+      <acronym>JVM</acronym>.</member>
 
     </simplelist>
 
@@ -182,9 +182,9 @@
         cf. Kerberos, insofar as service-level functionality as may be
         provided external to an application.</remark>
       </section>
-      
+
       </section>
-      
+
       <section>
         <title>Features of a &cltl; Program Environment</title>
 
@@ -193,7 +193,7 @@
           <member>
             <remark>The &cltl; conditions framework, including:
             Interactive continuation forms, in definitions of
-            containable errors</remark> 
+            containable errors</remark>
           </member>
           <member>
             <remark>Debugger integration</remark>
@@ -220,7 +220,7 @@
 
     <!-- <reference> -->
     <!--   <title>Application Dictionary</title> -->
-      
+
     <!-- </reference> -->
   </part>
 
@@ -235,7 +235,7 @@
 
     <!-- <reference> -->
     <!--   <title>Packaging Systems Dictionary</title> -->
-      
+
     <!-- </reference> -->
   </part>
 
@@ -247,7 +247,7 @@
       <glossdef>
         <para>From a perspective of a Lisp session running within a
         non-Lisp host environment: An application defined such as to be
-        initialized via <function>exec[v[e|p]]</function>. 
+        initialized via <function>exec[v[e|p]]</function>.
         </para>
       </glossdef>
     </glossentry>
@@ -286,7 +286,7 @@
         <remark>Typically, a POSIX-compatible environment (e.g. Linux,
         BSD, QNX, perhaps also OS X), or an environment at least
         partially reminiscent of POSIX (e.g Microsoft
-        Windows, BeOS, etc)</remark> 
+        Windows, BeOS, etc)</remark>
 
         <remark>In a context of virtualization, an application of a
         virtualization service may essentially serve as to add a
@@ -294,7 +294,7 @@
         &mdash; such as in which, an application's host environment
         may effectively represent  a <emphasis>guest</emphasis>
         instance (cf. VirtualBox) or alternately, a
-        <emphasis>dom1</emphasis> instance (cf. Xen) running within 
+        <emphasis>dom1</emphasis> instance (cf. Xen) running within
         &mdash; respectively &mdash; a <emphasis>host</emphasis>
         operating system (cf. VirtualBox) or a
         <emphasis>dom0</emphasis> <glossterm>Hypervisor</glossterm>
@@ -315,10 +315,10 @@
         <remark>Of course, the concern as with regards to application
         initialization may be of some relevance not only in an
         instance of an "Own hardware" environment. With regards to
-        cloud computing services, as in these decades along in the 
+        cloud computing services, as in these decades along in the
         evolution of timeshare models: Considering some functionality
         provided of an Amazon Web Services (AWS) Elastic Beanstalk
-        (EB) instance, insofar as that an EB instance may be 
+        (EB) instance, insofar as that an EB instance may be
         remotely activated or deactivated via an authenticated
         connection onto the web API published of AWS, it may be
         fortuitous to design  a continuous integration system such
@@ -345,19 +345,19 @@
       </refnamediv>
       <refsect1>
         <title>Overview</title>
-        
+
         <refsect2>
           <title>Towards Applications of a &docbook; Toolchain</title>
 
           <para>In any version of the &docbook; schema, in any
-          single schema syntax, the &docbook; schema may be 
-          applied and furthermore extended, as it being a normative 
+          single schema syntax, the &docbook; schema may be
+          applied and furthermore extended, as it being a normative
           and extensible document schema for XML documents.</para>
-          
+
           <para>In a production of a document conformant to the
           &docbook; schema, an XSLT transform engine may be applied to
           the  document, such as to apply the &docbookXSL;
-          stylesheets.</para> 
+          stylesheets.</para>
 
           <para>A toolchain developed onto &docbook; may be developed
           such as to apply a set of software tools, each within one of
@@ -370,7 +370,7 @@
             <member>XSL transforms, for applying the &docbookXSL;
             stylesheets onto one or more source documents</member>
             <member>Additional software tools, such as may be applied
-            in formatting of documents produced directly of the XSL 
+            in formatting of documents produced directly of the XSL
             transforms, specifically towards producing a file of any
             specific output format</member>
             <member>Tools for software packaging and software
@@ -395,7 +395,7 @@
             <member>Document formatting</member>
             <member>Publication</member>
           </simplelist>
-          
+
         </refsect2>
 
         <refsect2>
@@ -404,9 +404,9 @@
 
           <remark>To to: Provide an introduction to ASDF, MK:DEFSYS,
           etc</remark>
-          
-          <para>&asdf; may be applied, namely for purposes of 
-          <emphasis>file validation</emphasis> and 
+
+          <para>&asdf; may be applied, namely for purposes of
+          <emphasis>file validation</emphasis> and
           <emphasis>file transformation</emphasis>, onto file
           components  within a documentation life cycle applying the
           &docbook; toolchain. In such application:</para>
@@ -456,10 +456,10 @@
                   documentation toolchain &mdash; contextually, in
                   regards to application of a &relax; schema &mdash;
                   in a decision onto a selection of
-                  <application>nXML</application> or   
+                  <application>nXML</application> or
                   <application>Trang</application> at this instance,
                   within an effective documentation workflow
-                  model.</para> 
+                  model.</para>
 
                   <para><application>nXML</application> may applied
                   for interactive or batch validation of schema
@@ -470,7 +470,7 @@
                   applied for batch validation of schema syntax,
                   insofar as towards whether a &relax; schema may be
                   transformed towards a production of a schema of
-                  an second schema syntax.</para> 
+                  an second schema syntax.</para>
                 </footnote>
                 </td>
                 <td>
@@ -531,7 +531,7 @@
                 </footnote></td>
                 <td>Document of a publishable format<footnote>
                 <para>Publishable formats may include
-                <productname>HTML</productname> 
+                <productname>HTML</productname>
                 <productname>PDF</productname>, <productname>Manual
                 page</productname>,
                 <productname>TeXinfo</productname>, etc.
@@ -553,7 +553,7 @@
                     producing a document of a publishable format from
                     the initial <acronym>XML</acronym> document, in
                     application of an <acronym>XSL</acronym>
-                    transforms</member> 
+                    transforms</member>
                   </simplelist>
                 </td>
               </tr>
@@ -575,29 +575,29 @@
                   would be developed at this <emphasis>decision
                   node</emphasis>, and would be verified for its
                   applicability onto the preceding documentation
-                  toolchain, it may be determined that there may be an  
-                  issue addressing any one or more of: 
+                  toolchain, it may be determined that there may be an
+                  issue addressing any one or more of:
                   <simplelist>
                     <member>Content of any single
                     <emphasis>transformational stylesheet</emphasis>, as
                     would be applied in
-                    <emphasis>transformation</emphasis> of 
+                    <emphasis>transformation</emphasis> of
                     a single <emphasis>source document</emphasis> in
-                    the toolchain's application</member>  
+                    the toolchain's application</member>
 
                     <member>Content of any single
                     <emphasis>presentational stylesheet</emphasis>,
                     as would be applied in
-                    <emphasis>presentation</emphasis> of the 
+                    <emphasis>presentation</emphasis> of the
                     <emphasis>document of publishable
-                    format</emphasis> &mdash; 
+                    format</emphasis> &mdash;
                     namely, as would be correlated to the format of
                     the  <emphasis>document of publishable
                     format</emphasis> &mdash; correlation of
                     HTML and Cascading Stylesheets, in web-based
                     presentation, in print presentation, in HTML help
                     presentation, or in EPUB presentation, etc.</member>
-                    
+
                     <member>The content of any single <emphasis>source
                     document</emphasis>, at the instance of the
                     toolchain's application</member>
@@ -637,19 +637,19 @@
         <refsect2>
           <title>Additional Functionality (Interactive Instances
           within Toolchain)</title>
-          
+
           <remark>TO DO: Integrate this section within the broader
-          usage case, 
+          usage case,
           as illustrated here in this <tag
           class="element">refentry</tag> item</remark>
-          
+
           <remark>Abstract Concept: Differentiation of
           <emphasis>batch</emphasis> and
           <emphasis>interactive</emphasis> processes, within
           documentation toolchain</remark>
 
           <remark>Practical Concept: Development of an IDE for
-          documentation authors</remark> 
+          documentation authors</remark>
 
           <simplelist>
             <member>Interactive Spell Checking</member>
@@ -669,7 +669,7 @@
       <refsect1>
         <title>Planning</title>
         <remark>Essentially, this <emphasis>usage case</emphasis>
-        represents a plan for a <emphasis>documentation 
+        represents a plan for a <emphasis>documentation
         system</emphasis>. </remark>
         <remark>Insofar as &asdf; may be applied for
         actuation of non-interactive events, correspondingly, it may
@@ -682,7 +682,7 @@
       </refsect1>
       <refsect1>
         <title>Resources</title>
-        
+
         <segmentedlist>
           <segtitle>Resource</segtitle>
           <segtitle>Resource Kind</segtitle>
@@ -695,11 +695,11 @@
             <seg><simplelist>
               <member>Public source code repository for
               extensions developed onto DocBook</member>
-              <member>Source of usage-case</member> 
+              <member>Source of usage-case</member>
             </simplelist></seg>
           </seglistitem>
         </segmentedlist>
-        
+
       </refsect1>
     </refentry>
 
