@@ -50,9 +50,9 @@ Case Study: AWS key data provided IPC via shell environment variables
 #### Application Message Bus
 
 Case Studies
-* DBUs [X]
+* DBUS
 * CORBA (RPC)
-
+* MSMQ, AMQP, ... MQTT
 
 ## Platform-Specific Application Activation
 
@@ -114,7 +114,7 @@ _Orthogonal concepts addressed in the following sections:_
 # Availability
 
 Source tree at Github:
-  [git@github.com:MetaCommunity/dobelle-app.git][dobelle-app] 
+  [git@github.com:MetaCommunity/dobelle-app.git][dobelle-app]
 
 # Initial Documentation
 
@@ -179,7 +179,7 @@ other documentation _
         * Classpath specifier (cmdline; see also: `%CLASSPATH%` etc) [OPTIONAL]
         * 'Main' Class name
         * Args for 'Main' Class [OPTIONAL]
-        * See also: Eclipse IDE 
+        * See also: Eclipse IDE
     * Generic Concepts - Scripting and Automation in Java Application Systems
         * [JADE Toolkit](http://jade.tilab.com/doc/index.html)
         * [Apache Ant](http://ant.apache.org/)
@@ -311,7 +311,7 @@ _(TBD. See also: [mci-doc-docbook][mci-doc-docbook])_
 
 ### Integration with CLIM
 
-_(TBD. See also: "Initial Summary", below)_ 
+_(TBD. See also: "Initial Summary", below)_
 
 
 * Class: `CLIM-APPLICATION`
@@ -342,7 +342,7 @@ _(TBD. See also: "Initial Summary", below)_
           form is evaluated in McCLIM: `(clim:find-port :server-path
           '(:clx :display ":0"))` .
         * This may be applied as onto integration with SSH tunneling
-          (To Do: Develop usage cases) 
+          (To Do: Develop usage cases)
 * Related Concepts
     * Port [CLIM]
     * Frame Manager [CLIM]
@@ -367,7 +367,7 @@ _Notes (Non-Normative)_
   appropriate licensing, alternate CLIM implementations may be
   available, such as for _Allegro Common Lisp_, published by Franz
   Inc.
-  
+
 * Host Window System Architectures and CLIM
 	* CLIM is developed essentially around a framework in which a _host
 	  windowing system_ is defined.
@@ -388,7 +388,7 @@ _Notes (Non-Normative)_
 	        * Typically, the _remote client_ functionality of the X
 	          Window System would be augmented with an _SSL tunneling_
 	          provider, such as OpenSSL
-              
+
 * Additional Resources Available of a Conventional Desktop Host
   Environment, in most conventional Desktop Linux platforms
 	* In addition to a _windowing system_, a _host operating system_
@@ -396,7 +396,7 @@ _Notes (Non-Normative)_
 		* _Desktop Environment_ (KDE, GNOME, XFCE, etc)
 		* _Packaging System_ (typically, specific to the operating system)
 		* Locally installed _software_ (see also:
-		  [xstow](http://xstow.sourceforge.net/)] 
+		  [xstow](http://xstow.sourceforge.net/)]
 	* A _host machine_ may implement multiple _host operating systems_,
 	  simultaneously
 		* A _host operating system_ may be initalized via a _virtualization
@@ -421,7 +421,7 @@ This notification protocol may serve as a component of a system for
 supporting application design within an integrated development
 environment, and may be furthermore extended for appliation within a
 server environment.
-          
+
 
 # Server Platform Concepts
 
@@ -467,7 +467,7 @@ Common Lisp implementation
 00. Make documentation modular - _AWS, Build System, Desktop Application System, etc._
 
 0. **Document how this <framework> is used within DO-RECORDED-TEST**
-    * First: Review design documents for AFFTA 
+    * First: Review design documents for AFFTA
 
 1. **[COMPLETE] Move this into a new 'application' system [MCi]**
     * Result: `dobelle-app` source tree
@@ -476,12 +476,12 @@ Common Lisp implementation
     * First: Integration with CLIM (mobile)
     * Second: Development and implementation of IDL interfaces for
       application notification messages (First: Kerberos, SSL, and CLORB)
-    
+
 3. **Describe %APPLICATION% [Variable]**
     * First: Architecture
 
-4. **(4.A) Develop architecture: An appliation system for Common Lisp** 
-     
+4. **(4.A) Develop architecture: An appliation system for Common Lisp**
+
 4. **(4.B)) Develop archicture: Hybrid interactive/automated build
    system for "Software and things"**
 
@@ -504,7 +504,7 @@ Ubunutu") hypothetically an `%application%` may represent:
        services utilized within indivudal Linux distributions
        (cf. Debian's 'reportbug' interface and broader issue
        tracking system), and  desktop environments (e.g. KDE
-       and GNOME) as well as within individual applications 
+       and GNOME) as well as within individual applications
        (e.g. Firefox, Google Chrome, and applications developed
        as components of the respective desktop environment,
        e.g. WebKit) in a context of developer support, if not
@@ -518,7 +518,7 @@ Ubunutu") hypothetically an `%application%` may represent:
        network service administrator -- observing that a developer
        developing a network service application may be serving also as
        a network service administrator, in such development.
-       
+
 
 # Orthogonal Concepts
 
@@ -551,10 +551,10 @@ Ubunutu") hypothetically an `%application%` may represent:
   environment would have, each, a set of _properties_ such that may be
   accessed via individual functions defined within GNU
   LibC. Effectively, each set of such __properties_ serves to define a
-  distinct _system class_, such as of a _process_ or _thread_ -- 
+  distinct _system class_, such as of a _process_ or _thread_ --
   similarly, as with _user_, _group_, _file_, _host_ and other
   effective  _system object_ classes
-  
+
 * **Allocation of slots for _system object properties_**
     * Within a CLOS environment, those effective _system object_
       classes can be modeled such that each such _property_ would be
@@ -567,7 +567,7 @@ Ubunutu") hypothetically an `%application%` may represent:
       would be in duplication of the value of the same _property_
       within the containing _system environment_. Although it may
       present a _portable_ implementation, to allow a slot to be
-      allocated even for each such _system object property_ but -- if 
+      allocated even for each such _system object property_ but -- if
       it would be avoidable, within any specific implemenation -- then
       no slot need be allocated for each such _system object property_.
         * See also (?) `SB-PCL::MAKE-PRELIMINARY-LAYOUT`,
@@ -579,7 +579,7 @@ Ubunutu") hypothetically an `%application%` may represent:
           value provided to `MAKE-SLOT-TABLE` is the value returned
           from `COMPUTE-SLOTS`.
         * See also `SLOT-VALUE` [SBCL], observing the application of
-          `SB-PCL::FIND-SLOT-CELL` 
+          `SB-PCL::FIND-SLOT-CELL`
         * Without effectively revising MOP, it may not be possible to
           prevent allocation of slot value storage for _system object
           properties_. If _system object properties_ would be defined
@@ -606,13 +606,13 @@ Ubunutu") hypothetically an `%application%` may represent:
       slot_ for such a _system obbject_ would contain a _file
       descriptor index_.
         * usage cases: see also, `fcntl(2)`, e.g with regards to
-          mandatory/advisory file locking, such that 
+          mandatory/advisory file locking, such that
           may be of relevance for an object serialization system; with
           regards to "Close on exec"; with regards to capacities for
           "pipe" FD; file and directory change notification (e.g. for
           directory listings, or interactive file editing tools);
           blocking (synchronous) I/O; FD permissions; file leases
-* **References (Usage Case)** - _System Classes in POSIX, Linux, and 
+* **References (Usage Case)** - _System Classes in POSIX, Linux, and
       GNU LibC Environments_
     * GNU LibC Info documentation; Linux manual pages
     * Focus: pthreads
@@ -636,14 +636,14 @@ Ubunutu") hypothetically an `%application%` may represent:
 * Task: Extend [osicat] for interface with host process information
   (e.g. PID, real UID, GID, effective UID, GID, priority) and process
   control procedures (e.g.  *nice*, *sched_setscheduler*, *chroot*)
-  and CLIM presentation/interaction methods 
+  and CLIM presentation/interaction methods
 
 * Class: `BRANCH`
     * Generic protocol class for interfaces onto existing
       multi-process architectures
         * i.e. "Root" class for an implementation of a unified
           interface onto host processes and threads
-        * and a bit of a lighthearted metaphor with regards to 
+        * and a bit of a lighthearted metaphor with regards to
           the details of processes and threads under POSIX
           and the pertinence of _namespaces_ in the Linux kernel --
           i.e namespaces of (referencing `clone(2)`)
@@ -672,9 +672,9 @@ Ubunutu") hypothetically an `%application%` may represent:
             * a manner of ad-hoc host virtualization in the kernel
           space (question: What about the relevance of virtual
           filesystems? cf. `/proc` and `CLONE_NEWPID`), albeit with a
-          shared process scheduling environment (presumably), and 
+          shared process scheduling environment (presumably), and
           (absolutely) a shared kernel configuration, as of a single
-          Linux host, but otherwise towards something like a complete 
+          Linux host, but otherwise towards something like a complete
           vhost framework on Linux (effects TBD with regards to shared
           memory registers within the controlling kernel environment)
           (effects TBD with regards to simultaneous access to same
@@ -683,12 +683,12 @@ Ubunutu") hypothetically an `%application%` may represent:
           space") (may not be suitable for embedded applications) (may
           not be suitable for direct interactive desktop applications,
           including desktop virtualization frameworks) (effects TBD
-          with regards to networking hardware and protocols.) (Formal 
+          with regards to networking hardware and protocols.) (Formal
           SDN frameworks and normative virtualization environments may be
           preferred, or virtual hosting limited at least as with
           regards to `CLONE_NEWNET` ). See also: `clone(2)`, `init`
     * This class presents an architecture-neutral metaphor in its
-      implementation, furthermore avoiding ambiguity between POSIX 
+      implementation, furthermore avoiding ambiguity between POSIX
       processes, POSIX-compliant implementations of pthreads, and
       (historic/optional) LinuxThreads implementations of pthreads
     * Concerning process/thread implementations in Linux host
@@ -699,7 +699,7 @@ Ubunutu") hypothetically an `%application%` may represent:
       from [[LKD2][lkd2]]
     * Class: `THREAD` (`BRANCH`)
         * Summary: Within a multi-thread Lisp implementation, a
-          _thread branch_ defines a _branch_ that executes within the 
+          _thread branch_ defines a _branch_ that executes within the
           _process environment_ of the containing _process branch_.
         * Observing that `clone` [`clone(2)`] may be applied
           effectively to "Work around" numerous conventions
@@ -716,7 +716,7 @@ Ubunutu") hypothetically an `%application%` may represent:
          on POSIX and Linux, however)
        * See also: `SHELL-PROCESS`
     * Class: `FORK` (`OS-PROCESS`)
-        * Summary: Initially a "copy" of the calling process, 
+        * Summary: Initially a "copy" of the calling process,
           as created via `fork(2)` or optionally `clone(2)` (note:
           `CLONE_IO`, as with regards to serialization of data objects
           within a Common Lisp implementation; `CLONE_NEWIPC` as with
@@ -735,14 +735,14 @@ Ubunutu") hypothetically an `%application%` may represent:
         * See also: `execve(2)` but note side-effects with regards to
           thread groups, as specifically denoted about `CLONE_THREAD`
           in `clone(2)`
-        * **Note: Streams interaction after _fork_**. See, for example: 
+        * **Note: Streams interaction after _fork_**. See, for example:
           `SB-EXT:RUN-PROGRAM`, which (#-w32 always) allocates a new
           pseudo-terminal for the forked process, using
           `SB-IMPL::OPEN-PTY`. See also: manual page `PTS(4)`. Note
           also that osicat must be patched to implement `grantpt`,
           `unlockpt` and `ptsname`.
         * PROCESS-PID : The _fork_ function should return, to the
-          _parent process_, the PID of the _child process_. The _child 
+          _parent process_, the PID of the _child process_. The _child
           process_ must also be able to access the _parent procoess_
         * Class: `SHELL-PROCESS` (`PROCESS-FORK`)
             * Summary: A `SHELL-PROCESS` executes within a new _process
@@ -766,7 +766,7 @@ Ubunutu") hypothetically an `%application%` may represent:
           within an encapsualted manner, for forked applications
     * Class: `PTY-PSEUDOTERMINAL`
         * May be recommended for interactive applications (if
-          applicable distinct to `FIFO-PSEUDOTERMINAL`, with 
+          applicable distinct to `FIFO-PSEUDOTERMINAL`, with
           such as a CLIM pane as an intermediary)
     * Function: `GET-PARENT-BRANCH &OPTIONAL PROCESS` =>
       process-or-null
@@ -791,7 +791,7 @@ Ubunutu") hypothetically an `%application%` may represent:
         * Type: Function
         * Summary: The `PROCESS-LOCAL-VARIABLES-FUNCTION`, when
           evaluted, must return a single value for each of the
-          `PROCESS-LOCAL-VARIABLES`. (Note: If the list of values 
+          `PROCESS-LOCAL-VARIABLES`. (Note: If the list of values
           returned by the function is shorter than the list of
           variables denoted in `PROCESS-LOCAL-VARIABLES` then those
           variables effectively following after the values - as
@@ -821,7 +821,7 @@ Ubunutu") hypothetically an `%application%` may represent:
         * `DECLARATION`: (**FIXME:** Reconsider this 'implicit
           let' design)
         * `FORM`: An _implicit progn_ (i.e. thread function body??)
-          (**FIXME:** Reconsider this 'implicit let' design) 
+          (**FIXME:** Reconsider this 'implicit let' design)
 * Function: `FIND-BRANCH`
     * Drilldown: Trivial.
     * Definition depends on convention for process/thread
@@ -840,7 +840,7 @@ Ubunutu") hypothetically an `%application%` may represent:
               applied within a program, other than to produce a list
               of "Indexed threads"?
                   * See also `pthread_sigqueue(3)`, `sigqueue(3)`,
-                    `sigaction(2)` (?) 
+                    `sigaction(2)` (?)
             * See also: `pthreads(7)`
                 * Shared data/heap segments
                 * Unique stack
@@ -888,7 +888,7 @@ Ubunutu") hypothetically an `%application%` may represent:
               numeric-vectors type may be preferred.
             * A _branch id_ may be assigned to a _thread_ object,
               as external to any _multithreading_ implementation's
-              specific _threading architecture_. Though it will 
+              specific _threading architecture_. Though it will
               require initialization of third object, complimentay to
               the _thread_ and its _branch iD_, however it would
               provide a platform-agnostic method for thread indexing,
@@ -970,9 +970,9 @@ Ubunutu") hypothetically an `%application%` may represent:
 		      `clim-debugger:debugger` (defined in
 		      `mcclim:Apps;Debugger;clim-debugger.lisp`; depends on
 		      McCLIM _Clouseau_)
-	
+
     * Class: `JAVA-APPLICATION`
-        * JVM memory management 
+        * JVM memory management
             * Heap / Stack Limits
             * Garbage Collection
         * JVM compatibility (1.6, 1.7, ...)
@@ -1008,13 +1008,13 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
     * Service application networks
     * Data-oriented computing
     * CORBA services for mobile embedded platforms
-        * Inter-process communication (IPC) protocol and architectures 
+        * Inter-process communication (IPC) protocol and architectures
           for application coordination within _chroot jails_ on mobile
           embedded platforms
     * CORBA and Microkernel architectures (desktop and server platforms)
 
 * **Notes**
-    * Effectively, this functionality would require an extension onto 
+    * Effectively, this functionality would require an extension onto
       CLORB, towards a definition of a seperate system for support of
       CORBA application development in Common Lisp.
     * That system should provide support for protocols implementing
@@ -1053,7 +1053,7 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
           set), but would also be inaccessible with regards to file
           descriptors (`CLONE_FILES` unset), IPC namespace
           (`CLONE_NEWIPC` set), and PID namespace (`CLONE_NEWPID` set)
-          of the _cloning process_ and the broader _host_ (also unset: 
+          of the _cloning process_ and the broader _host_ (also unset:
           `CLONE_IO`,; `CLONE_SETTLS`, `CLONE_UTS`, `CLONE_VM`,
           `CLONE_FS`, etc) ... with a procedure ensuring it would be
           impossible for the  _cloning process_ to access the memory
@@ -1073,12 +1073,12 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
           filesystem as would be the location of the lock file creaetd
           by the _cloning process_, as wait until the
           _lock file_ has been removed by the _cloning process_ --
-          such that would have been  to allow the _cloning process_ to 
-          terminate -- then to unmount that shared filesystem. 
-          The _cloned process_  would then be altogether isolated from 
+          such that would have been  to allow the _cloning process_ to
+          terminate -- then to unmount that shared filesystem.
+          The _cloned process_  would then be altogether isolated from
           the _spawned process_, except by way of networking and
           kernel drivers. The _cloned process_ may then make calls to
-          mount its own virtual  `/proc` and `/sys` filesystems 
+          mount its own virtual  `/proc` and `/sys` filesystems
           within its new _mount namespace_ and new _PID namespace_,
           subsequently to mount any isolated block-special filesystems
           for the application's normal operation, and to initialize a
@@ -1094,7 +1094,7 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
 
 # Development Environment
 
-## Desktop Virtualization - VirtualBox SDK 
+## Desktop Virtualization - VirtualBox SDK
 
 * Concepts
     * Desktop Virtualization
@@ -1154,17 +1154,17 @@ keynote that in reciprocal of a certain popular adage: Even the most
 advanced engineering system may be understood insofar as with regards
 to elements of its mechanical nature, provided a sufficient overview
 of the system's composition. Thus, even a binary planetary system of a
-fictional binary star system -- and a strange artifact interposed 
+fictional binary star system -- and a strange artifact interposed
 between the planets -- that even such an exotic phsycial system may be
 understood for its mechanical nature, without any undue
 mystification.
 
-Of course, the _Dobelle_ system would require no specific maintenance, 
+Of course, the _Dobelle_ system would require no specific maintenance,
 itself, as with regards to its nature as an artifact obviously of a
 manner of genius -- beyond the hypothetical material nature of such a
 phsycial system, it being moreover an artifact developed essentially
-as a work of storytelling, in a medium of science fiction. As to any 
-more of details of the nature of the _Dobelle_ system -- but it might 
+as a work of storytelling, in a medium of science fiction. As to any
+more of details of the nature of the _Dobelle_ system -- but it might
 well spoil the reader's attention, if this document was to summarize
 all of the story developed in _Summertide_, if in any too simple
 regards.

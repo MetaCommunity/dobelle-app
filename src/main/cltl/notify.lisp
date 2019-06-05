@@ -86,14 +86,35 @@
 
 
 (defgeneric notify (application context condition) ;; NB
-  ;; FIXME: Clarify usage of  CONTEXT argument
+  ;; FIXME: Clarify usage of  CONTEXT argument as providing a narrower
+  ;; manner of granularity than APPLICATION, for debugging
+  ;;   - e.g: "Current Thread"
   ;;
-  ;; e.g. for  CLIM-APP APPLICATION
-  ;;           CONTEXT classes e.g
-  ;;              WINDOW-CONTEXT
-  ;;              SHELL-PROCESS-CONTEXT
-  ;;              HOST-CONTEXT
-  ;;              etc
+  ;; e.g. for a CLIM-APP APPLICATION, a WINDOW-CONTEXT
+  ;;
+  ;; e.g for a UNIX-CMD application, a SHELL-PROCESS-CONTEXT
+  ;;
+  ;; e.g for a network-server application
+  ;;    - current response context, anonymized for purpose of debug
+  ;;    - current storage context, anonymized for purpose of debug
+  ;;    - current proxy context, similarly
+  ;;
+  ;; e.g for a network-client application
+  ;;    - current request context, anonymized
+  ;;    - current storage context, anonymized
+  ;;
+  ;; FIME: This design does not per se allow for presentation onto a
+  ;; pesentation-context, whether such may be provided by an application
+  ;; for which NOTIFY is being called, or provided - in any broader
+  ;; sense - in the lisp implementation itself, or provided via any
+  ;; single process as may have initialized the lisp implemntation for
+  ;; purpose of monitoring and debug.
+
+  ;; insofar as in its original design, this simply provides for a
+  ;; manner of condition wrapping for a generic sense of application and
+  ;; application error/warning/notification context.
+
+  ;; NB: Visual 'Reactor' components in ACE/TAO
   (:method ((application null) context (condition error))
     (error 'application-error
            :application nil
@@ -113,7 +134,7 @@
             :condition condition)))
 
 
-;; NOTE/TODO: This system now dep. on [system Bordeaux Threads]
+;; TBD: dep. on [Bordeaux Threads]
 #+Bordeaux-Threads
 (defun notify* (condition)
   ;; FIXME:
