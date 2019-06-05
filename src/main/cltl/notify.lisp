@@ -6,19 +6,21 @@
 ;;;; Trivial application notification framework for condition handling
 
 
-(defclass application ()
-  ())
+(defclass application (#+FIXME singleton)
+  ()
+  #+FIXME (:metaclass singleton))
 
+;; --
 
 (defvar %application% nil)
 
-;; FIXME: Define an APPLICATION class representative of the Lisp image itself
+;; FIXME: Define an APPLICATION class representative of the Lisp REPL+PTY
 
 (defun current-application ()
   (values %application%))
 
 (defun (setf current-application) (new-value)
-  ;; FIXME: Thread handling?
+  ;; FIXME: Thread handling? (Application Monitor Thread ??)
   (setf %application% new-value))
 
 
@@ -36,7 +38,7 @@
 ;;  ;; application-frame, etc.
 ;;
 ;; (defclass remote-process (process) ...)
- 
+
 
 (defgeneric format-condition (condition stream))
 
@@ -74,8 +76,8 @@
 (handler-case ; instance test - application-error
     (simple-program-error "Ping ping ping ping ~s" (get-universal-time))
   (error (c)
-    (error 'application-error 
-           :application "Foo top level foo" 
+    (error 'application-error
+           :application "Foo top level foo"
            :condition c)))
 
 
@@ -83,7 +85,7 @@
   ())
 
 
-(defgeneric notify (application context condition)
+(defgeneric notify (application context condition) ;; NB
   ;; FIXME: Clarify usage of  CONTEXT argument
   ;;
   ;; e.g. for  CLIM-APP APPLICATION
@@ -105,7 +107,7 @@
            :condition condition))
 
   (:method ((application null) context (condition condition))
-    (signal 'applicaiton-condition
+    (signal 'application-condition
             :application nil
             :application-context context
             :condition condition)))
@@ -114,7 +116,7 @@
 ;; NOTE/TODO: This system now dep. on [system Bordeaux Threads]
 #+Bordeaux-Threads
 (defun notify* (condition)
-  ;; FIXME: 
+  ;; FIXME:
   ;;
   ;; 1. Define a CLASS, THREAD, utilizing of Bordeaux-Threads'
   ;;    implementation-specific DEFTYPE interface for reference
@@ -125,11 +127,11 @@
   ;; 2. Specialize NOTIFY onto (CONTEXT THREAD)
   ;;
   ;; 3. Define a class, PROCESS, utilizing of OSICAT's POSIX interface
-  ;; 
+  ;;
   ;; 4. Specialize NOTIFY onto (CONTEXT PROCESS)
   ;;
   ;; 5. Define a class, HOST, utilizing of AWS' EC2 API
-  ;; 
+  ;;
   ;; 6. Define an interface for computing the {AWS messaging} identity
   ;;    for [a] {host administrator[s]} (cf. also AWS IAM) via the AWS
   ;;    API [Java]

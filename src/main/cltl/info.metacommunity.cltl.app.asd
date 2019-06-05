@@ -2,20 +2,20 @@
 
 (in-package #:asdf-user)
 
-(defsystem #:info.metacommunity.cltl.app
-  :description 
+(defsystem #:ltp-dobelle-app
+  :description
   "API for application initialization and messaging in Common Lisp"
   :version "1.0"
   :homepage "https://github.com/MetaCommunity/dobelle-app"
   :license "https://github.com/MetaCommunity/dobelle-app/blob/master/LICENSE"
-  
-  :depends-on (#:info.metacommunity.cltl.utils)
 
-  :components 
+  :depends-on (#:ltp-common #+FIXME #:ltp-common-index)
+
+  :components
   ((:file "app-package")
-   
+
    (:file "notify"
-          :depends-on 
+          :depends-on
           ("app-package"
            ))
    ))
