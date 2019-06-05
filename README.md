@@ -1,9 +1,89 @@
 API for application packaging, initialization, and messaging in Common Lisp
 =========================================================================
 
+# Remarks
+
+* The following _Initial Documentation_  may serve to denote a matter of
+  the principal origins of the LTP EO project -- specifically, as with
+  regards to _external system objects_
+
+* The following _Initial Documentation_ denotes the GNU libc
+  implementation -- a common feature of Linux systems -- in a couple of
+  places. Those sections should be updated to reflect the typically
+  _vendor agnostic_ nature of standard libc APIs.
+
+* The following _Initial Documentation_ does not serve to address many
+  concerns as may be entailed in integration of C and Common Lisp
+  programming systems.
+
+    * Note concerns that may emerge, in effect, with regards to
+      methodologies for extensions onto POSIX threads APIs -- as well as
+      other APIs, such that may be available in POSIX systems, generally
+      -- such that those APIs may be defined as to operate with
+      _callback functions_, typically in support of asynchronous
+      programming models.
+
+      In these instances, a "Normal C Function" must be provided, such
+      that the same "Normal C Function" would provide a certain _call
+      stack_ semantics, and would be defined in an ABI supported by the
+      host system. Theoretically, this may be approached in a Common
+      Lisp programming system in some applications of the LLVM
+      Just-in-Time (JIT) compiler API. Broadly, these concerns may also
+      be approached with definition of "Static Code" and "Runtime
+      Linking" in the Common Lisp implementaiton, in a per-system
+      manner.
+
+    * Note that none of the following documentation serves to address
+      concerns as may emerge, broadly, with regards to software
+      lifecyles when applying C language systems together with Common
+      Lisp programming  systems. These concerns may be deliniated, in
+      a procedural manner, as with regards to compile-time analysis,
+      bytecode assembly, build-time linking and runtime linking for
+      combined Common Lisp and C programming systems.
+
+        * Note that the Common Lisp implementation may provide -- in
+          effect -- a _toolchain_, in some ways comparable to a C or C++
+          compiler toolchain. In a simple manner of analogy, reader
+          provided in a Common Lisp implementation may be compared to a
+          C preprocessor. The implementation compiler -- for
+          implementations compiling to machine bytecode -- may be
+          compared to a C assembler, in some regards.  The Common Lisp
+          implementation may also provide some features, in a manner
+          fairly analogous to _build-time linker_ tools in a
+          conventional C toolchain -- although this distinction might
+          seem, in effect, blurred for any typically _interactive_
+          applications of Common Lisp implementations. The
+          implementation may furthermore provide -- typically, in an
+          internal manner, although usually providing some manner of an
+          implementation-specific functional API -- some integration
+          with host _runtime linking_, as _vis a vis_ `ld` on ELF
+          systems, or similar, on COFF systems.
+
+          It may be said that C, C++, and furthermore Objective-C
+          represents -- in each -- a more rigorous manner of programming
+          language than Lisp, _per se_. In a strongly typed application
+          of Common Lisp, the similarities may be sufficient to provide
+          a normal basis for interoperability between Common Lisp and C
+          programming systems.
+
+    * This text will not, in itself, propose any integration with the
+      Itanium ABI, for C++ programming systems. Documentation describing
+      the Itanium ABI is publicly available.
+
+    * This text was intended to provide an initial description towards a
+      generic model for applications in Common Lisp, as well as some
+      indicators for how that generic model may be implemented on POSIX
+      systems. The text is fairly dense, as such, in its original
+      Markdown format.
+
+    * This text was authored, in a manner, with POSIX operating systems
+      on PC and server environments in mind. It may not serve to address
+      many concerns with regards to mobile computing environments.
+
+
 # Overview
 
-The [dobelle-app][dobelle-app] defines a class, `APPLICATION`,
+The [dobelle-app][dobelle-app] system defines a class, `APPLICATION`,
 within a Common Lisp namespace.
 
 ## Application Modeling
@@ -107,7 +187,7 @@ application architecture._
 
 _Orthogonal concepts addressed in the following sections:_
 * _Unified interface for process and threading protocols, as primarily
-   within POSIX environments - i.e. `BRANCH` class protocol_
+   within POSIX environments - i.e. `TASK` class protocol_
 * _Desktop virtualization - context, Development Environment_
 * _CORBA_
 *
@@ -544,18 +624,27 @@ Ubunutu") hypothetically an `%application%` may represent:
 
 ### System Classes / System Objects
 
-* Overview: Extension of _Externalized classes_ protocol, onto POSIX
-  environments and similar
+* Overview: Extension of _External Objects_ protocol (LTP EO), for
+  integration with POSIX environments and similar
+
 * To do: define with `info.metacommunity.cltl.mop.system-classes` system
+
+    * FIXME: Intrinsic overlap with Common Lisp (CLtL2) System Classes
+
+    * NB: Implementation-specific classes that do not represent
+      extensions to STANDARD-CLASS
+
 * Description: _Process_ objects and _thread_ objects of a POSIX
   environment would have, each, a set of _properties_ such that may be
-  accessed via individual functions defined within GNU
-  LibC. Effectively, each set of such __properties_ serves to define a
-  distinct _system class_, such as of a _process_ or _thread_ --
-  similarly, as with _user_, _group_, _file_, _host_ and other
-  effective  _system object_ classes
+  accessed via individual functions defined within POSIX and libc
+  implementations. Effectively, each set of such __properties_ serves to
+  define a distinct _system class_ (i.e **external system object class***),
+  such as of a _process_ or _thread_ -- similarly, as with _user_,
+  _group_, _file_, _host_ and other effective  _external system object_
+  classes
 
-* **Allocation of slots for _system object properties_**
+* **Allocation of slots for _system object properties_** - Synopsis (Notes)
+
     * Within a CLOS environment, those effective _system object_
       classes can be modeled such that each such _property_ would be
       represented by a _slot definition_ such that, although defined
@@ -563,6 +652,7 @@ Ubunutu") hypothetically an `%application%` may represent:
       with an allocated slot value within any instances of that class,
       and -- as with PCL -- neither with the _class layout_ of the
       class.
+
     * Effectively, any _slot_ intialized for such a _property_
       would be in duplication of the value of the same _property_
       within the containing _system environment_. Although it may
@@ -592,13 +682,16 @@ Ubunutu") hypothetically an `%application%` may represent:
           `SLOT-BOUNDP-USING-CLASS` would always return `T`, and
           `SLOT-VALUE-USING-CLASS` would always access the _system
           object property_ within the _system environment_.
+
 * **System Object Identity**
+
     * To uniquely identify a _system object class_ as may be defined
       for representing a POSIX _process_, the definition may need not
       be made with an _instance allocated slot_ for the same
       identify value, insofar as the _system object class_ would
       represent the _containing process_ (in which instance, see also
       `getpid`).
+
     * By contrast: To uniquely identify a _system object class_ as may
       be defined for representing a POSIX _file descriptor_, then an
       _instance allocated slot_ must be created for containing the
@@ -612,15 +705,21 @@ Ubunutu") hypothetically an `%application%` may represent:
           "pipe" FD; file and directory change notification (e.g. for
           directory listings, or interactive file editing tools);
           blocking (synchronous) I/O; FD permissions; file leases
+
 * **References (Usage Case)** - _System Classes in POSIX, Linux, and
-      GNU LibC Environments_
-    * GNU LibC Info documentation; Linux manual pages
-    * Focus: pthreads
+      GNU (or other) libc Environments_
+
+    * GNU (or other) libc Info documentation; Linux manual pages
+
+    * Topic: pthreads
+
         * A threads may inherit some or all of of process identity
           values from within a thread's creating process
+
         * For control of which process identity values --
           including namespaces -- will or will not be inherited
           when a thread is created, see also `clone(2)` [Linux]
+
         * Manual page `pthread_attr_init(3)`
             * `pthread_attr_getdetachstate`
             * `pthread_attr_getscope`
@@ -631,14 +730,14 @@ Ubunutu") hypothetically an `%application%` may represent:
             * `pthread_attr_getstack`
 
 
-## 'Branch' (i.e. Process/Thread) API "TO DO"
+## 'Task' (i.e. Process/Thread) API "TO DO"
 
 * Task: Extend [osicat] for interface with host process information
   (e.g. PID, real UID, GID, effective UID, GID, priority) and process
   control procedures (e.g.  *nice*, *sched_setscheduler*, *chroot*)
   and CLIM presentation/interaction methods
 
-* Class: `BRANCH`
+* Class: `TASK`
     * Generic protocol class for interfaces onto existing
       multi-process architectures
         * i.e. "Root" class for an implementation of a unified
@@ -697,10 +796,12 @@ Ubunutu") hypothetically an `%application%` may represent:
       and
       _[Process Scheduling](http://www.makelinux.net/books/lkd2/ch04)_
       from [[LKD2][lkd2]]
-    * Class: `THREAD` (`BRANCH`)
+
+    * Class: `THREAD` (`TASK`)
+
         * Summary: Within a multi-thread Lisp implementation, a
-          _thread branch_ defines a _branch_ that executes within the
-          _process environment_ of the containing _process branch_.
+          _thread task_ defines a _task_ that executes within the
+          _process environment_ of the containing _process task_.
         * Observing that `clone` [`clone(2)`] may be applied
           effectively to "Work around" numerous conventions
           for POSIX threading [`pthreads(7)`]. Note, however
@@ -710,12 +811,22 @@ Ubunutu") hypothetically an `%application%` may represent:
           non-multithreading Lisp implementations
         * With regards to Linux host operating systems, see
           also: `pthreads(7)` and subsequent notes in this outline
-    * Class: `PROCESS` (`BRANCH`)
+
+    * Class: `PROCESS` (`TASK`)
+
        * Effectively presents an object-oriented interface onto
          features of host-specific _process_ implementation (focusing
          on POSIX and Linux, however)
        * See also: `SHELL-PROCESS`
+
+----
+
+* TBD
+
     * Class: `FORK` (`OS-PROCESS`)
+
+        * FIXME: Hard-coding procedural semantics in the class schema0
+
         * Summary: Initially a "copy" of the calling process,
           as created via `fork(2)` or optionally `clone(2)` (note:
           `CLONE_IO`, as with regards to serialization of data objects
@@ -725,7 +836,7 @@ Ubunutu") hypothetically an `%application%` may represent:
           and mutexes TBD. See also: `sysvipc(7)` and
           `mq_overview(7)`, as well as `clone(2)`). If created via
           `fork(2)`, always has a unique PID . Is effectively a
-          "branch" extending of the implementation's initial _host
+          "task" extending of the implementation's initial _host
           process_ (cf. POSIX process groups), though effectively
           limited across _process boundaries_ (?) and memory
           registers. (See also: also `CLONE_VM` [`clone(2)`] (?))
@@ -749,6 +860,7 @@ Ubunutu") hypothetically an `%application%` may represent:
               environment_, within the _process group_ of the containing
               _Lisp process_, and launches a shell command via _exec..._
             * See also: {SETENV bindings...}
+
     * Class: #-W32 `FIFO-PSEUDOTERMINAL` (via FIFOs - TBD, prototype)
         * As an alternative to `grantpt`, `unlockpt` and `ptsname`,
         * a FIFO may be created for (by default) each of the standard
@@ -764,22 +876,26 @@ Ubunutu") hypothetically an `%application%` may represent:
           system. Possibly not adequate for interactive application,
           this may at least suffice to provide a "bundle of streams"
           within an encapsualted manner, for forked applications
+
     * Class: `PTY-PSEUDOTERMINAL`
         * May be recommended for interactive applications (if
           applicable distinct to `FIFO-PSEUDOTERMINAL`, with
           such as a CLIM pane as an intermediary)
-    * Function: `GET-PARENT-BRANCH &OPTIONAL PROCESS` =>
-      process-or-null
-        * Null: Only e.g. when PROCESS has PID `0`
+
+    * Function: `GET-PARENT-TASK &OPTIONAL TASK` => process-or-null
+        * Null: Only e.g. when the implicit task has PID `0` (UNIX)
         * **Design Issue:** Ephemeral interfaces for host OS processes
           not within current process' thread group. (May be limited
           according to user permissions within host operating system)
-    * Accessor: `PROCESS-NAME` (string)
+
+    * Accessor: `PROCESS-NAME` := string
+
     * Accessor: `PROCESS-CHILD-FUNCTION`
-        * (For a _thread process_, a Lisp function evaluating
-          arbitrary Lisp code; for a _shell process_, a Lisp function
+        * (For a _thread task_, a Lisp function evaluating
+          arbitrary Lisp code; for a _process task_, a Lisp function
           that calls FORK, ... and EXEC or similar)
-    * Accessors (POSIX)
+
+    * Accessors (POSIX Process Environment)
         * TBD: POSIX process interface, where applicable
         * For a `THREAD-PROCESS`, accessors would be applicable within
           and external to the `THREAD-PROCESS`, and would be applied
@@ -806,11 +922,15 @@ Ubunutu") hypothetically an `%application%` may represent:
           will be evaluated within a lexical environment in which any
           of the `PROCESS-LOCAL-VAIABLES` is defined as local to the
           same lexical environment.
-* Function: `MAKE-BRANCH`
-* Macro: `DEFPROCESS` (**FIXME:** Reconsider whether this may present
+
+----
+
+* Function: `MAKE-TASK` / MAKE-TASK ...
+
+* Macro: `DEFTASK` (**FIXME:** Reconsider whether this may present
   any too informal of an interface to the underlying process object
   system)
-    * Syntax: `DEFPROCESS NAME (TYPE {(VAR BINDING)}*) {DECLARATION}? {FORM}*`
+    * Syntax: `DEFTASK NAME (TYPE {(VAR BINDING)}*) {DECLARATION}? {FORM}*`
         * `NAME`: A _process name_ (i.e. a string)
         * `TYPE`: A symbol (denoting the type of the process to define)
         * `VAR`: A symbol (**FIXME:** Reconsider this 'implicit let' design)
@@ -822,7 +942,9 @@ Ubunutu") hypothetically an `%application%` may represent:
           let' design)
         * `FORM`: An _implicit progn_ (i.e. thread function body??)
           (**FIXME:** Reconsider this 'implicit let' design)
-* Function: `FIND-BRANCH`
+    * TBD: `DEFTASK` in non-multiprocess environments, e.g SBCL on ARM
+
+* Function: `FIND-TASK`
     * Drilldown: Trivial.
     * Definition depends on convention for process/thread
       naming/indexing, as defined by the host OS and as then as
@@ -836,7 +958,7 @@ Ubunutu") hypothetically an `%application%` may represent:
         * Applicability: ????
             * In what instances may a program need to locate a
               thread by its "ID" ?
-            * Correspondingly, in what instances may a "Branch Id" be
+            * Correspondingly, in what instances may a "Task Id" be
               applied within a program, other than to produce a list
               of "Indexed threads"?
                   * See also `pthread_sigqueue(3)`, `sigqueue(3)`,
@@ -845,12 +967,12 @@ Ubunutu") hypothetically an `%application%` may represent:
                 * Shared data/heap segments
                 * Unique stack
                 * Shared process attributes
-                * Unique branch id, signal mask, errno, signal stack,
+                * Unique task id, signal mask, errno, signal stack,
                   scheduling priority (see `sched_setscheduler(2)`,
                   `sched_setparam(2)`)
                 * Linux: unique process capabilities set; unique CPU
                   affinity
-                * Note branch id reuse ("Branch Ids")
+                * Note task id reuse ("Task Ids")
                 * Linux: NPTL (kernel 2.6 and later)
                 * Note also: `ulimit` and thread-specific handling of
                   `RLIMIT_STACK`
@@ -859,7 +981,7 @@ Ubunutu") hypothetically an `%application%` may represent:
         * Note: "Largest possible real PID" even on 64 bit Linux
           implementation: unsigned 32 bit - see
           `/usr/include/bits/typesizes.h`
-        * Note: Branch Ids (implementation specific interfaces)
+        * Note: Task Ids (implementation specific interfaces)
             * In SBCL, refer to: `sbcl:src;code;target-thread.lisp`
               specifically around definition of
               `SB-THREAD::%CREATE-THREAD` and the corresponding C
@@ -876,7 +998,7 @@ Ubunutu") hypothetically an `%application%` may represent:
           `pid_t`; _osicat_; _cffi-grovel_.
         * To define a native `host-thread-id` type, See also: POSIX
           `pthread_t`; _osicat_; _cffi-grovel_; `pthreads(7)`
-        * To define a "Branch Ids" type:
+        * To define a "Task Ids" type:
             * Concept: Unique, platform-agnostic identification of
               host processes and threads
             * Derived type: `(simple-array #.(widest-type 'host-process-pid 'host-thread-id) (2))`
@@ -886,11 +1008,11 @@ Ubunutu") hypothetically an `%application%` may represent:
               (cf. SLIME, SWANK/BACKEND) but for indentifying threads
               within a software program, a numeric type or
               numeric-vectors type may be preferred.
-            * A _branch id_ may be assigned to a _thread_ object,
+            * A _task id_ may be assigned to a _thread_ object,
               as external to any _multithreading_ implementation's
               specific _threading architecture_. Though it will
               require initialization of third object, complimentay to
-              the _thread_ and its _branch iD_, however it would
+              the _thread_ and its _task iD_, however it would
               provide a platform-agnostic method for thread indexing,
               no less allowing for a fixnum-constrained (or lesser,
               e.g. unsigned 32 bit or even unsigned 31 bit, if in the
@@ -899,25 +1021,26 @@ Ubunutu") hypothetically an `%application%` may represent:
               defines a type of optimized vector for simple arrays of
               unsigned 31 bit elements. see also:
               `SB-VM:SIMPLE-ARRAY-UNSIGNED-BYTE-31-WIDETAG`) in
-              indexing of _branch ids_.
-            * Ensure that the _branch id_ with _thread id_ `0` for any
+              indexing of _task ids_.
+            * Ensure that the _task id_ with _thread id_ `0` for any
               single _process_  object will always denote a 'primary
               controlling thread', within the same _process_ object as
               any _thread id_ under the same _process ID_--
               similar to the _managing thread_ of a _Linux threads_
-              implementation. Conceivably, if a _branch_ with
+              implementation. Conceivably, if a _task_ with
               _thread id_ `0` would be terminated, that should result
-              in termination of every _thread branch_ spawned by the same
-              _process branch_.
+              in termination of every _thread task_ spawned by the same
+              _process task_.
              * See also: `fork(2)`, `clone(2)`, and `pthreads(7)`
                (Linux as host OS)
-* Function: `TERMINATE-BRANCH` (?)
-    * Syntax: `TERMINATE-BRANCH NAME => PROCESS`
-       * `NAME`: A _branch name_
-       * `BRANCH`: The _process_ denoted by `NAME`
-    * Summary: The function `TERMINATE-BRANCH` ensures that if a
-      branch named `NAME` is currently defined such as to be
-      accessible to `FIND-BRANCH`, that the branch will be terminated
+
+* Function: `TERMINATE-TASK` (?)
+    * Syntax: `TERMINATE-TASK NAME => PROCESS`
+       * `NAME`: A _task name_
+       * `TASK`: The _process_ denoted by `NAME`
+    * Summary: The function `TERMINATE-TASK` ensures that if a
+      task named `NAME` is currently defined such as to be
+      accessible to `FIND-TASK`, that the task will be terminated
     * see also: `pthread_kill(3)`, `kill(2)`, `tgkill(2)`, and
       `clone(2)` as with regards to _thread groups_ namely: _"Signal
       dispositions  and actions are process-wide: if an unhandled
@@ -926,13 +1049,15 @@ Ubunutu") hypothetically an `%application%` may represent:
       group."_ [`clone(2)`]
 
       `CLONE_THREAD`
-* Function: `CURRENT-BRANCH`
 
+* Function: `CURRENT-TASK`
+
+----
 
 * Class: `APPLICATION`
     * _To Do: Differentiate "Application" from "Process",
       semantically, or else join the two concepts into one API_
-    * Accessor: `APPLCIATION-BRANCH` - i.e. controlling process/thread
+    * Accessor: `APPLCIATION-TASK` - i.e. controlling process/thread
     * Accessor: `APPLICATION-NAME` - object naming?
     * Accessor: `APPLICATION-PARAMETERS` - _too generic?_
 	* Accessor: `APPLICATION-DEBUGGER-HOOK`
@@ -1024,7 +1149,7 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
       development system may develop a model for "Insulated execve",
       namely applying specific _flags_ to `clone()`, cf `clone(2)` and
       observing the notes about those same _flags_ within the section,
-      below, about the definition of the `BRANCH` class
+      below, about the definition of the `TASK` class
         * On a Linux host system (post kernel 2.6) `clone()` may be
           applied in a manner as to provide a level of _process
           insulation_, extending far beyond the simple _chroot jail_,
