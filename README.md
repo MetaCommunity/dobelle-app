@@ -43,21 +43,21 @@ API for application packaging, initialization, and messaging in Common Lisp
 
         * Note that the Common Lisp implementation may provide -- in
           effect -- a _toolchain_, in some ways comparable to a C or C++
-          compiler toolchain. In a simple manner of analogy, reader
+          compiler toolchain. In a simple manner of analogy, the _reader_
           provided in a Common Lisp implementation may be compared to a
-          C preprocessor. The implementation compiler -- for
-          implementations compiling to machine bytecode -- may be
-          compared to a C assembler, in some regards.  The Common Lisp
+          C _preprocessor_. The implementation _compiler_ -- for
+          implementations compiling to machine _bytecode_ -- may be
+          compared to a C _assembler_, in some regards.  The Common Lisp
           implementation may also provide some features, in a manner
-          fairly analogous to _build-time linker_ tools in a
-          conventional C toolchain -- although this distinction might
-          seem, in effect, blurred for any typically _interactive_
-          applications of Common Lisp implementations. The
-          implementation may furthermore provide -- typically, in an
-          internal manner, although usually providing some manner of an
-          implementation-specific functional API -- some integration
-          with host _runtime linking_, as _vis a vis_ `ld` on ELF
-          systems, or similar, on COFF systems.
+          fairly analogous to a _build-time linker_ in a conventional C
+          toolchain -- although this distinction might seem, in effect,
+          blurred for any typically _interactive_ applications of Common
+          Lisp implementations. The implementation may furthermore
+          provide -- typically, in an internal manner, although usually
+          providing some manner of an implementation-specific functional
+          API -- some integration with host _runtime linking_, as _vis a
+          vis_ `ld` and `dlsym` on ELF systems, or similar, on COFF
+          systems.
 
           It may be said that C, C++, and furthermore Objective-C
           represents -- in each -- a more rigorous manner of programming
@@ -76,9 +76,26 @@ API for application packaging, initialization, and messaging in Common Lisp
       systems. The text is fairly dense, as such, in its original
       Markdown format.
 
-    * This text was authored, in a manner, with POSIX operating systems
-      on PC and server environments in mind. It may not serve to address
-      many concerns with regards to mobile computing environments.
+    * This design documentation was originally developed, in a manner,
+      with POSIX operating systems on PC and server environments in
+      mind. It may not serve to address many concerns with regards to
+      mobile computing environments.
+
+
+    * The concept of defininig a first-order class, `application`, might
+      be assumed to denote a fairly PC-oriented idea -- something beside
+      the support for portable, program-level interactions with
+      restarts, conditions, and the debugger in CLtl2. However, this API
+      should not be assumed to be limited to PC computing environments.
+
+
+# Literary Note
+
+This software system is named after a planetary system -- namely, the
+planetary system of _Opal_ and _Quake_, two fictional planetary bodies,
+each of a diametrically opposed planetary climate. The _Dobelle_
+planetary system was developed in a series of books by Charles
+Sheffield, the Heritage Universe.
 
 
 # Overview
@@ -100,79 +117,109 @@ TBD: Case study - FreeBSD `boot0`
 
 (TBD)
 
+See also: tlab-sandbox/asdf-build-generalization/README.md
+
 Case Studies:
 * ...
+
 
 #### Dobelle Application Initialization Parameters
 
 (TBD - Platform-Agnostic Applications Object Model)
 
+(NB: LTP-MOP-SINGLETON system)
+
 ##### Configuring Dobelle Applications with Shell Runtime Parameters
 
 (TBD: Implementation-neutral interface for consuming shell commandline args)
-(TBD: getopt_long(3), getsubopt(3), ... HOWTO: Object-oriented model for shcmd arg consumer)
+
+(TBD: getopt_long(3), getsubopt(3), ... HOWTO: Object-oriented model for
+shcmd arg consumer)
 
 Topic: Shell Command Line Arguments
+
 * Made available via shell command line
-* ...or (for linkable object files) made avaialble via direct call to object file's 'main()', cf. exec(), execve()
+
+* ...or (for linkable object files) made avaialble via direct call to
+  object file's 'main()', cf. exec(), execve()
+
 
 #### Dobelle Applications in Multiprocessing Environments
 
-(TBD - Processes; Threads)
+(TBD - Processes; Threads) (NB: **Task** [Concept] as a generalization
+of OS processes and OS threads)
 
 * Initializing a Dobelle Application in a New Thread
-* Initializing a Dobelle Application within a Common Lisp Peeer Process
+* Initializing a Dobelle Application with a Common Lisp Peer Process
+
 
 #### Shell Environment
 
-Case Study: AWS key data provided IPC via shell environment variables
+Case Study: Information provided, in effect, for IPC but provided via
+shell environment variables (assumed to be only privately available to
+each OS process - pending verification of this characteristic, per
+operating system)
+
 
 #### Application Message Bus
 
 Case Studies
-* DBUS
-* CORBA (RPC)
-* MSMQ, AMQP, ... MQTT
+* POSIX RT mqueue API
+* DBUS @ the UNIX Desktop (and Cygwin0
+* "Android IPC" broadly
+* CORBA (RPC) Services
+* MSMQ, AMQP, ... MQTT (and JSON ??)
+* ASN.1 as a portable, principally language-agnostic type system
+
+General Concept: Inter-application messaging services, on a single
+computing host.
+
+General Concept: Application messaging services for arbitrary hosts on
+an arbitrary network.
+
+----
 
 ## Platform-Specific Application Activation
 
 ### Appliation Activation on Desktop and Server Platforms
 
-#### UNIX boot/init/login
+#### UNIX boot/init (OS) login (userspace) and subsq `exec()`
 
 ### Application Activation on Mobile Appliance Operating Systems
 
 #### Android Zygote
 
-#### Tizen
+#### Tizen (??)
 
-#### Maemo
+#### Maemo (Linux and X on Mobile)
+
+----
 
 ## Previous Notes
 
-_Ed. Note: This documentation endeavors to define a baseline
+**Ed. Note:** This documentation endeavors to define a baseline
 architecture towards a framework for application development in Common
 Lisp, focusing on three distinct types of host architecture: Server
 platform; Desktop platform; Mobile platform. As such, this
 documentation would be developed for an audience of software
-developers._
+developers.
 
-_This documentation has served largely as a page for collecting notes,
+This documentation has served largely as a page for collecting notes,
 as firstly with regards to the concepts of hardware architectures,
 computing platforms, operating system environments, software
 applications, application packaging systems, application debugging,
-and issue tracking._
+and issue tracking.
 
-_Secondly, this documentation has served as a page for collecting
+Secondly, this documentation has served as a page for collecting
 notes also with regads to specific application architectures --
 focusing, herein, about CORBA as a network application architecture
-and Linux as an operating system._
+and Linux as an operating system.
 
-_Thirdly, this documentation has served as a page for collecting a few
+Thirdly, this documentation has served as a page for collecting a few
 notes with regards to software development process and
-development process support._
+development process support.
 
-_Regarding the items of those "Second" and "Third" topics: Those items
+Regarding the items of those "Second" and "Third" topics: Those items
 would be essentially orthogonal to the baseline concepts of this
 system, and should likewise be developed within seperate items of
 documentation, in altogether seperate application systems. However,
@@ -182,15 +229,20 @@ additional development of an architecture for development and
 application of such orthogonal concepts, within this heterogenous
 conceptual framework -- presently, this documentation will continue to
 serve as a generic "Notes collection" towards development of an
-application architecture._
+application architecture.
 
 
-_Orthogonal concepts addressed in the following sections:_
-* _Unified interface for process and threading protocols, as primarily
-   within POSIX environments - i.e. `TASK` class protocol_
-* _Desktop virtualization - context, Development Environment_
-* _CORBA_
-*
+_Some concepts to be addressed (??) in the following sections:_
+
+* Unified interface for process and threading protocols, as primarily
+   within POSIX environments - i.e. `TASK` class protocol
+
+* Desktop virtualization - context, Development Environment
+
+* CORBA (assuming ABI compatibility with any complete CORBA framework
+  implementation)
+
+
 # Availability
 
 Source tree at Github:
@@ -350,6 +402,8 @@ other documentation _
              community process and, in detail, within open technical
              specifications
 
+----
+
 ## Application Concepts
 
 ### Application Life Cycle
@@ -502,6 +556,7 @@ supporting application design within an integrated development
 environment, and may be furthermore extended for appliation within a
 server environment.
 
+----
 
 # Server Platform Concepts
 
