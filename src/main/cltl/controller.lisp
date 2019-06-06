@@ -16,9 +16,64 @@
 
 (in-package #:ltp/dobelle/app)
 
+;; ---
+
+(defgeneric kind-name (kind))
+(defgeneric (setf kind-name) (new-name kind))
+
+(defclass kind ()
+  ((name
+    :type symbol
+    :accessor kind-nme
+    :initarg :name)))
+
+
+(defclass restart-kind (kind)
+  ())
+
+(defsingleton continue-restart-kind (restart-kind)
+  ()
+  (:default-initargs :name 'continue))
+
+
+(defclass lambda-kind (kind)
+  ())
+
+(defsingleton restart-main-lambda-kind (lambda-kind)
+  ()
+  (:default-initargs :name :main))
+
+(defsingleton restart-interactive-lambda-kind (lambda-kind)
+  ()
+  (:default-initargs :name :interactive))
+
+(defsingleton restart-report-lambda-kind (lambda-kind)
+  ()
+  (:default-initargs :name :report))
+
+(defsingleton restart-test-kind (lambda-kind)
+  ()
+  (:default-initargs :name :test))
+
+
+(defgeneric compute-restart-lambda (lambda-kind restart-kind application)
+  #+NIL ;; rough prototype - need to do name mangling for each symbol
+  (:method ((lambda-kind symbol) (restart-kind symbol)
+            (application application))
+    (let ((lk-singleton (find-class lambda-kind))
+          (rk-singleton (find-clsss restart-kind)))
+      (compute-restart-lambda lk-singleton rk-singleton application))))
+
+
+(defgeneric restart-function (lamba-kind restart-kind application)
+(defgeneric (setf restart-function) (function lamba-kind restart-kind
+                                     application))
+
+
 ;; ----
 
 (defgeneric controller-registered-applications (controller))
+
 
 (defclass app-controller ()
   ())
@@ -99,14 +154,18 @@
 ;; - application runtime init or next (main) or exit lambda
 ;; - application condition handling lambda
 
-;; TO DO: Define a reasonable default for each of the following generic
-;; functions, such that will serve to provide a normal restart-handling
-;; protocol for modular applications. (DEFINE-RESTART-HANDLER ?)
 
-(defgeneric app-continue-restart-main-lambda (TBD))
-(defgeneric app-continue-restart-interactive-lambda (TBD))
-(defgeneric app-continue-restart-report-lambda (TBD))
-(defgeneric app-continue-restart-test-lambda (TBD))
+;; TO DO: Define a reasonable default for each of the following methods
+;; such that will serve to provide a normal restart-handling protocol
+;; for modular applications.
+;; i.e
+#+NIL
+(eval-when ()
+  (compute-restart-lambda :main 'continue *application*)
+  (compute-restart-lambda :interactive 'continue *application*)
+  (compute-restart-lambda :report 'continue *application*)
+  (compute-restart-lambda :test 'continue *application*)
+  )
 
 
 ;; ---- application main exec
@@ -118,13 +177,13 @@
     (let ((%application-lambda%
            (app-runtime-next-lambda *application*)))
       (restart-bind ((continue
-                      (app-continue-restart-main-lambda *application*)
+                      (restart-function :main 'continue *application*)
                        :interactive
-                       (app-continue-restart-interactive-lambda *application*)
-                       :report
-                       (app-continue-restart-report-lambda *application*)
+                       (restart-function :interactive 'continue *application*)
+                        :report
+                       (restart-function :report 'continue *application*)
                        :test
-                       (app-continue-restart-test-lambda *application*)))
+                       (restart-function :test 'continue *application*)))
         (handler-bind ((condition (lambda (cdn)
                                     (handler-dispatch cdn app))))
           (funcall %application-lambda%))))))
