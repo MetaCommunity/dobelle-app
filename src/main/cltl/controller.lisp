@@ -1,20 +1,43 @@
-;; NB: May be moved into a package ltp/dobelle/app
-;; w/ symbols subsq renamed s/application-//
+;; controller.lisp - LTP Dobelle application-controller protocol
 
+;; NB: May be moved into a package ltp/dobelle/app
+;; w/ symbols subsq renamed s/app-//
+
+
+(in-package #:ltp/common)
+
+(defpackage #:ltp/dobelle/app
+  (:nicknames #:ltp.dobelle.app)
+  (:use #:ltp/common/mop/singleton
+        #:ltp/common/mop
+        #:ltp/common
+        #:cl))
+
+
+(in-package #:ltp/dobelle/app)
 
 ;; ----
 
 (defgeneric controller-registered-applications (controller))
 
-(defsingleton application-controller ()
-  (...))
+(defclass app-controller ()
+  ())
+
+(defsingleton single-threaded-app-controller (app-controller)
+  ())
+
+(defsingleton multi-threaded-app-controller (app-controller)
+  ())
 
 
 ;; --
 
-(defgeneric application-runtime-init-lambda (application))
-(defgeneric application-runtime-next-lambda (application))
-(defgeneric application-runtime-exit-lambda (application))
+(defclass application ()
+  ())
+
+(defgeneric app-runtime-init-lambda (application))
+(defgeneric app-runtime-next-lambda (application))
+(defgeneric app-runtime-exit-lambda (application))
 
 ;; NB: These may be approached, alternately, with funcallable instances
 ;;
@@ -34,9 +57,9 @@
 (defgeneric compute-runtime-exit-lambda (application))
 ;; such that may be used in a system finally providing values for
 ;; the accessors
-(defgeneric application-runtime-init-function (application))
-(defgeneric application-runtime-next-function (application))
-(defgeneric application-runtime-exit-function (application))
+(defgeneric app-runtime-init-function (application))
+(defgeneric app-runtime-next-function (application))
+(defgeneric app-runtime-exit-function (application))
 ;; ... such that should be defined in a manner as to permit
 ;; specialized FTYPE declaration for each of the respective
 ;; functions, as per (FTYPE (APPLICATION) (VALUES FUNCTION &OPTIONAL) ...)
@@ -80,27 +103,28 @@
 ;; functions, such that will serve to provide a normal restart-handling
 ;; protocol for modular applications. (DEFINE-RESTART-HANDLER ?)
 
-(defgeneric application-continue-restart-main-lambda (TBD))
-(defgeneric application-continue-restart-interactive-lambda (TBD))
-(defgeneric application-continue-restart-report-lambda (TBD))
-(defgeneric application-continue-restart-test-lambda (TBD))
+(defgeneric app-continue-restart-main-lambda (TBD))
+(defgeneric app-continue-restart-interactive-lambda (TBD))
+(defgeneric app-continue-restart-report-lambda (TBD))
+(defgeneric app-continue-restart-test-lambda (TBD))
 
 
 ;; ---- application main exec
 
-(do-vector (*application*
-            (controller-registered-applications %controller-singleton%)
-            %controller-singleton%)
-  (let ((%application-lambda%
-         (application-runtime-next-lambda *application*)))
-    (restart-bind ((continue
-                    (application-continue-restart-main-lambda *application*)
-                     :interactive
-                     (application-continue-restart-interactive-lambda *application*)
-                     :report
-                     (application-continue-restart-report-lambda *application*)
-                     :test
-                     (application-continue-restart-test-lambda *application*)))
-      (handler-bind ((condition (lambda (cdn)
-                                  (handler-dispatch cdn app))))
-        (funcall %application-lambda%)))))
+(defmacro controller-main ()
+  (do-vector (*application*
+              (controller-registered-applications %controller-singleton%)
+              %controller-singleton%)
+    (let ((%application-lambda%
+           (app-runtime-next-lambda *application*)))
+      (restart-bind ((continue
+                      (app-continue-restart-main-lambda *application*)
+                       :interactive
+                       (app-continue-restart-interactive-lambda *application*)
+                       :report
+                       (app-continue-restart-report-lambda *application*)
+                       :test
+                       (app-continue-restart-test-lambda *application*)))
+        (handler-bind ((condition (lambda (cdn)
+                                    (handler-dispatch cdn app))))
+          (funcall %application-lambda%))))))
