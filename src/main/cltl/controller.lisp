@@ -4,11 +4,92 @@
 ;; w/ symbols subsq renamed s/app-//
 
 
+#|
+
+Remarks - API Design
+
+- This API endeavors to develop some characteristics of a concept,
+  broadly: Normal application definitions, for Common Lisp programs.
+
+  Below, this concept - in a manner, an application pattern -- is
+  represented insofar as for two generic usage cases in Common Lisp
+  programming, principally:
+
+    - Representation of Common Lisp Restarts and Condition Objects
+
+    - Definition of a generic API for definition and management
+      of an application runtime lifecycle - in a manner: Application
+      initialization, application runtime event handling, and
+      application termination.
+
+
+  With regards to representations of restarts and condition objects, in
+  Common Lisp programs, two generic usage cases are addressed below:
+
+    - Interactive Common Lisp applications, represented here as vis a
+      vis: User interaction with the implementation debugger - here,
+      focusing on the implementation of a generic 'CONTINUE' restart, at
+      a granularity of a genric application API
+
+    - N!ointeractive Common Lisp applications, such as may provide any
+      manner of intrinsic handling for Common Lisp conditions, in any
+      arbitrary application usage cases. (NB: CERROR -> CONTINUE := FAIL)
+
+
+  The concept of a generic API for applications lifecyle (definition and
+  management) is developed - albeit in something of a rudimentary regard -
+  towards applications in multi-threaded and single-threaded Common Lisp
+  programming environments.
+
+
+  A generic API is proposed for asynchronous dispatch onto multiple
+  applications in single-threaded Common Lisp programming environments,
+  such that might serve - in some limited way - as to resemble an
+  application data flow for multi-threaded   applications.
+
+  In this regard, an APPLICATION-CONTROLLER is developed, such that the
+  implementation of the APPLICATION-CONTROLLER will differ as per
+  whether the Common Lisp implementation is assumed to provide, or
+  assumed to not provide an API for multi-threaded applications.
+
+
+  It is assumed that any API for multi-threaded applications may be
+  provided in a manner generally resembling POSIX threads.
+
+
+--
+
+  In a broad manner, the programming pattern - developed below - defines
+  a separation between the Common Lisp runtime image and individual
+  tasks, such that may be comprised of simultaneous threads or
+  asynchronous call structures in, respectively, a multi-threaded or
+  single-threaded programming environment.
+
+--
+
+  This API extends the SINGLETON MOP extension -- as developed in the
+  Thinkum Labs Lisp Tools Project (LTP) -- extending the SINGLETON
+  pattern as to define a generic enumerated type, in a manner such that
+  any members of the enumerated type, or the enumerated type itself, may
+  be used for principally static dispatching in Common Lisp method
+  definitions.
+
+  The macro DEFINE-SINGLETON-ENUM .... [TBD: Documentation]
+
+--
+
+  The macro CONTROLLER-MAIN provides a generic, pseudocode-like example
+  of a top-level function for an APPLICATION-CONTROLLER. The source code
+  of this macro, as such, may be subject to change in subsequent
+  revisions of this soruce file.
+
+|#
+
 (in-package #:ltp/common)
 
 (defpackage #:ltp/dobelle/app
   (:nicknames #:ltp.dobelle.app)
-  (:use #:ltp/common/mop/singleton
+  (:use #:ltp/common/singleton
         #:ltp/common/mop
         #:ltp/common
         #:cl))
@@ -16,7 +97,42 @@
 
 (in-package #:ltp/dobelle/app)
 
-;; ---
+
+
+(eval-when ()
+(define-singleton-enum retart-kind (kind)
+  ()
+  ((continue-restart-kind continue))
+  (:descriptor name))
+;; ^ subsq defines functions:
+;; - REGISTER-RESTART-KIND
+;; - FIND-RESTART-KIND
+;; - REMOVE-RESTART-KIND
+;; also defines singleton classes
+;; - CONTINUE-RESTART-KIND
+
+
+(define-singleton-enum restart-lambda-kind (kind)
+  ()
+  ((restart-main-lambda-kind :main)
+   (restart-interactive-lambda-kind :interactive)
+   (restart-report-lambda-kind :report)
+   (restart-test-lamba-kind :test))
+  (:descriptor name))
+;; ^ subsq defines functions:
+;; - REGISTER-RESTART-LAMBDA-KIND
+;; - FIND-RESTART-LAMBDA-KIND
+;; - REMOVE-RESTART-LAMBDA-KIND
+;; also defines singleton classes:
+;; - RESTART-MAIN-LAMBDA-KIND
+;; - RESTART-INTERACTIVE-LAMBDA-KIND
+;; - RESTART-REPORT-LAMBDA-KIND
+;; - RESTART-TEST-LAMBA-KIND
+
+)
+
+
+;; --
 
 (defgeneric kind-name (kind))
 (defgeneric (setf kind-name) (new-name kind))
@@ -31,13 +147,24 @@
 (defclass restart-kind (kind)
   ())
 
+;; (defun register-restart-kind (kind))
+;; (defun find-restart-kind (name &optional (noerr nil)))
+;; (defun remove-restart-kind (kind))
+
+
 (defsingleton continue-restart-kind (restart-kind)
   ()
   (:default-initargs :name 'continue))
 
+;; (register-restart-kind 'continue-restart-kind)
 
 (defclass lambda-kind (kind)
   ())
+
+;; (defun register-lambda-kind (kind))
+;; (defun find-lambda-kind (name &optional (noerr nil)))
+;; (defun remove-lambda-kind (kind))
+
 
 (defsingleton restart-main-lambda-kind (lambda-kind)
   ()
@@ -51,23 +178,23 @@
   ()
   (:default-initargs :name :report))
 
-(defsingleton restart-test-kind (lambda-kind)
+(defsingleton restart-test-lambda-kind (lambda-kind)
   ()
   (:default-initargs :name :test))
 
+;; (register-lambda-kind ...) ....
+
 
 (defgeneric compute-restart-lambda (lambda-kind restart-kind application)
-  #+NIL ;; rough prototype - need to do name mangling for each symbol
   (:method ((lambda-kind symbol) (restart-kind symbol)
             (application application))
-    (let ((lk-singleton (find-class lambda-kind))
-          (rk-singleton (find-clsss restart-kind)))
+    (let ((lk-singleton (find-restart-lambda-kind lambda-kind))
+          (rk-singleton (find-restart-kind restart-kind)))
       (compute-restart-lambda lk-singleton rk-singleton application))))
 
 
-(defgeneric restart-function (lamba-kind restart-kind application)
-(defgeneric (setf restart-function) (function lamba-kind restart-kind
-                                     application))
+(defgeneric restart-function (lambda-kind restart-kind application)
+(defgeneric (setf restart-function) (function lambda-kind restart-kind application))
 
 
 ;; ----
@@ -78,10 +205,11 @@
 (defclass app-controller ()
   ())
 
-(defsingleton single-threaded-app-controller (app-controller)
+(defsingleton app-controller/single-thread (app-controller)
   ())
 
-(defsingleton multi-threaded-app-controller (app-controller)
+;; #+SOME-LISP-HACK
+(defsingleton app-controller/multi-thread (app-controller)
   ())
 
 
@@ -91,7 +219,7 @@
   ())
 
 (defgeneric app-runtime-init-lambda (application))
-(defgeneric app-runtime-next-lambda (application))
+;; (defgeneric app-runtime-next-lambda (application))
 (defgeneric app-runtime-exit-lambda (application))
 
 ;; NB: These may be approached, alternately, with funcallable instances
