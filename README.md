@@ -1,6 +1,13 @@
 API for application packaging, initialization, and messaging in Common Lisp
 =========================================================================
 
+**Ed. Note:** This README is outdated. Subsequent of the repository
+migration to [the `thinkum/dobelle` repository][dobelle-src] at GitHub,
+source references are out-of-date in this text. This design
+specification, furthermore, has not been reviewed since its last content
+update.
+
+
 # Remarks
 
 * The following _Initial Documentation_  may serve to denote a matter of
@@ -100,7 +107,7 @@ Sheffield, the Heritage Universe.
 
 # Overview
 
-The [dobelle-app][dobelle-app] system defines a class, `APPLICATION`,
+The [dobelle-src][dobelle-src] system defines a class, `APPLICATION`,
 within a Common Lisp namespace.
 
 ## Application Modeling
@@ -246,7 +253,7 @@ _Some concepts to be addressed (??) in the following sections:_
 # Availability
 
 Source tree at Github:
-  [git@github.com:MetaCommunity/dobelle-app.git][dobelle-app]
+  [git@github.com:thinkum/dobelle.git][dobelle-src]
 
 # Initial Documentation
 
@@ -605,7 +612,7 @@ Common Lisp implementation
     * First: Review design documents for AFFTA
 
 1. **[COMPLETE] Move this into a new 'application' system [MCi]**
-    * Result: `dobelle-app` source tree
+    * Result: `dobelle-src` source tree
 
 2. **Document NOTIFY [standard generic function]**
     * First: Integration with CLIM (mobile)
@@ -1006,7 +1013,7 @@ Ubunutu") hypothetically an `%application%` may represent:
       interfaced by the specific Lisp implementation
     * **TO DO:** Define architecture for process naming/indexing
         * Note that this would apply only in regards to
-          threads created via `dobelle-app`. Conceivably, without
+          threads created via `dobelle-src`. Conceivably, without
           closer implementation-specific integration, it would be
           possible for an application to create a thread that would
           not be indexed in this sytem
@@ -1300,14 +1307,14 @@ _(TBD Context: "Mobile, Desktop, and Server Applications")_
     * [VirtualBox IGuestProcess Interface](https://www.virtualbox.org/sdkref/interface_i_guest_process-members.html)
 
 
-# Appendix: Symbolic Name of the Dobelle-App Source Tree
+# Appendix: Symbolic Name of the Dobelle-Src Source Tree
 
-The [Dobelle-App][dobelle-app] source tree was named after a feature
+The [Dobelle-Src][dobelle-src] source tree was named after a feature
 of a science-fiction novel, _Summertide_ -- the first novel of the
 series, _The Heritage Universe_, by Charles Scheffield.
 
 As a short synopsis of the symbolism represented in the naming of the
-[Dobelle-App][dobelle-app] source tree: In the first book of the
+[Dobelle-Src][dobelle-src] source tree: In the first book of the
 _Heritage Universe_ series, _Dobelle_ represents a planetary system
 defined of two contrasting worlds, _Quake_ and _Opal_. The two planets
 are connected by a mysterious _artifact_ denoted as _Umblical_, all
@@ -1378,8 +1385,8 @@ architectures, somewhere north of _Summertide_.
 8. Prakash, Winston. [Practicing Continuous Delivery Using Hudson](http://www.eclipse.org/hudson/the-hudson-book/book-hudson.pdf)
 
 
-[dobelle-app]: https://github.com/MetaCommunity/dobelle-app
+[dobelle-src]: https://github.com/thinkum/dobelle
 [mci-doc-docbook]: https://github.com/MetaCommunity/mci-doc-docbook
-[affta]: https://github.com/MetaCommunity/affta
+[affta]: https://github.com/thinkum/affta
 [mcclim]: http://common-lisp.net/project/mcclim/
 [lkd2]: http://www.makelinux.net/books/lkd2/
